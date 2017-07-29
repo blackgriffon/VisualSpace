@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/01.Scenes/3D Viewer.unity
+  isLoaded: 1
+  isActive: 1
