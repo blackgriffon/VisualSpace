@@ -1,0 +1,40 @@
+﻿<Window x:Class="Nollan.Visual_Space.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Nollan.Visual_Space"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="367.677" Width="540.909">
+    <Window.Resources>
+        <local:MapCanvas x:Key="Key_mapCanvas" />
+    </Window.Resources>
+
+
+    <Grid Name="mainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+
+        </Grid.RowDefinitions>
+        <local:MapCanvas Grid.Row="0" x:Name="mapCanvas" Background="Transparent"  
+                     MouseLeftButtonDown="MapCanvas_MouseLeftButtonDown"
+                     MouseMove="MapCanvas_MouseMove"
+                     SizeChanged="mapCanvas_SizeChanged"
+                     KeyDown="mapCanvas_KeyDown"
+                     MouseLeftButtonUp="MapCanvas_MouseLeftButtonUp"
+                     
+                     >
+
+            <TextBox Name="txtBox" Width="50.534" Canvas.Left="408.206" Canvas.Top="24.419"/>
+            <Button Content="지우기" Click="Button_Click" Canvas.Left="472.401" Canvas.Top="24.419"/>
+
+            <CheckBox Name="Ch_line" Content="선 그리기" Canvas.Left="418.849" Canvas.Top="62.014" 
+                  Checked="Ch_line_Checked" Unchecked="Ch_line_Unchecked"/>
+
+            <CheckBox Name="Ch_linePlusMinus" Content="선 증가감소" Canvas.Left="418.849" Canvas.Top="102.017"  HorizontalAlignment="Center" VerticalAlignment="Center"
+                  Checked="Ch_linePlusMinus_Checked" Unchecked="Ch_linePlusMinus_Unchecked" Height="29.55" Width="93.552"/>
+
+        </local:MapCanvas>
+    </Grid>
+</Window>

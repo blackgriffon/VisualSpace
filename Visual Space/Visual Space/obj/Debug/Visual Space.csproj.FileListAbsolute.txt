@@ -1,0 +1,19 @@
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\obj\Debug\Visual Space.csprojResolveAssemblyReference.cache
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\obj\Debug\MainWindow.g.cs
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\obj\Debug\App.g.cs
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\obj\Debug\MainWindow.baml
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\obj\Debug\Visual Space.csproj.GenerateResource.Cache
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\obj\Debug\Nollan.Visual_Space.Properties.Resources.resources
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\bin\Debug\protobuf-net.dll
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\obj\Debug\UnityViewer\ExeViewer.g.cs
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\obj\Debug\UnityViewer\ExeViewer.baml
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\obj\Debug\VisualSpace.UnityViewer.UnityExe.resources
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\obj\Debug\Visual_Space_MarkupCompile.cache
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\obj\Debug\Visual_Space_MarkupCompile.lref
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\obj\Debug\Visual_Space.exe
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\obj\Debug\Visual_Space.pdb
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\bin\Debug\Visual_Space.exe.config
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\bin\Debug\Visual_Space.exe
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\bin\Debug\Visual_Space.pdb
+C:\Users\TAEWOO\Desktop\Study\프로젝트 소스코드\Visual Space\Visual Space\obj\Debug\Visual_Space.g.resources
