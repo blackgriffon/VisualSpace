@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Nollan.Visual_Space.Network
 {
-    class WpfUnityTCPServer
+    class WpfUnityTCPServer : IWpfUnityTCPServer
     {
         // 송신 수신을 위한 데이터
         Queue<WpfUnityPacketHeader> recevieDataQueue = new Queue<WpfUnityPacketHeader>();
