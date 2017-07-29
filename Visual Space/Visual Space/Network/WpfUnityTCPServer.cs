@@ -133,7 +133,10 @@ namespace Nollan.Visual_Space.Network
         {
             IsConnected = false;
             if (_Client != null)
+            {
+                _NetworkStream.Close();
                 _Client.Close();
+            }
 
         }
     }
