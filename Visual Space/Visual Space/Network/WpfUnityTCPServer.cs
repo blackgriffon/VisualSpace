@@ -12,9 +12,6 @@ namespace Nollan.Visual_Space.Network
 {
     class WpfUnityTCPServer : IWpfUnityTCPServer
     {
-        // 송신 수신을 위한 데이터
-        Queue<WpfUnityPacketHeader> recevieDataQueue = new Queue<WpfUnityPacketHeader>();
-        Queue<WpfUnityPacketHeader> sendDataQueue = new Queue<WpfUnityPacketHeader>();
 
         // 전송완료 이벤트
         public event Action<WpfUnityPacketHeader> OnReceviedCompleted;
@@ -27,7 +24,7 @@ namespace Nollan.Visual_Space.Network
         NetworkStream _NetworkStream = null;
 
         // 스레드 루프를 빠져나올때 사용할 플레그
-        public bool IsConnected  = false;
+        public bool IsConnected = false;
 
         // 포트번호 / IP주소
         public int Port { get; private set; }

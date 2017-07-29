@@ -61,6 +61,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="MapCanvas.cs" />
+    <Compile Include="Network\NullWpfUnityTCPServer.cs" />
+    <Compile Include="Network\IWpfUnityTCPServer.cs" />
     <Compile Include="UnityViewer\ExeViewer.xaml.cs">
       <DependentUpon>ExeViewer.xaml</DependentUpon>
     </Compile>
@@ -119,5 +121,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Content Include="exe\3D Viewer.exe" />
+    <Resource Include="exe\ReadMe.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
