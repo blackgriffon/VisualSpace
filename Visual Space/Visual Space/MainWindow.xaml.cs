@@ -1,4 +1,5 @@
-﻿#define RUN_CLIENT_IN_UNITY
+﻿//#define RUN_3DVIWER_IN_UNITY_EDITER
+#define RUN_3DVIWER
 using Nollan.Visual_Space.Network;
 using System;
 using System.Collections.Generic;
@@ -28,16 +29,21 @@ namespace Nollan.Visual_Space
    public partial class MainWindow : Window
     {
 
-        WpfUnityTCPServer server = null;
+        IWpfUnityTCPServer server = null;
 
 
         public MainWindow()
         {
             InitializeComponent();
+
+#if RUN_3DVIWER
             server = new WpfUnityTCPServer("127.0.0.1", 9000);
             server.Connect();
-            //server.Connectcompleted += OnConnectcompleted;
             server.OnReceviedCompleted += OnReceviedCompleted;
+
+#else
+            server = new NullWpfUnityTCPServer();
+#endif
             this.Loaded += MainWindow_Loaded;
         }
 
@@ -108,122 +114,12 @@ namespace Nollan.Visual_Space
         }
 
 
-        // 유니티와 연결이 되면 recevie 스레드를 실행한다.
-        //private void OnConnectcompleted()
-        //{
-
-        //    new Thread(processReceviePacket).Start();
-        //}
-
-        //private void processReceviePacket()
-        //{
-        //    WpfUnityPacketHeader header = new WpfUnityPacketHeader();
-        //    while (server.IsConnected)
-        //    {
-        //        if (server.Recevie(ref header))
-        //        {
-        //            switch (header.ObjectType)
-        //            {
-        //                case WpfUnityPacketType.WallInfo:
-        //                    WallInfo wallInfo = (WallInfo)header.Data;
-
-        //                    switch (wallInfo.Action)
-        //                    {
-        //                        case WallInfo.WallInfoAction.MOVE3D:
-
-        //                            Dispatcher.Invoke(() =>
-        //                            {
-        //                                foreach (var el in mapCanvas.Children)
-        //                                {
-        //                                    if (el is Line l)
-        //                                    {
-        //                                        if (l.Name == wallInfo.Name)
-        //                                        {
-
-        //                                            List<int> pos = convert3DPosTo2D(wallInfo);
-
-        //                                            l.X1 = pos[2];
-        //                                            l.Y1 = pos[3];
-        //                                            l.X2 = pos[0];
-        //                                            l.Y2 = pos[1];
-        //                                            break;
-        //                                        }
-        //                                    }
-        //                                }
-
-        //                            });
-        //                            break;
-
-        //                        case WallInfo.WallInfoAction.REMOVE3D:
-        //                            Dispatcher.Invoke(() =>
-        //                            {
-        //                                Line toRemove = null;
-
-        //                                // foreach 문 안에서 list의 요소를 지우면 에러가 난다.
-        //                                foreach (var el in mapCanvas.Children)
-        //                                {
-        //                                    if (el is Line l)
-        //                                    {
-        //                                        if (l.Name == wallInfo.Name)
-        //                                        {
-
-        //                                            toRemove = l;
-        //                                            break;
-        //                                        }
-        //                                    }
-        //                                }
-
-        //                                if (toRemove != null)
-        //                                    mapCanvas.Children.Remove(toRemove as UIElement);
-
-
-        //                            });
-        //                            break;
-        //                    }
-        //                    break;
-
-
-        //            }
-        //        }
-        //    }
-        //}
-
-
-
         private List<int> convert3DPosTo2D(WallInfo wallInfo)
         {
 
 
             int zeroPos = 200;
             // 계산
-            //// 2d 좌표 기준으로 200 / 200 센터로 지정한다.
-
-            //float x1 = (float)line.X1 - zeroPos;
-            //float x2 = (float)line.X2 - zeroPos;
-            //float y1 = (float)line.Y1 - zeroPos;
-            //float y2 = (float)line.Y2 - zeroPos;
-
-
-            //// 중심점을 구한다.
-            //float xc = (x1 + x2) / 2;
-            //float yc = (y1 + y2) / 2 * -1;
-
-            //// 크기를 구한다.
-            //float w = Math.Abs(x1 - x2);
-            //float h = Math.Abs(y1 - y2);
-
-            //wallInfo.PosX = xc / 20;
-            //wallInfo.PosY = 1f;
-            //wallInfo.PosZ = yc / 20;
-
-            //wallInfo.ScaleX = w / 20;
-            //wallInfo.ScaleY = 2f;
-            //wallInfo.ScaleZ = h / 20;
-
-            //if (wallInfo.ScaleX == 0)
-            //    wallInfo.ScaleX = 0.3f;
-            //else
-            //    wallInfo.ScaleZ = 0.3f;
 
             // 2D 상의 중심점을 구한다.
             int xc = (int)wallInfo.PosX * 20 + zeroPos;
@@ -260,8 +156,9 @@ namespace Nollan.Visual_Space
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
 
-            // 클라이언트를 EXE로 enbedded안하고 unity프로그램으로 돌리면
-#if !RUN_CLIENT_IN_UNITY
+            // 클라이언트를 EXE로 enbedded안하고 unity프로그램으로 돌리거나
+            // 3Dviwer를 실행시킬 때만 되도록한다.
+#if !RUN_3DVIWER_IN_UNITY_EDITER && RUN_3DVIWER
             ExeViewer exeViewer = new ExeViewer();
             mainGrid.Children.Add(exeViewer);
             Grid.SetRow(exeViewer, 1);

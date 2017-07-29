@@ -56,16 +56,11 @@ namespace Nollan.Visual_Space.Network
                 IsConnected = true;
                 _NetworkStream = _Client.GetStream();
 
-
-                Thread lLoopWrite = new Thread(new ThreadStart(LoopWrite));
-                lLoopWrite.IsBackground = true;
-                lLoopWrite.Start();
-
                 Thread lLoopRead = new Thread(new ThreadStart(LoopRead));
                 lLoopRead.IsBackground = true;
                 lLoopRead.Start();
 
-               //Connectcompleted();
+                //Connectcompleted();
             }).Start();
 
         } //
@@ -88,7 +83,7 @@ namespace Nollan.Visual_Space.Network
                             break;
                     }
 
-                    if(OnReceviedCompleted != null)
+                    if (OnReceviedCompleted != null)
                         OnReceviedCompleted(header);
                 }
                 catch (System.IO.IOException)
@@ -101,18 +96,15 @@ namespace Nollan.Visual_Space.Network
             Console.WriteLine("client: reader is shutting down");
         }
 
-        private void LoopWrite()
+
+        object sendlockObj = new object();
+        public void Send(WpfUnityPacketHeader header)
         {
-            while (IsConnected)
+            if (header != null && IsConnected)
             {
+
                 try
                 {
-                    WpfUnityPacketHeader header;
-
-                    if (sendDataQueue.Count <= 0)
-                        continue;
-                    lock (sendlockObj)
-                        header = sendDataQueue.Dequeue();
 
                     ProtoBuf.Serializer.SerializeWithLengthPrefix<WpfUnityPacketHeader>(_NetworkStream, header, ProtoBuf.PrefixStyle.Fixed32);
 
@@ -129,21 +121,8 @@ namespace Nollan.Visual_Space.Network
                 }
                 catch (Exception ex) { Console.WriteLine(ex.Message); }
             }
-            IsConnected = false;
-            Console.WriteLine("client: writer is shutting down");
-        } //
 
 
-        object sendlockObj = new object();
-        public void Send(WpfUnityPacketHeader xHeader)
-        {
-            if (xHeader == null)
-                return;
-
-            lock (sendlockObj)
-            {
-                sendDataQueue.Enqueue(xHeader);
-            }
         }
 
 
