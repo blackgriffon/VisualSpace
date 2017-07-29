@@ -20,7 +20,13 @@ namespace VisualSpace.UnityViewer
     /// </summary>
     public partial class ExeViewer : UserControl
     {
-        public static UnityExe uc = new UnityExe(@"C:\Users\TAEWOO\Desktop\test4.exe");
+        // 현재 디버그 중이면 3Dviewer가 있는 폴더 경로를 바꾼다.
+#if DEBUG
+        public static UnityExe uc = new UnityExe(AppDomain.CurrentDomain.BaseDirectory+@"..\..\exe\3D Viewer.exe");
+#else
+        public static UnityExe uc = new UnityExe(AppDomain.CurrentDomain.BaseDirectory+@"exe\3D Viewer.exe");
+#endif
+
 
 
         public ExeViewer()
