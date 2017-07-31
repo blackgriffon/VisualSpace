@@ -32,180 +32,132 @@ public class csMoveWall : MonoBehaviour
 
     }
 
+    private GameObject selecetdObject = null;
+    public GameObject SelecetdObject
+    {
+        get
+        {
+            return selecetdObject;
+        }
+
+        set
+        {
+            if (selecetdObject != null)
+            {
+                // 선택이 해재되면
+                Destroy(selecetdObject.GetComponent<Outline>());
+                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name));
+
+            }
+
+            selecetdObject = value;
+
+            if (selecetdObject != null)
+            {
+                // 선택된거가 있으면
+                networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name));
+                selecetdObject.AddComponent<Outline>();
+            }
+        }
+    }
 
 
-    // 게임 오브젝트가 선택되었을 때, 씬 윈도우에 표시되는 UI나 여러 표식들은 이곳에서 그려줍니다.
-    //public void OnSceneGUI()
-    //{
-
-    //    if (hit.transform != null)
-    //    {
-    //        Movement _movement = hit.transform as Movement;
-    //        // 타겟 지점에 붉은색의 큐브 생성
-    //        Handles.color = Color.red;
-    //        Handles.CubeCap(0, _movement._targetPosition, Quaternion.identity, 1.0f);
-
-    //        // 타겟 지점과 게임 오브젝트를 녹색 줄로 이어주겠습니다.
-    //        Handles.color = Color.green;
-    //        Handles.DrawLine(_movement.gameObject.transform.position, _movement._targetPosition);
-
-    //        // UI
-    //        Handles.BeginGUI();
-    //        {
-    //            // 타겟 지점으로 게임 오브젝트를 이동시켜 주는 버튼 표시
-    //            if (_movement.gameObject.transform.position != _movement._targetPosition)
-    //            {
-    //                // 3D 좌표를 2D 좌표로 변경해서 큐브보다 약간 더 위에 출력시켜 준다.
-    //                Vector2 button_positoin = HandleUtility.WorldToGUIPoint(_movement._targetPosition);
-    //                Rect button_rect = new Rect(button_positoin.x, button_positoin.y - 40, 200, 20);
-    //                if (GUI.Button(button_rect, "Move To Target Position"))
-    //                    _movement.gameObject.transform.position = _movement._targetPosition;
-    //            }
-    //        }
-    //        Handles.EndGUI();
-    //    }
-    //}
-
-
-
-    GameObject selecetdObject;
-    
     float moveStep = 1f;
 
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            // 포커스가 아닌상태였다가 클릭했다면
-            //if(!bFocus)
-            //{
-            //    bFocus = true;
-            //    return;
-            //}
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (selecetdObject != null)
-            {
-                Destroy(selecetdObject.GetComponent<Outline>());
-                selecetdObject = null;
-            }
-
 
             if (Physics.Raycast(ray.origin, ray.direction, out hit))
             {
-                Debug.Log(hit.transform.gameObject.name);
-                selecetdObject = hit.transform.gameObject;
-                selecetdObject.AddComponent<Outline>();
+                SelecetdObject = hit.transform.gameObject;
             }
-
+            else
+            {
+                SelecetdObject = null;
+            }
         }
 
 
-        if (selecetdObject != null)
+        if (SelecetdObject != null)
         {
 
 
             if (Input.GetKeyDown(KeyCode.W))
             {
-                selecetdObject.transform.Translate(Vector3.forward * moveStep);
+                SelecetdObject.transform.Translate(Vector3.forward * moveStep);
                 Packet.Header header = new Packet.Header();
                 header.ObjectType = Packet.PacketType.WallInfo;
                 WallInfo wallInfo = new WallInfo();
                 wallInfo.Action = WallInfoAction.MOVE3D;
-                wallInfo.Name = selecetdObject.name;
-                wallInfo.PosX = selecetdObject.transform.position.x;
-                wallInfo.PosY = selecetdObject.transform.position.y;
-                wallInfo.PosZ = selecetdObject.transform.position.z;
+                wallInfo.Name = SelecetdObject.name;
+                wallInfo.PosX = SelecetdObject.transform.position.x;
+                wallInfo.PosY = SelecetdObject.transform.position.y;
+                wallInfo.PosZ = SelecetdObject.transform.position.z;
 
-                wallInfo.ScaleX = selecetdObject.transform.localScale.x;
-                wallInfo.ScaleY = selecetdObject.transform.localScale.y;
-                wallInfo.ScaleZ = selecetdObject.transform.localScale.z;
+                wallInfo.ScaleX = SelecetdObject.transform.localScale.x;
+                wallInfo.ScaleY = SelecetdObject.transform.localScale.y;
+                wallInfo.ScaleZ = SelecetdObject.transform.localScale.z;
                 header.Data = wallInfo;
                 networkManager.Send(header);
             }
             else if (Input.GetKeyDown(KeyCode.S))
             {
-                selecetdObject.transform.Translate(Vector3.back * moveStep);
+                SelecetdObject.transform.Translate(Vector3.back * moveStep);
                 Packet.Header header = new Packet.Header();
                 header.ObjectType = Packet.PacketType.WallInfo;
                 WallInfo wallInfo = new WallInfo();
                 wallInfo.Action = WallInfoAction.MOVE3D;
-                wallInfo.Name = selecetdObject.name;
-                wallInfo.PosX = selecetdObject.transform.position.x;
-                wallInfo.PosY = selecetdObject.transform.position.y;
-                wallInfo.PosZ = selecetdObject.transform.position.z;
+                wallInfo.Name = SelecetdObject.name;
+                wallInfo.PosX = SelecetdObject.transform.position.x;
+                wallInfo.PosY = SelecetdObject.transform.position.y;
+                wallInfo.PosZ = SelecetdObject.transform.position.z;
 
-                wallInfo.ScaleX = selecetdObject.transform.localScale.x;
-                wallInfo.ScaleY = selecetdObject.transform.localScale.y;
-                wallInfo.ScaleZ = selecetdObject.transform.localScale.z;
+                wallInfo.ScaleX = SelecetdObject.transform.localScale.x;
+                wallInfo.ScaleY = SelecetdObject.transform.localScale.y;
+                wallInfo.ScaleZ = SelecetdObject.transform.localScale.z;
                 header.Data = wallInfo;
                 networkManager.Send(header);
             }
             else if (Input.GetKeyDown(KeyCode.A))
             {
-                selecetdObject.transform.Translate(Vector3.left * moveStep);
+                SelecetdObject.transform.Translate(Vector3.left * moveStep);
                 Packet.Header header = new Packet.Header();
                 header.ObjectType = Packet.PacketType.WallInfo;
                 WallInfo wallInfo = new WallInfo();
                 wallInfo.Action = WallInfoAction.MOVE3D;
-                wallInfo.Name = selecetdObject.name;
-                wallInfo.PosX = selecetdObject.transform.position.x;
-                wallInfo.PosY = selecetdObject.transform.position.y;
-                wallInfo.PosZ = selecetdObject.transform.position.z;
+                wallInfo.Name = SelecetdObject.name;
+                wallInfo.PosX = SelecetdObject.transform.position.x;
+                wallInfo.PosY = SelecetdObject.transform.position.y;
+                wallInfo.PosZ = SelecetdObject.transform.position.z;
 
-                wallInfo.ScaleX = selecetdObject.transform.localScale.x;
-                wallInfo.ScaleY = selecetdObject.transform.localScale.y;
-                wallInfo.ScaleZ = selecetdObject.transform.localScale.z;
+                wallInfo.ScaleX = SelecetdObject.transform.localScale.x;
+                wallInfo.ScaleY = SelecetdObject.transform.localScale.y;
+                wallInfo.ScaleZ = SelecetdObject.transform.localScale.z;
                 header.Data = wallInfo;
                 networkManager.Send(header);
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
-                selecetdObject.transform.Translate(Vector3.right * moveStep);
+                SelecetdObject.transform.Translate(Vector3.right * moveStep);
                 Packet.Header header = new Packet.Header();
                 header.ObjectType = Packet.PacketType.WallInfo;
                 WallInfo wallInfo = new WallInfo();
                 wallInfo.Action = WallInfoAction.MOVE3D;
-                wallInfo.Name = selecetdObject.name;
-                wallInfo.PosX = selecetdObject.transform.position.x;
-                wallInfo.PosY = selecetdObject.transform.position.y;
-                wallInfo.PosZ = selecetdObject.transform.position.z;
+                wallInfo.Name = SelecetdObject.name;
+                wallInfo.PosX = SelecetdObject.transform.position.x;
+                wallInfo.PosY = SelecetdObject.transform.position.y;
+                wallInfo.PosZ = SelecetdObject.transform.position.z;
 
-                wallInfo.ScaleX = selecetdObject.transform.localScale.x;
-                wallInfo.ScaleY = selecetdObject.transform.localScale.y;
-                wallInfo.ScaleZ = selecetdObject.transform.localScale.z;
+                wallInfo.ScaleX = SelecetdObject.transform.localScale.x;
+                wallInfo.ScaleY = SelecetdObject.transform.localScale.y;
+                wallInfo.ScaleZ = SelecetdObject.transform.localScale.z;
                 header.Data = wallInfo;
                 networkManager.Send(header);
             }
 
-
-            // 1번 눌릴때 마다 1씩 이동
-            //float v = Input.GetAxis("Vertical");
-            //float h = Input.GetAxis("Horizontal");
-
-            //if (v != 0 || h != 0)
-            //{
-
-            //    hit.transform.gameObject.transform.Translate(h * Vector3.right * Speed * Time.deltaTime);
-            //    hit.transform.gameObject.transform.Translate(v * Vector3.forward * Speed * Time.deltaTime);
-            //    // Packet.Header header = new Packet.Header();
-            //    Packet.Header header = new Packet.Header();
-            //    header.ObjectType = Packet.PacketType.WallInfo;
-            //    WallInfo wallInfo = new WallInfo();
-            //    wallInfo.Action = WallInfoAction.MOVE3D;
-            //    wallInfo.Name = hit.transform.gameObject.name;
-            //    wallInfo.PosX = hit.transform.gameObject.transform.position.x;
-            //    wallInfo.PosY = hit.transform.gameObject.transform.position.y;
-            //    wallInfo.PosZ = hit.transform.gameObject.transform.position.z;
-
-            //    wallInfo.ScaleX = hit.transform.gameObject.transform.localScale.x;
-            //    wallInfo.ScaleY = hit.transform.gameObject.transform.localScale.y;
-            //    wallInfo.ScaleZ = hit.transform.gameObject.transform.localScale.z;
-
-            //    header.Data = wallInfo;
-
-            //    networkManager.Send(header);
-            //}
 
             else if (Input.GetKey(KeyCode.Delete))
             {
@@ -216,12 +168,12 @@ public class csMoveWall : MonoBehaviour
                 header.ObjectType = Packet.PacketType.WallInfo;
                 WallInfo wallInfo = new WallInfo();
                 wallInfo.Action = WallInfoAction.REMOVE3D;
-                wallInfo.Name = selecetdObject.gameObject.name;
+                wallInfo.Name = SelecetdObject.gameObject.name;
                 header.Data = wallInfo;
                 networkManager.Send(header);
 
                 Destroy(hit.transform.gameObject);
-        
+
             }
 
 

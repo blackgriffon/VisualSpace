@@ -11,6 +11,7 @@ public class csTCPClientManager : MonoBehaviour
     TCPClientProtoBuf client = null;
     Packet.Header header = null;
     GameObject parentObject = null;
+    csMoveWall moveWall = null;
 
 
     private void Awake()
@@ -21,6 +22,7 @@ public class csTCPClientManager : MonoBehaviour
         header = new Header();
         Debug.Log("connected...");
         parentObject = GameObject.Find("Objects");
+        moveWall = GameObject.Find("MoveObjectManager").GetComponent<csMoveWall>();
         //StartCoroutine(coRecevicePacket());
     }
 
@@ -95,29 +97,39 @@ public class csTCPClientManager : MonoBehaviour
         switch (header.ObjectType)
         {
             case Packet.PacketType.WallInfo:
-                GameObject cube;
+                GameObject gameObj;
                 Debug.Log("recevied Data PacketType.WallInfo");
                 WallInfo wallInfo = (WallInfo)header.Data;
                 switch (wallInfo.Action)
                 {
                     case WallInfoAction.CREATE:
-                        cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                        cube.name = wallInfo.Name;
-                        cube.transform.position = new Vector3(wallInfo.PosX, wallInfo.PosY, wallInfo.PosZ);
-                        cube.transform.localScale = new Vector3(wallInfo.ScaleX, wallInfo.ScaleY, wallInfo.ScaleZ);
-                        cube.transform.parent = parentObject.transform;
-                        cube.tag = "Wall";
+                        gameObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                        gameObj.name = wallInfo.Name;
+                        gameObj.transform.position = new Vector3(wallInfo.PosX, wallInfo.PosY, wallInfo.PosZ);
+                        gameObj.transform.localScale = new Vector3(wallInfo.ScaleX, wallInfo.ScaleY, wallInfo.ScaleZ);
+                        gameObj.transform.parent = parentObject.transform;
+                        gameObj.tag = "Wall";
                         break;
 
                     case WallInfoAction.MOVE:
-                        cube = GameObject.Find(wallInfo.Name);
-                        cube.transform.position = new Vector3(wallInfo.PosX, wallInfo.PosY, wallInfo.PosZ);
-                        cube.transform.localScale = new Vector3(wallInfo.ScaleX, wallInfo.ScaleY, wallInfo.ScaleZ);
+                        gameObj = GameObject.Find(wallInfo.Name);
+                        gameObj.transform.position = new Vector3(wallInfo.PosX, wallInfo.PosY, wallInfo.PosZ);
+                        gameObj.transform.localScale = new Vector3(wallInfo.ScaleX, wallInfo.ScaleY, wallInfo.ScaleZ);
                         break;
 
                     case WallInfoAction.REMOVE:
-                        cube = GameObject.Find(wallInfo.Name);
-                        Destroy(cube);
+                        gameObj = GameObject.Find(wallInfo.Name);
+                        Destroy(gameObj);
+                        break;
+
+
+                    case WallInfoAction.SELECT:
+                        moveWall.SelecetdObject = GameObject.Find(wallInfo.Name);
+                        break;
+
+
+                    case WallInfoAction.DESELECT:
+                        moveWall.SelecetdObject = null;
                         break;
                 }
 

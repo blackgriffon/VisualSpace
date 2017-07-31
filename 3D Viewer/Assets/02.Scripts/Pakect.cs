@@ -35,9 +35,13 @@ namespace Packet
         CREATE = 0,
         MOVE,
         REMOVE,
+        SELECT,
+        DESELECT,
         RESIZE,
         MOVE3D,
         REMOVE3D,
+        SELECT3D,
+        DESELECT3D,
     }
 
     [ProtoContract]
@@ -51,5 +55,30 @@ namespace Packet
         [ProtoMember(6)] public float ScaleX;
         [ProtoMember(7)] public float ScaleY;
         [ProtoMember(8)] public float ScaleZ;
+    }
+
+    public static class PacketFactory
+    {
+        public static Header MakeDeselect(string name)
+        {
+            Header header = new Header();
+            header.ObjectType = PacketType.WallInfo;
+            WallInfo wallInfo = new WallInfo();
+            wallInfo.Action = WallInfoAction.DESELECT3D;
+            wallInfo.Name = name;
+            header.Data = wallInfo;
+            return header;
+        }
+
+        public static Header MakeSelect(string name)
+        {
+            Header header = new Header();
+            header.ObjectType = PacketType.WallInfo;
+            WallInfo wallInfo = new WallInfo();
+            wallInfo.Action = WallInfoAction.SELECT3D;
+            wallInfo.Name = name;
+            header.Data = wallInfo;
+            return header;
+        }
     }
 }
