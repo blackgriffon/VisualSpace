@@ -286,35 +286,39 @@ namespace Nollan.Visual_Space
         private void MapCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
 
+            //0731추가------
+            //선이 그려져 있고, 선택된 선이 있는데 그냥 허공(캔버스)를 선택하는 경우
+            if (selectedLine != null)
+            {
+                if (e.Source != line)
+                {
 
+                    selectedLine.Stroke = Brushes.Black;
+                    selectedLine = null; //선택된 선 해제.
+
+                    /*
+                1.선택된 선이 있을 때 선 그릴 경우 일단 캔버스를 클릭하게 되므로 선택해제가 됨. 
+                2.캔버스를 누르면 선택이 취소됨
+                3.선증가감소 체크 버튼이 켜져있을 시 선을 누르면 선택한 것임.
+                4.선이동시(선그리기아니고, 선증감도 아닐 때) 내려놓으면 붉은색으로 남아있음.    
+
+                 */
+
+                }
+            }
+            //-----------------//
+
+
+
+            //마우스다운시
             if (!bMouseDown && bLine_check && !linePlusMinus_Check)
             {
-                //0731추가------
-                //선이 그려져 있고, 선택된 선이 있는데 그냥 허공(캔버스)를 선택하는 경우
-                if (selectedLine != null)
-                {
-                    if (e.Source != line)
-                    {
-
-                        selectedLine.Stroke = Brushes.Black;
-                        selectedLine = null; //선택된 선 해제.
-
-                        /*
-                    1.선택된 선이 있을 때 선 그릴 경우 일단 캔버스를 클릭하게 되므로 선택해제가 됨. 
-                    2.캔버스를 누르면 선택이 취소됨
-                    3.선증가감소 체크 버튼이 켜져있을 시 선을 누르면 선택한 것임.
-                    4.선이동시(선그리기아니고, 선증감도 아닐 때) 내려놓으면 붉은색으로 남아있음.    
-
-                     */
-
-                    }
-                }
-                //-----------------//
+                
 
 
                 
                 bMouseDown = true;
-                stPoint = e.GetPosition(null);
+                stPoint = TranslatePointToCanvas(e, mapCanvas);
                 remainderToFindVertex(stPoint.X, stPoint.Y); //가장 가까운 꼭지점을 찾는다. 그 값은 튜플형식으로 Result_StartPoint에 담기게됨.
                 line = new Line();
                 line.X1 = Result_StartPoint.Item1;
@@ -385,7 +389,7 @@ namespace Nollan.Visual_Space
             if (bMouseDown && bLine_check)
             {
                 //선 그릴 때 늘어났다 줄어났다를 마우스 다운하는 지점에 맞춰야하니까.
-                curPoint = e.GetPosition(null);
+                curPoint = TranslatePointToCanvas(e, mapCanvas);
                 line.X2 = curPoint.X;
                 line.Y2 = curPoint.Y;
 
