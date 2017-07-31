@@ -1,5 +1,5 @@
-﻿// #define RUN_3DVIWER_IN_UNITY_EDITER
-// #define RUN_3DVIWER
+﻿#define RUN_3DVIWER_IN_UNITY_EDITER
+#define RUN_3DVIWER
 using Nollan.Visual_Space.Network;
 using System;
 using System.Collections.Generic;
@@ -292,7 +292,8 @@ namespace Nollan.Visual_Space
             {
                 if (e.Source != line)
                 {
-
+                    // 선택해재 정보 전송
+                    server.Send(PacketFactory.MakeDeselect(selectedLine.Name));
                     selectedLine.Stroke = Brushes.Black;
                     selectedLine = null; //선택된 선 해제.
 
@@ -348,7 +349,6 @@ namespace Nollan.Visual_Space
                     txtBox.Text = line.Name;
 
                     //선택된 선을 기억
-                    selectedLine = new Line();
                     selectedLine = line;
                     stPoint = stPoint = TranslatePointToCanvas(e, mapCanvas);
 
@@ -717,7 +717,8 @@ namespace Nollan.Visual_Space
                     moveParallelLIne(Result_separateLine, moveDistanceX2, moveDistanceY2); //선 평행이동 함수
 
 
-                    line.Stroke = Brushes.Black;
+                    //line.Stroke = Brushes.Black;
+
                     WpfUnityPacketHeader header = fillWallInfo(line, WallInfo.WallInfoAction.MOVE);
                     server.Send(header);
                     bMouseDown = false;
@@ -1089,7 +1090,9 @@ namespace Nollan.Visual_Space
 
             if (selectedLine == line) //똑같은 선을 선택했으면
             {
+
                 line.Stroke = Brushes.Red;
+
             }
             else //똑같은 선을 선택한 게 아니라면
             {
@@ -1097,12 +1100,16 @@ namespace Nollan.Visual_Space
                 if (selectedLine != null) //이전에 선택한 선이 있다면. else1 한 번 거치면 무조건 이쪽으로 와야함.
                 {
                     selectedLine.Stroke = Brushes.Black;
+                    server.Send(PacketFactory.MakeDeselect(selectedLine.Name));
+
                     line.Stroke = Brushes.Red;
+                    server.Send(PacketFactory.MakeSelect(line.Name));
 
                 }
                 else //else1. 선을 한 번도 선택을 하지 않았으면 이쪽으로.
                 {
                     line.Stroke = Brushes.Red;
+                    server.Send(PacketFactory.MakeSelect(line.Name));
                 }
 
             }

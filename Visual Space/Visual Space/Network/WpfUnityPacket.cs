@@ -62,4 +62,34 @@ namespace Nollan.Visual_Space.Network
 
     }
 
+    public static class PacketFactory
+    {
+        public static WpfUnityPacketHeader MakeSelect(string name)
+        {
+            WpfUnityPacketHeader header = new WpfUnityPacketHeader();
+            header.ObjectType = WpfUnityPacketType.WallInfo;
+            WallInfo wallInfo = new WallInfo();
+            wallInfo.Action = WallInfo.WallInfoAction.SELECT;
+            wallInfo.Name = name;
+            header.Data = wallInfo;
+            return header;
+
+        }
+
+
+        public static WpfUnityPacketHeader MakeDeselect(string name)
+        {
+            WpfUnityPacketHeader header = new WpfUnityPacketHeader();
+            header.ObjectType = WpfUnityPacketType.WallInfo;
+            WallInfo wallInfo = new WallInfo();
+            wallInfo.Action = WallInfo.WallInfoAction.DESELECT;
+            wallInfo.Name = name;
+            header.Data = wallInfo;
+            return header;
+
+        }
+
+
+    }
+
 }

@@ -100,3 +100,13 @@ D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\obj\Debug\VisualSp
 D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\obj\Debug\Visual Space.csproj.GenerateResource.Cache
 D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\obj\Debug\Visual_Space.exe
 D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\obj\Debug\Visual_Space.pdb
+C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\bin\Debug\DockingLibrary.dll
+C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\bin\Debug\SampleExpander.exe
+C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\obj\Debug\DockingWindows\DrawingWindow.g.cs
+C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\obj\Debug\DockingWindows\ListWindow.g.cs
+C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\obj\Debug\DockingWindows\ObjectWindow.g.cs
+C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\obj\Debug\DockingWindows\UnityExeViewer.g.cs
+C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\obj\Debug\DockingWindows\DrawingWindow.baml
+C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\obj\Debug\DockingWindows\ListWindow.baml
+C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\obj\Debug\DockingWindows\ObjectWindow.baml
+C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\obj\Debug\DockingWindows\UnityExeViewer.baml
