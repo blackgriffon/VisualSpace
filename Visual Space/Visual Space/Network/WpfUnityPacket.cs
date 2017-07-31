@@ -41,9 +41,13 @@ namespace Nollan.Visual_Space.Network
             CREATE = 0,
             MOVE,
             REMOVE,
+            SELECT,
+            DESELECT,
             RESIZE,
             MOVE3D,
             REMOVE3D,
+            SELECT3D,
+            DESELECT3D,
         }
 
 
