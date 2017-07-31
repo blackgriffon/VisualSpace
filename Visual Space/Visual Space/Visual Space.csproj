@@ -123,7 +123,6 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="exe\3D Viewer.exe" />
-    <Resource Include="exe\ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
