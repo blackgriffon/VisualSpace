@@ -37,3 +37,36 @@ C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\obj\Debug\Visual S
 C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\obj\Debug\Visual_Space.exe
 C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\obj\Debug\Visual_Space.pdb
 C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\obj\Debug\Visual_Space_Content.g.cs
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\Visual Space.csprojResolveAssemblyReference.cache
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\DockingWindows\DrawingWindow.g.cs
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\DockingWindows\ListWindow.g.cs
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\DockingWindows\ObjectWindow.g.cs
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\DockingWindows\UnityExeViewer.g.cs
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\MainWindow.g.cs
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\UnityViewer\ExeViewer.g.cs
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\App.g.cs
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\Visual_Space_Content.g.cs
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\Visual_Space_MarkupCompile.cache
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\Visual_Space_MarkupCompile.lref
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\Visual_Space.exe
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\Visual_Space.pdb
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\bin\Debug\Visual_Space.exe.config
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\bin\Debug\Visual_Space.exe
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\bin\Debug\Visual_Space.pdb
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\bin\Debug\DockingLibrary.dll
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\bin\Debug\protobuf-net.dll
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\bin\Debug\SampleExpander.exe
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\bin\Debug\DockingLibrary.pdb
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\bin\Debug\SampleExpander.pdb
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\bin\Debug\SampleExpander.exe.config
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\DockingWindows\DrawingWindow.baml
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\DockingWindows\ListWindow.baml
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\DockingWindows\ObjectWindow.baml
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\DockingWindows\UnityExeViewer.baml
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\MainWindow.baml
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\UnityViewer\ExeViewer.baml
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\Visual_Space.g.resources
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\Nollan.Visual_Space.Properties.Resources.resources
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\VisualSpace.UnityViewer.UnityExe.resources
+D:\winshare\mainproject\Visual Space0731\Visual Space\Visual Space\obj\Debug\Visual Space.csproj.GenerateResource.Cache

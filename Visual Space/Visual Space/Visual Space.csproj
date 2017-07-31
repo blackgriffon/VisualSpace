@@ -34,8 +34,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DockingLibrary">
+      <HintPath>DockingLibrary\bin\Debug\DockingLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="protobuf-net">
       <HintPath>dll\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="SampleExpander">
+      <HintPath>expenderplus\SampleExpander\bin\Debug\SampleExpander.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -60,6 +66,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DockingWindows\DrawingWindow.xaml.cs">
+      <DependentUpon>DrawingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DockingWindows\ListWindow.xaml.cs">
+      <DependentUpon>ListWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DockingWindows\MultiplyConverter.cs" />
+    <Compile Include="DockingWindows\ObjectWindow.xaml.cs">
+      <DependentUpon>ObjectWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DockingWindows\UnityExeViewer.xaml.cs">
+      <DependentUpon>UnityExeViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MapCanvas.cs" />
     <Compile Include="Network\NullWpfUnityTCPServer.cs" />
     <Compile Include="Network\IWpfUnityTCPServer.cs" />
@@ -72,6 +91,22 @@
     <Compile Include="UnityViewer\UnityExe.designer.cs">
       <DependentUpon>UnityExe.cs</DependentUpon>
     </Compile>
+    <Page Include="DockingWindows\DrawingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DockingWindows\ListWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DockingWindows\ObjectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DockingWindows\UnityExeViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -123,6 +158,8 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="exe\3D Viewer.exe" />
+    <Resource Include="images\BathRoom1.png" />
+    <Resource Include="images\BathRoom2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
