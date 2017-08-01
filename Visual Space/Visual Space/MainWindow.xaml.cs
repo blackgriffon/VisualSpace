@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -281,7 +282,7 @@ namespace Nollan.Visual_Space
 
         }
 
-
+        
         //마우스다운시
         private void MapCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -322,6 +323,8 @@ namespace Nollan.Visual_Space
                 stPoint = TranslatePointToCanvas(e, mapCanvas);
                 remainderToFindVertex(stPoint.X, stPoint.Y); //가장 가까운 꼭지점을 찾는다. 그 값은 튜플형식으로 Result_StartPoint에 담기게됨.
                 line = new Line();
+                line.MouseEnter += control_MouseEnter;
+                line.MouseLeave += control_MouseLeave;
                 line.X1 = Result_StartPoint.Item1;
                 line.X2 = Result_StartPoint.Item1;
                 line.Y1 = Result_StartPoint.Item2;
@@ -379,6 +382,7 @@ namespace Nollan.Visual_Space
                 }
             }
         }
+
 
 
         //마우스무브시
@@ -458,6 +462,8 @@ namespace Nollan.Visual_Space
                 }
             }
         }
+
+     
 
         private void MapCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -1375,6 +1381,172 @@ namespace Nollan.Visual_Space
             mapCanvas.Height = canvas_TotalHeight;
 
         }
+
+       
+        public void control_MouseEnter(object sender, MouseEventArgs e)
+        {
+           // timer1.Stop();
+            Cursor = Cursors.SizeAll;
+        }
+
+        public void control_MouseLeave(object sender, EventArgs e)
+        {
+            Cursor = Cursors.Arrow;
+           // timer1.Start();
+        }
+
+
+        enum Direction
+        {
+            NW,
+            N,
+            NE,
+            W,
+            E,
+            SW,
+            S,
+            SE,
+            None
+        }
+
+        const int DRAG_HANDLE_SIZE = 7;
+        double mouseX, mouseY;
+        Control SelectedControl;
+        Direction direction;
+        Point newLocation;
+        Size newSize;
+        private System.Windows.Forms.PropertyGrid propertyGrid1;
+        /*
+            MouseButtonEventArgs e 마우스버튼다운
+        MouseEventArgs e 마우스무브
+            MouseButtonEventArgs e 마우스버튼업
+             */
+
+        private void control_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == Mouse.LeftButton)
+            {
+              //  this.Invalidate();  //unselect other control
+                SelectedControl = (Control)sender;
+                Control control = (Control)sender;
+                mouseX = -e.GetPosition(null).X;
+                mouseY = -e.GetPosition(null).Y;
+           //     control.Invalidate();
+            //   DrawControlBorder(sender);
+                propertyGrid1.SelectedObject = SelectedControl;
+            }
+        }
+        private void control_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == Mouse.LeftButton)
+            {
+                Control control = (Control)sender;
+                Point nextPosition = new Point();
+                nextPosition = this.TranslatePoint(nextPosition, this.mainWindow);
+                //   nextPosition = this.PointToClient(MousePosition);
+                nextPosition.Offset(mouseX, mouseY);
+
+           //     control. = nextPosition;
+
+
+
+                //  control.Location = nextPosition;
+          //      Invalidate();
+            }
+        }
+        private void control_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == Mouse.LeftButton)
+            {
+                Control control = (Control)sender;
+       //         Cursor.Clip = System.Drawing.Rectangle.Empty;
+       //         control.Invalidate();
+                //DrawControlBorder(control);
+            }
+        }
+
+        //public bool dragAction = false;
+
+        //private void minuteHand_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    dragAction = true;
+        //    minuteHand_MouseMove(this.minuteHand, e);
+        //}
+
+        //private void Window_MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    if (e.LeftButton == MouseButtonState.Pressed)
+        //    {
+        //        this.DragMove();
+        //    }
+        //}
+
+        //private void minuteHand_MouseLeftButtonUp(object sender, MouseEventArgs e)
+        //{
+        //    dragAction = false;
+        //}
+
+
+        //private void DrawControlBorder(object sender)
+        //{
+        //    Control control = (Control)sender;
+        //    //define the border to be drawn, it will be offset by DRAG_HANDLE_SIZE / 2
+        //    //around the control, so when the drag handles are drawn they will be seem
+        //    //connected in the middle.
+        //    Rectangle Border = new Rectangle(
+        //        new Point(control.Location.X - DRAG_HANDLE_SIZE / 2,
+        //            control.Location.Y - DRAG_HANDLE_SIZE / 2),
+        //        new Size(control.Size.Width + DRAG_HANDLE_SIZE,
+        //            control.Size.Height + DRAG_HANDLE_SIZE));
+        //    //define the 8 drag handles, that has the size of DRAG_HANDLE_SIZE
+        //    Rectangle NW = new Rectangle(
+        //        new Point(control.Location.X - DRAG_HANDLE_SIZE,
+        //            control.Location.Y - DRAG_HANDLE_SIZE),
+        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
+        //    Rectangle N = new Rectangle(
+        //        new Point(control.Location.X + control.Width / 2 - DRAG_HANDLE_SIZE / 2,
+        //            control.Location.Y - DRAG_HANDLE_SIZE),
+        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
+        //    Rectangle NE = new Rectangle(
+        //        new Point(control.Location.X + control.Width,
+        //            control.Location.Y - DRAG_HANDLE_SIZE),
+        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
+        //    Rectangle W = new Rectangle(
+        //        new Point(control.Location.X - DRAG_HANDLE_SIZE,
+        //            control.Location.Y + control.Height / 2 - DRAG_HANDLE_SIZE / 2),
+        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
+        //    Rectangle E = new Rectangle(
+        //        new Point(control.Location.X + control.Width,
+        //            control.Location.Y + control.Height / 2 - DRAG_HANDLE_SIZE / 2),
+        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
+        //    Rectangle SW = new Rectangle(
+        //        new Point(control.Location.X - DRAG_HANDLE_SIZE,
+        //            control.Location.Y + control.Height),
+        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
+        //    Rectangle S = new Rectangle(
+        //        new Point(control.Location.X + control.Width / 2 - DRAG_HANDLE_SIZE / 2,
+        //            control.Location.Y + control.Height),
+        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
+        //    Rectangle SE = new Rectangle(
+        //        new Point(control.Location.X + control.Width,
+        //            control.Location.Y + control.Height),
+        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
+
+        //    //get the form graphic
+        //    Graphics g = this.CreateGraphics();
+        //    //draw the border and drag handles
+        //    ControlPaint.DrawBorder(g, Border, Color.Gray, ButtonBorderStyle.Dotted);
+        //    ControlPaint.DrawGrabHandle(g, NW, true, true);
+        //    ControlPaint.DrawGrabHandle(g, N, true, true);
+        //    ControlPaint.DrawGrabHandle(g, NE, true, true);
+        //    ControlPaint.DrawGrabHandle(g, W, true, true);
+        //    ControlPaint.DrawGrabHandle(g, E, true, true);
+        //    ControlPaint.DrawGrabHandle(g, SW, true, true);
+        //    ControlPaint.DrawGrabHandle(g, S, true, true);
+        //    ControlPaint.DrawGrabHandle(g, SE, true, true);
+        //    g.Dispose();
+        //}
+
 
 
     }

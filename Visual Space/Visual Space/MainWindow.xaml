@@ -7,7 +7,7 @@
         xmlns:docking="clr-namespace:DockingLibrary;assembly=DockingLibrary"
         mc:Ignorable="d" 
         Title="MainWindow" Height="800" Width="1200" 
-        Name="mainWindow" WindowState="Normal" MinHeight="800" MinWidth="1200">
+        Name="mainWindow" WindowState="Normal" MinHeight="800" MinWidth="1200" >
     <Window.Resources>
         <docking:DockManager x:Key="dockManager" />
         <docking:DocumentContent x:Key="documentContent" />
@@ -98,6 +98,8 @@
             <StackPanel Name="stackPanel_objectWindow" Grid.Column="2" Background="Black" Width="Auto" Height="Auto" 
                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SizeChanged="stackPanel_objectWindow_SizeChanged">
                 <docking:DockManager Name ="ExpenderDockManager" Background="LightGray"  Width="Auto" Height="Auto" />
+                
+                
             </StackPanel>
 
 
