@@ -5,17 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Nollan.Visual_Space"
         xmlns:docking="clr-namespace:DockingLibrary;assembly=DockingLibrary"
+        
         mc:Ignorable="d" 
         Title="MainWindow" Height="800" Width="1200" 
         Name="mainWindow" WindowState="Normal" MinHeight="800" MinWidth="1200" >
     
     <Window.Resources>
+        
         <docking:DockManager x:Key="dockManager" />
         <docking:DocumentContent x:Key="documentContent" />
         <local:MapCanvas x:Key="Key_mapCanvas" />
+        <local:MyDrag x:Key="myDrag" />
     </Window.Resources>
 
-    <DockPanel>
+   
+        
+  
+    <DockPanel Name="myDockPanel_Main" Height="Auto" Width="Auto">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="메뉴바1">
                 <MenuItem Header="New" />
@@ -35,15 +41,19 @@
         </ToolBar>
 
 
+        
 
-
-        <Grid Name="rootGrid" >
+        <Grid Name="rootGrid" DockPanel.Dock="Top" Width="Auto" Height="Auto"
+              
+              
+              >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition  Width="*"/>
-                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>               
                 <ColumnDefinition Width="1.7*" />
             </Grid.ColumnDefinitions>
 
+       
 
             <Grid Grid.Column="1" Name="mainGrid" Background="Transparent">
                 <Grid.RowDefinitions>
@@ -53,14 +63,19 @@
 
 
 
-
+            
                 <ScrollViewer Name="ScViewer_canvas" HorizontalScrollBarVisibility="Visible"  Background="Transparent" SizeChanged="ScViewer_canvas_SizeChanged">
-                    <local:MapCanvas x:Name="mapCanvas" Background="Transparent"  
+                    
+                        
+                  
+                    <local:MapCanvas x:Name="mapCanvas" Background="Transparent"  AllowDrop="True"
                      MouseLeftButtonDown="MapCanvas_MouseLeftButtonDown"
                      MouseMove="MapCanvas_MouseMove"
                      SizeChanged="mapCanvas_SizeChanged"
                      KeyDown="mapCanvas_KeyDown"
                      MouseLeftButtonUp="MapCanvas_MouseLeftButtonUp"  
+                     DragOver="panel_DragOver"
+                     Drop="panel_Drop"             
                      Grid.Row="0"
                      >
 
@@ -82,33 +97,27 @@
 
                     </local:MapCanvas>
 
+                    
                 </ScrollViewer>
-
+            
 
 
             </Grid>
 
-            <!--<docking:DockManager Name ="DrawingManager" Background="LightGray"  Width="500" Height="800" Grid.Column="1" Grid.Row="0"/>-->
+            <!--격자 <docking:DockManager Name ="DrawingManager" Background="LightGray"  Width="500" Height="800" Grid.Column="1" Grid.Row="0"/>-->
 
-            <StackPanel Name="stackPanel_listWindow" Grid.Column="0" Background="Black" Width="Auto" Height="Auto" 
+            <StackPanel Name="stackPanel_listWindow" Grid.Column="0" Background="Transparent" Width="Auto" Height="1000" 
                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SizeChanged="stackPanel_listWindow_SizeChanged">
                 <docking:DockManager Name ="ListDockManager" Background="LightGray"  Width="Auto" Height="Auto" />
             </StackPanel>
 
 
-            <StackPanel Name="stackPanel_objectWindow" Grid.Column="2" Background="Black" Width="Auto" Height="Auto" 
+            <StackPanel Name="stackPanel_objectWindow" Grid.Column="3" Background="Transparent" Width="Auto" Height="1000" 
                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SizeChanged="stackPanel_objectWindow_SizeChanged">
-                <docking:DockManager Name ="ExpenderDockManager" Background="LightGray"  Width="Auto" Height="Auto" />
-                
+                <docking:DockManager Name ="ExpenderDockManager" Background="LightGray"  Width="Auto" Height="Auto" />                
                 
             </StackPanel>
-
-
-            <!--<local:ListWindowBy1 Grid.Column="0" />-->
-
-            <!--<doking:DockingGrid Background="LightGray" Grid.Column="0"/>
-        <doking:DockingGrid Background="LightGray" Grid.Column="2"/>-->
-            <!--<doking:DockManager Name ="dockManager" Grid.Column="0" Background="Red"/>-->
+        
 
 
         </Grid>
@@ -117,42 +126,8 @@
 
 
 
-
-
-
-
-
-
-
-        <!--<Grid Name="mainGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <local:MapCanvas Grid.Row="0" x:Name="mapCanvas" Background="Transparent"  
-                     MouseLeftButtonDown="MapCanvas_MouseLeftButtonDown"
-                     MouseMove="MapCanvas_MouseMove"
-                     SizeChanged="mapCanvas_SizeChanged"
-                     KeyDown="mapCanvas_KeyDown"
-                     MouseLeftButtonUp="MapCanvas_MouseLeftButtonUp"
-                     
-                     >
-
-            <TextBox Name="txtBox" Width="50.534" Canvas.Left="408.206" Canvas.Top="24.419"/>
-            <Button Content="지우기" Click="Button_Click" Canvas.Left="472.401" Canvas.Top="24.419"/>
-
-            <CheckBox Name="Ch_line" Content="선 그리기" Canvas.Left="418.849" Canvas.Top="62.014" 
-                  Checked="Ch_line_Checked" Unchecked="Ch_line_Unchecked"/>
-
-            <CheckBox Name="Ch_linePlusMinus" Content="선 증가감소" Canvas.Left="418.849" Canvas.Top="102.017"  HorizontalAlignment="Center" VerticalAlignment="Center"
-                  Checked="Ch_linePlusMinus_Checked" Unchecked="Ch_linePlusMinus_Unchecked" Height="29.55" Width="93.552"/>
-
-        </local:MapCanvas>
-    </Grid>-->
-
-
-
-
-
     </DockPanel>
+
+
+
 </Window>

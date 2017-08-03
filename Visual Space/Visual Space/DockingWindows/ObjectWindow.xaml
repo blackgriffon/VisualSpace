@@ -3,18 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Nollan.Visual_Space.DockingWindows"             
+             xmlns:local="clr-namespace:Nollan.Visual_Space.DockingWindows"     
+                         xmlns:main="clr-namespace:Visual_Space"
                 xmlns:explus="clr-namespace:SampleExpander;assembly=SampleExpander"
         xmlns:docking="clr-namespace:DockingLibrary;assembly=DockingLibrary" 
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-             Width="300" Height="300" Title="ObjectWindow" >
+             Width="300" Height="300" Title="ObjectWindow" AllowDrop="True" AllowsTransparency="True" >
 
 
 
     <Window.Resources>
         <explus:MultiplyConverter x:Key="multiplyConverter" />
-
+        
 
         <!-- Simple Expander Button's Template-->
         <ControlTemplate x:Key="SimpleExpanderButtonTemp" TargetType="{x:Type ToggleButton}">
@@ -312,7 +313,15 @@
     </Window.Resources>
 
 
-    <ScrollViewer>
+    <ScrollViewer Background="Transparent">
+
+        <Canvas x:Name="_myCanvas" Background="Transparent" AllowDrop="True"                
+              
+                
+                >
+            
+    
+        
         <StackPanel Width="Auto" Height="700" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <StackPanel.Resources>
                 <Style x:Key="TestContentStyle" TargetType="Button">
@@ -323,40 +332,46 @@
             </StackPanel.Resources>
 
 
+           
+                
+          
 
-
-            <Expander Header="Using Default Expander"
-                  HorizontalAlignment="Left"
+            <Expander Header="Using Default Expander" 
+                  HorizontalAlignment="Left" AllowDrop="True"
                   VerticalAlignment="Top">
 
 
-                <WrapPanel  HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="1, 1, 1, 1">
+                <WrapPanel Name="Wrap_BathRoom"  HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="1, 1, 1, 1" AllowDrop="True">
 
                     <Button Width="63" Height="80" Margin="1, 1, 1, 1" x:Name="BathRoom1"  FontSize="11" Background="#00000000">
                         <Button.ToolTip>
                             <TextBlock HorizontalAlignment="Center" IsHitTestVisible="False" Width="150" TextWrapping="Wrap" TextAlignment="Center"><InlineUIContainer>
-            						<Image Width="150" Height="150" Source="/images/BathRoom1.PNG" VerticalAlignment="Top" Stretch="Fill" HorizontalAlignment="Center"/>
+            						<Image Width="150" Height="150" Source="/pictures/BathRoom1.PNG" VerticalAlignment="Top" Stretch="Fill" HorizontalAlignment="Center"/>
             					</InlineUIContainer><Run Text=" 설명 : 세로 벽"/></TextBlock>
                         </Button.ToolTip>
+                        
                         <TextBlock  HorizontalAlignment="Center" Height="70" Width="70" TextWrapping="Wrap" TextAlignment="Center"><InlineUIContainer>    
-            					<Image Width="66.75" Height="56.25" Source="/images/BathRoom1.PNG" />
+            					<Image Width="66.75" Height="56.25" Source="/pictures/BathRoom1.PNG" />
             				</InlineUIContainer><Run Text=" BathRoom1"/></TextBlock>
                     </Button>
 
                     <Button Width="63" Height="80" Margin="1, 1, 1, 1" x:Name="BathRoom2"  FontSize="11" Background="#00000000">
                         <Button.ToolTip>
                             <TextBlock HorizontalAlignment="Center" IsHitTestVisible="False" Width="150" TextWrapping="Wrap" TextAlignment="Center"><InlineUIContainer>
-            						<Image Width="150" Height="150" Source="/images/BathRoom2.PNG" VerticalAlignment="Top" Stretch="Fill" HorizontalAlignment="Center"/>
+            						<Image Width="150" Height="150" Source="/pictures/BathRoom2.PNG" VerticalAlignment="Top" Stretch="Fill" HorizontalAlignment="Center"/>
             					</InlineUIContainer><Run Text=" 설명 : 세로 벽"/></TextBlock>
                         </Button.ToolTip>
                         <TextBlock  HorizontalAlignment="Center" Height="70" Width="63" TextWrapping="Wrap" TextAlignment="Center"><InlineUIContainer>    
-            					<Image Width="50.75" Height="56.25" Source="/images/BathRoom2.PNG" />
+            					<Image Width="50.75" Height="56.25" Source="/pictures/BathRoom2.PNG" />
             				</InlineUIContainer><Run Text=" BathRoom2"/></TextBlock>
                     </Button>
+                                      
+
+                       
+                        <local:Categori Width="50" Height="50" />
 
 
-
-                    <!--<Button Style="{StaticResource TestContentStyle}"/>-->
+                        <!--<Button Style="{StaticResource TestContentStyle}"/>-->
 
 
 
@@ -401,6 +416,8 @@
 
 
         </StackPanel>
+
+        </Canvas>
 
     </ScrollViewer>
 

@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="Nollan.Visual_Space.MyDrag"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Nollan.Visual_Space"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid Margin="50.181,27.818,49.818,22.181" x:Name="SimpleNote" Height="250" Width="200" >
+            <Rectangle Fill="Red" Stroke="Black" StrokeThickness="8" />
+            <Grid Height="25" Margin="0,0,0,0" VerticalAlignment="Top" Background="Transparent" x:Name="DragPanel" Cursor="Hand"
+                  
+                 MouseLeftButtonDown="DragPanel_MouseLeftButtonDown" 
+                  MouseMove="DragPanel_MouseMove"
+                 MouseUp="DragPanel_MouseLeftButtonUp"
+                  
+                  >
+                <Rectangle Fill="Yellow" Margin="8,8,8,0" Stroke="BlanchedAlmond" StrokeThickness="8" />
+            </Grid>
+            <TextBox Margin="76.727,44.636,72.364,49.455" Text="이곳에 글을 입력하세요" TextWrapping="Wrap" x:Name="txtNote"
+                 FontSize="12" Background="Aqua" BorderBrush="Beige" Foreground="BlueViolet" Cursor="IBeam" />
+        </Grid>
+   
+
+    </Grid>
+</UserControl>
