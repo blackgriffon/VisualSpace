@@ -1,6 +1,11 @@
+<<<<<<< HEAD
+﻿#define RUN_3DVIWER_IN_UNITY_EDITER
+#define RUN_3DVIWER
+=======
 //#define RUN_3DVIWER_IN_UNITY_EDITER
 //#define RUN_3DVIWER
 using Nollan.Visual_Space.DockingWindows;
+>>>>>>> develop
 using Nollan.Visual_Space.Network;
 using System;
 using System.Collections.Generic;
@@ -99,7 +104,6 @@ namespace Nollan.Visual_Space
                                     {
                                         if (l.Name == wallInfo.Name)
                                         {
-
                                             toRemove = l;
                                             break;
                                         }
@@ -108,8 +112,6 @@ namespace Nollan.Visual_Space
 
                                 if (toRemove != null)
                                     mapCanvas.Children.Remove(toRemove as UIElement);
-
-
                             });
                             break;
 
@@ -162,7 +164,6 @@ namespace Nollan.Visual_Space
 
         private List<int> convert3DPosTo2D(WallInfo wallInfo)
         {
-
 
             int zeroPos = 200;
             // 계산
@@ -887,6 +888,7 @@ namespace Nollan.Visual_Space
                 case WallInfo.WallInfoAction.MOVE:
 
                     int zeroPos = 200;
+                    float wallThickness = 0.3f;
                     // 계산
                     // 2d 좌표 기준으로 200 / 200 센터로 지정한다.
 
@@ -913,9 +915,15 @@ namespace Nollan.Visual_Space
                     wallInfo.ScaleZ = h / 20;
 
                     if (wallInfo.ScaleX == 0)
-                        wallInfo.ScaleX = 0.3f;
+                    { 
+                        wallInfo.ScaleX = wallThickness;
+                        wallInfo.ScaleZ += wallThickness;
+                    }
                     else
-                        wallInfo.ScaleZ = 0.3f;
+                    {
+                        wallInfo.ScaleX += wallThickness;
+                        wallInfo.ScaleZ = wallThickness;
+                    }
                     break;
 
             }

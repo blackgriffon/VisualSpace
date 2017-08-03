@@ -17,20 +17,11 @@ public class csMoveWall : MonoBehaviour
     public float Speed = 100;
 
 
-    private void Start()
+    private void Awake()
     {
         networkManager = GameObject.Find("NetworkManager").GetComponent<csTCPClientManager>();
     }
 
-
-    bool bFocus = true;
-    private void OnApplicationFocus(bool focus)
-    {
-
-        if (!focus)
-            bFocus = false;
-
-    }
 
     private GameObject selecetdObject = null;
     public GameObject SelecetdObject
@@ -70,8 +61,10 @@ public class csMoveWall : MonoBehaviour
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray.origin, ray.direction, out hit))
+            if (Physics.Raycast(ray.origin, ray.direction, out hit) && hit.transform.gameObject.tag != "SupportObject")
             {
+
+
                 SelecetdObject = hit.transform.gameObject;
             }
             else
@@ -84,7 +77,7 @@ public class csMoveWall : MonoBehaviour
         if (SelecetdObject != null)
         {
 
-
+            
             if (Input.GetKeyDown(KeyCode.W))
             {
                 SelecetdObject.transform.Translate(Vector3.forward * moveStep);
@@ -162,8 +155,6 @@ public class csMoveWall : MonoBehaviour
             else if (Input.GetKey(KeyCode.Delete))
             {
 
-
-                Debug.Log("Delete 키눌림");
                 Packet.Header header = new Packet.Header();
                 header.ObjectType = Packet.PacketType.WallInfo;
                 WallInfo wallInfo = new WallInfo();

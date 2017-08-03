@@ -12,6 +12,7 @@ public class csTCPClientManager : MonoBehaviour
     Packet.Header header = null;
     GameObject parentObject = null;
     csMoveWall moveWall = null;
+    public GameObject WallObject = null;
 
 
     private void Awake()
@@ -52,7 +53,8 @@ public class csTCPClientManager : MonoBehaviour
                     switch (wallInfo.Action)
                     {
                         case WallInfoAction.CREATE:
-                            cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                            //cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                            cube = Instantiate(WallObject);
                             cube.name = wallInfo.Name;
                             cube.transform.position = new Vector3(wallInfo.PosX, wallInfo.PosY, wallInfo.PosZ);
                             cube.transform.localScale = new Vector3(wallInfo.ScaleX, wallInfo.ScaleY, wallInfo.ScaleZ);
@@ -103,12 +105,14 @@ public class csTCPClientManager : MonoBehaviour
                 switch (wallInfo.Action)
                 {
                     case WallInfoAction.CREATE:
-                        gameObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                        //gameObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                        gameObj = Instantiate(WallObject);
+                        gameObj.GetComponent<MeshRenderer>().enabled = true;
                         gameObj.name = wallInfo.Name;
                         gameObj.transform.position = new Vector3(wallInfo.PosX, wallInfo.PosY, wallInfo.PosZ);
                         gameObj.transform.localScale = new Vector3(wallInfo.ScaleX, wallInfo.ScaleY, wallInfo.ScaleZ);
                         gameObj.transform.parent = parentObject.transform;
-                        gameObj.tag = "Wall";
+                        gameObj.tag = "Object";
                         break;
 
                     case WallInfoAction.MOVE:

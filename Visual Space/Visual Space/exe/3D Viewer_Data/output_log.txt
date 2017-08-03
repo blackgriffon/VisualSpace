@@ -4,13 +4,17 @@ Direct3D:
     Version:  Direct3D 11.0 [level 11.1]
     Renderer: NVIDIA GeForce GTX 1050 (ID=0x1c8d)
     Vendor:   NVIDIA
-    VRAM:     4053 MB
+    VRAM:     3072 MB
     Driver:   22.21.13.8233
 Begin MonoManager ReloadAssembly
 Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.dll (this message is harmless)
 Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
 Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\Assembly-CSharp.dll (this message is harmless)
 Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\Assembly-UnityScript-firstpass.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
 Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.UI.dll (this message is harmless)
 Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
 Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
@@ -23,7 +27,29 @@ Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space
 Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\protobuf-net.dll into Unity Child Domain
 Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\System.dll (this message is harmless)
 Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\System.Core.dll (this message is harmless)
-- Completed reload, in  0.096 seconds
+- Completed reload, in  0.111 seconds
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
+UnloadTime: 2.412308 ms
+connected...
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Setting up 4 worker threads for Enlighten.
+  Thread -> id: 304 -> priority: 1 
+  Thread -> id: 1fd0 -> priority: 1 
+  Thread -> id: 51e8 -> priority: 1 
+  Thread -> id: 5254 -> priority: 1 
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+

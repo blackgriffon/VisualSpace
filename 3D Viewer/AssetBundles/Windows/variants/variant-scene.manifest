@@ -1,0 +1,15 @@
+ManifestFileVersion: 0
+CRC: 692430415
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 695481eb70115e7bb4755cf50eec354f
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 31d6cfe0d16ae931b73c59d7e0c089c0
+HashAppended: 0
+ClassTypes: []
+Assets:
+- Assets/AssetBundleSample/SampleAssets/Variants/VariantScene.unity
+Dependencies:
+- C:/Users/TAEWOO/Desktop/VisualSpace/3D Viewer/AssetBundles/Windows/variants/myassets.hd

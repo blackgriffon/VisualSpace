@@ -33,12 +33,30 @@ namespace VisualSpace.UnityViewer
         {
             InitializeComponent();
             host.Child = uc;
+            this.PreviewKeyDown += ExeViewer_PreviewKeyDown;
+            this.KeyDown += ExeViewer_KeyDown;
             Application.Current.Exit += Current_Exit;
         }
+
+        private void ExeViewer_KeyDown(object sender, KeyEventArgs e)
+        {
+            MessageBox.Show(e.OriginalSource.ToString());
+        }
+
+        private void ExeViewer_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            MessageBox.Show(e.OriginalSource.ToString());
+        }
+
+
 
         private void Current_Exit(object sender, ExitEventArgs e)
         {
             uc.CloseExe();
+
         }
+
+        
+
     }
 }
