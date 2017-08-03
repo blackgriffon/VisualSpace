@@ -1,0 +1,33 @@
+﻿<Window x:Class="ranslateTransform.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ranslateTransform"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525" >
+    <Grid Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <Canvas Grid.Column="1">            
+        
+        <Rectangle Width="200" Height="50" Fill="Yellow" Margin="61,27,117,184" />
+
+        <Rectangle Name="bluerec" Width="200" Height="50" Fill="Blue"  Opacity="0.5" Margin="59,101,119,110">
+
+            <Rectangle.RenderTransform>
+                <TranslateTransform X="50" Y="20" />
+            </Rectangle.RenderTransform>
+
+        </Rectangle>
+            <Button Content="Button" Height="29.273" Canvas.Left="22.727" Canvas.Top="219.909" Width="86.546" Click="Button_Click"/>
+        </Canvas>
+
+
+
+    </Grid>
+</Window>

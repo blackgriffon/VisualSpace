@@ -1,6 +1,6 @@
-
-﻿#define RUN_3DVIWER_IN_UNITY_EDITER
-#define RUN_3DVIWER
+//#define RUN_3DVIWER_IN_UNITY_EDITER
+//#define RUN_3DVIWER
+using Nollan.Visual_Space.DockingWindows;
 using Nollan.Visual_Space.Network;
 using System;
 using System.Collections.Generic;
@@ -16,20 +16,24 @@ using System.Windows.Data;
 using System.Windows.Documents;
 
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
 using VisualSpace.UnityViewer;
 
-namespace Nollan.Visual_Space
+namespace Nollan.Visual_Space 
 {
     /// <summary>
     /// MainWindow.xaml에 대한 상호 작용 논리
     /// </summary>
 
-   public partial class MainWindow : Window
+   public partial class MainWindow : Window , ICloneable
     {
+        
+
 
         IWpfUnityTCPServer server = null;
 
@@ -195,6 +199,53 @@ namespace Nollan.Visual_Space
 
         }
 
+
+
+
+        #region 윈도우 리사이징 시 컨트롤 크기 변경
+
+        double orginalWidth, originalHeight;
+        ScaleTransform scale = new ScaleTransform();
+
+        void Window1_SizeChanged(object sender, SizeChangedEventArgs e)
+
+        {
+
+            ChangeSize(e.NewSize.Width, e.NewSize.Height);
+
+        }
+
+        
+        void Window1_Loaded()
+        {
+
+            orginalWidth = this.Width;
+            originalHeight = this.Height;
+            
+            if (this.WindowState == WindowState.Maximized)
+            {
+                ChangeSize(this.ActualWidth, this.ActualHeight);
+            }
+            
+            this.SizeChanged += new SizeChangedEventHandler(Window1_SizeChanged);
+        }
+
+
+        private void ChangeSize(double width, double height)
+        {
+            scale.ScaleX = width / orginalWidth;
+            scale.ScaleY = height / originalHeight;
+
+            FrameworkElement rootElement = this.Content as FrameworkElement;
+            rootElement.LayoutTransform = scale;
+        }        
+
+#endregion
+
+
+   
+
+
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -206,7 +257,19 @@ namespace Nollan.Visual_Space
             Grid.SetRow(exeViewer, 1);
 #endif
 
+            //-----
+         //   Window1_Loaded(); //리사이징 코드
+            //----//
 
+
+            showSubPanel(); //왼쪽 오른쪽 UI 띄우기
+
+
+
+        }
+
+        public void showSubPanel()
+        {
             //0731추가-----
             //set window parent for dragging operations
             ListDockManager.ParentWindow = this;
@@ -221,7 +284,6 @@ namespace Nollan.Visual_Space
             objWindowDocking.DockManager = ExpenderDockManager;
             objWindowDocking.Show(Dock.Top);
             //-------//
-
         }
 
 
@@ -283,105 +345,126 @@ namespace Nollan.Visual_Space
 
         }
 
-        
+        Point imageStPoint;
+        Point imageCurPoint;
+        Image obj_image;
+        bool imageClick = false;
+     
         //마우스다운시
         private void MapCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
 
-            //0731추가------
-            //선이 그려져 있고, 선택된 선이 있는데 그냥 허공(캔버스)를 선택하는 경우
-            if (selectedLine != null)
+            if (e.OriginalSource.GetType() != typeof(Image)) //클릭했을 시 오리지널소스가 image가 아닌 경우
             {
-                if (e.Source != line)
+
+
+                //0731추가------
+                //선이 그려져 있고, 선택된 선이 있는데 그냥 허공(캔버스)를 선택하는 경우
+                if (selectedLine != null)
                 {
-                    // 선택해재 정보 전송
-                    server.Send(PacketFactory.MakeDeselect(selectedLine.Name));
-                    selectedLine.Stroke = Brushes.Black;
-                    selectedLine = null; //선택된 선 해제.
+                    if (e.Source != line)
+                    {
+                        // 선택해재 정보 전송
+                        server.Send(PacketFactory.MakeDeselect(selectedLine.Name));
+                        selectedLine.Stroke = Brushes.Black;
+                        selectedLine = null; //선택된 선 해제.
 
-                    /*
-                1.선택된 선이 있을 때 선 그릴 경우 일단 캔버스를 클릭하게 되므로 선택해제가 됨. 
-                2.캔버스를 누르면 선택이 취소됨
-                3.선증가감소 체크 버튼이 켜져있을 시 선을 누르면 선택한 것임.
-                4.선이동시(선그리기아니고, 선증감도 아닐 때) 내려놓으면 붉은색으로 남아있음.    
+                        /*
+                    1.선택된 선이 있을 때 선 그릴 경우 일단 캔버스를 클릭하게 되므로 선택해제가 됨. 
+                    2.캔버스를 누르면 선택이 취소됨
+                    3.선증가감소 체크 버튼이 켜져있을 시 선을 누르면 선택한 것임.
+                    4.선이동시(선그리기아니고, 선증감도 아닐 때) 내려놓으면 붉은색으로 남아있음.    
 
-                 */
+                     */
+
+                    }
+                }
+                //-----------------//
+
+
+
+                //마우스다운시
+                if (!bMouseDown && bLine_check && !linePlusMinus_Check)
+                {
+
+
+
+
+                    bMouseDown = true;
+                    stPoint = TranslatePointToCanvas(e, mapCanvas);
+                    remainderToFindVertex(stPoint.X, stPoint.Y); //가장 가까운 꼭지점을 찾는다. 그 값은 튜플형식으로 Result_StartPoint에 담기게됨.
+                    line = new Line();
+                    line.MouseEnter += control_MouseEnter;
+                    line.MouseLeave += control_MouseLeave;
+                    line.X1 = Result_StartPoint.Item1;
+                    line.X2 = Result_StartPoint.Item1;
+                    line.Y1 = Result_StartPoint.Item2;
+                    line.Y2 = Result_StartPoint.Item2;
+
+
+                    line.Stroke = Brushes.Black;
+                    line.StrokeThickness = 6;
+                    line.Name = $"Line_{i++}";
+                    mapCanvas.Children.Add(line);
 
                 }
-            }
-            //-----------------//
-
-
-
-            //마우스다운시
-            if (!bMouseDown && bLine_check && !linePlusMinus_Check)
-            {
-                
-
-
-                
-                bMouseDown = true;
-                stPoint = TranslatePointToCanvas(e, mapCanvas);
-                remainderToFindVertex(stPoint.X, stPoint.Y); //가장 가까운 꼭지점을 찾는다. 그 값은 튜플형식으로 Result_StartPoint에 담기게됨.
-                line = new Line();
-                line.MouseEnter += control_MouseEnter;
-                line.MouseLeave += control_MouseLeave;
-                line.X1 = Result_StartPoint.Item1;
-                line.X2 = Result_StartPoint.Item1;
-                line.Y1 = Result_StartPoint.Item2;
-                line.Y2 = Result_StartPoint.Item2;
-
-
-                line.Stroke = Brushes.Black;
-                line.StrokeThickness = 6;
-                line.Name = $"Line_{i++}";
-                mapCanvas.Children.Add(line);
-
-            }
-            // 선 그리기가 아닐때
-            else
-            {
-                //버블링되서 윈도우가 받게 되는 핸들을 형변환.
-                line = e.OriginalSource as Line;
-
-                if (line != null)
+                // 선 그리기가 아닐때
+                else
                 {
+                    //버블링되서 윈도우가 받게 되는 핸들을 형변환.
+                    line = e.OriginalSource as Line;
 
-                    //선 확대 축소 선 색깔 변경(마우스 다운)
-                    selectedLineColorChangeMethod(); //선택된 선 색 변경 메서드                    
-
-                    txtBox.Text = line.Name;
-
-                    //선택된 선을 기억
-                    selectedLine = line;
-                    stPoint = stPoint = TranslatePointToCanvas(e, mapCanvas);
-
-
-                    // 선 증가 감소 진입 플래그
-                    if (Ch_linePlusMinus.IsChecked == true)
+                    if (line != null)
                     {
 
-                        writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스다운-세퍼레이트라인처리 전");
-                        Result_separateLine = separateLine(line.X1, line.Y1, line.X2, line.Y2); //수평인지 수직선인지 구별하는 함수
-                                                                                                //수평 ture, 수직 false
+                        //선 확대 축소 선 색깔 변경(마우스 다운)
+                        selectedLineColorChangeMethod(); //선택된 선 색 변경 메서드                    
+
+                        txtBox.Text = line.Name;
+
+                        //선택된 선을 기억
+                        selectedLine = line;
+                        stPoint = stPoint = TranslatePointToCanvas(e, mapCanvas);
 
 
-                        if (Result_separateLine == true) //ㅡ선. 수평선일 경우. y값은 변경하지 않고 x값만 변경하자.
+                        // 선 증가 감소 진입 플래그
+                        if (Ch_linePlusMinus.IsChecked == true)
                         {
-                            isHorizontalORVertical_Line();
-                            fluctuationFlagisTrueORFalse();
 
-                        }
-                        else //l선(수직선)일 경우. x값은 변경하지 않고 y값만 변경하자.
-                        {
-                            isHorizontalORVertical_Line();
-                            fluctuationFlagisTrueORFalse();
+                            writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스다운-세퍼레이트라인처리 전");
+                            Result_separateLine = separateLine(line.X1, line.Y1, line.X2, line.Y2); //수평인지 수직선인지 구별하는 함수
+                                                                                                    //수평 ture, 수직 false
 
+
+                            if (Result_separateLine == true) //ㅡ선. 수평선일 경우. y값은 변경하지 않고 x값만 변경하자.
+                            {
+                                isHorizontalORVertical_Line();
+                                fluctuationFlagisTrueORFalse();
+
+                            }
+                            else //l선(수직선)일 경우. x값은 변경하지 않고 y값만 변경하자.
+                            {
+                                isHorizontalORVertical_Line();
+                                fluctuationFlagisTrueORFalse();
+
+                            }
                         }
+
                     }
-
                 }
             }
+            else //클릭했을 때 original source가 image인 경우
+            {
+                obj_image = e.OriginalSource as Image; //현재 클릭된 이미지를 기억?
+                // MessageBox.Show("이미지");
+              //  imageStPoint = TranslatePointToCanvas(e, mapCanvas); //클릭한 좌표를 맵캔버스 기준으로 변환해서 반환값을 가져온다.
+                imageClick = true;
+
+
+            }
+
+
+
         }
 
 
@@ -389,359 +472,400 @@ namespace Nollan.Visual_Space
         //마우스무브시
         private void MapCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-
-            //선 그리기
-            if (bMouseDown && bLine_check)
+            if (imageClick == false)
             {
-                //선 그릴 때 늘어났다 줄어났다를 마우스 다운하는 지점에 맞춰야하니까.
-                curPoint = TranslatePointToCanvas(e, mapCanvas);
-                line.X2 = curPoint.X;
-                line.Y2 = curPoint.Y;
+
+                //선 그리기
+                if (bMouseDown && bLine_check)
+                {
+                    //선 그릴 때 늘어났다 줄어났다를 마우스 다운하는 지점에 맞춰야하니까.
+                    curPoint = TranslatePointToCanvas(e, mapCanvas);
+                    line.X2 = curPoint.X;
+                    line.Y2 = curPoint.Y;
+
+                }
+                // 선그리기 가 아닐때
+                else
+                {
+                    curPoint = TranslatePointToCanvas(e, mapCanvas);
+
+
+                    // 라인 증가 및 축소시킬 때.
+                    if (line != null && !bLine_check && linePlusMinus_Check)  //마우스 다운상태고, 라인이 널이 아니고, 선그리기 체크 해제, 증가감소 체크상태일 때
+                    {
+
+                        stPoint = curPoint;
+
+                        double movX = Math.Abs(curPoint.X - line.X1);
+                        double movY = Math.Abs(curPoint.Y - line.Y1);
+
+                        if (Flag_HorizontalLinePlusMinus != null)
+                        {
+                            if (Flag_HorizontalLinePlusMinus == true) //ㅡ선(수평선)에서 --값으로 선이 증가할 건지 ++값으로 증가할건지(왼쪽 증가, 오른쪽증가)
+                            {
+                                moveLtRt_LinePlusMinus(movX);
+                                writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스무브-수평선 : x1에 마우스클릭이 더 가까웠을 경우");
+                            }
+                            else // Flag_HorizontalLinePlusMinus == false 일 때(마우스 클릭이 x2에 더 가까웠을 경우)
+                            {
+                                moveLtRt_LinePlusMinus(movX);
+                                writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스무브-수평선 : x2에 마우스클릭이 더 가까웠을 경우");
+                            }
+                        }
+
+                        if (Flag_VerticalLinePlusMinus != null)
+                        {
+
+                            if (Flag_VerticalLinePlusMinus == true) //l선(수직선) 일 때, --값으로 선이 증가할 건지 ++값으로 증가할건지(위쪽 증가, 밑쪽증가)
+                            {
+                                moveUpDw_LInePlusMinus(movY);
+                                writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스무브-수직선 : y1에 마우스클릭이 더 가까웠을 경우");
+                            }
+                            else // Flag_VerticalLinePlusMinus == false 일 때(마우스 클릭이 x2에 더 가까웠을 경우)
+                            {
+                                moveUpDw_LInePlusMinus(movY);
+                                writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스무브-수직선 : y2에 마우스클릭이 더 가까웠을 경우");
+                            }
+                        }
+                    }
+
+                    // 선 이동시킬 때(마우스무브)
+                    if (line != null && !linePlusMinus_Check)
+                    {
+                        // 이동할 거리
+                        double movX = curPoint.X - stPoint.X;
+                        double movY = curPoint.Y - stPoint.Y;
+                        stPoint = curPoint; //현재점에서 시작점을 뺏으니 현재점을 다시 시작점으로 바꿔줘야 다음에 다시 재귀했을 때 다시 로직이 돌아감
+
+                        //수평 수직
+                        // 거리 이동
+                        line.X1 += movX;
+                        line.X2 += movX;
+
+                        line.Y1 += movY;
+                        line.Y2 += movY;
+
+                    }
+                }
 
             }
-            // 선그리기 가 아닐때
-            else
+            else //imageClick = true 일 때
             {
-                curPoint = TranslatePointToCanvas(e, mapCanvas);
+               
+              //  imageCurPoint = TranslatePointToCanvas(e, mapCanvas);
+                //   double movX = imageCurPoint.X - imageStPoint.X;
+                //  double movY = imageCurPoint.Y - imageStPoint.Y;
+                
 
+                Canvas.SetLeft(obj_image, e.GetPosition(mapCanvas).X - obj_image.ActualWidth/2);
+                Canvas.SetTop(obj_image, e.GetPosition(mapCanvas).Y - obj_image.ActualHeight/2);
 
-                // 라인 증가 및 축소시킬 때.
-                if (line != null && !bLine_check && linePlusMinus_Check)  //마우스 다운상태고, 라인이 널이 아니고, 선그리기 체크 해제, 증가감소 체크상태일 때
-                {
+                // obj_image.
 
-                    stPoint = curPoint;
-
-                    double movX = Math.Abs(curPoint.X - line.X1);
-                    double movY = Math.Abs(curPoint.Y - line.Y1);
-
-                    if (Flag_HorizontalLinePlusMinus != null)
-                    {
-                        if (Flag_HorizontalLinePlusMinus == true) //ㅡ선(수평선)에서 --값으로 선이 증가할 건지 ++값으로 증가할건지(왼쪽 증가, 오른쪽증가)
-                        {
-                            moveLtRt_LinePlusMinus(movX);
-                            writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스무브-수평선 : x1에 마우스클릭이 더 가까웠을 경우");
-                        }
-                        else // Flag_HorizontalLinePlusMinus == false 일 때(마우스 클릭이 x2에 더 가까웠을 경우)
-                        {
-                            moveLtRt_LinePlusMinus(movX);
-                            writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스무브-수평선 : x2에 마우스클릭이 더 가까웠을 경우");
-                        }
-                    }
-
-                    if (Flag_VerticalLinePlusMinus != null)
-                    {
-
-                        if (Flag_VerticalLinePlusMinus == true) //l선(수직선) 일 때, --값으로 선이 증가할 건지 ++값으로 증가할건지(위쪽 증가, 밑쪽증가)
-                        {
-                            moveUpDw_LInePlusMinus(movY);
-                            writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스무브-수직선 : y1에 마우스클릭이 더 가까웠을 경우");
-                        }
-                        else // Flag_VerticalLinePlusMinus == false 일 때(마우스 클릭이 x2에 더 가까웠을 경우)
-                        {
-                            moveUpDw_LInePlusMinus(movY);
-                            writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스무브-수직선 : y2에 마우스클릭이 더 가까웠을 경우");
-                        }
-                    }
-                }
-
-                // 선 이동시킬 때(마우스무브)
-                if (line != null && !linePlusMinus_Check)
-                {
-                    // 이동할 거리
-                    double movX = curPoint.X - stPoint.X;
-                    double movY = curPoint.Y - stPoint.Y;
-                    stPoint = curPoint; //현재점에서 시작점을 뺏으니 현재점을 다시 시작점으로 바꿔줘야 다음에 다시 재귀했을 때 다시 로직이 돌아감
-
-                    //수평 수직
-                    // 거리 이동
-                    line.X1 += movX;
-                    line.X2 += movX;
-
-                    line.Y1 += movY;
-                    line.Y2 += movY;
-
-                }
             }
         }
 
-     
+
 
         private void MapCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-#region 일반적인 선 그리기
-            //선 그리기 로직 - 일반적인 선 그리기
-            if (bMouseDown && bLine_check)
+            if (!imageClick) //imageClick == false
             {
-                //혹시 선택되서 붉은 선이 그려져 있을 때 선그리기 하면 붉은색 선이 남지 않도록 다 검게 칠해주자.
-                foreach (var child in mapCanvas.Children)
+
+                #region 일반적인 선 그리기
+                //선 그리기 로직 - 일반적인 선 그리기
+                if (bMouseDown && bLine_check)
                 {
-                    if (child is Line l) //is에다가 변수선언하면서 as 효과까지 주는 c#문법. 라인일 때만 true
+                    //혹시 선택되서 붉은 선이 그려져 있을 때 선그리기 하면 붉은색 선이 남지 않도록 다 검게 칠해주자.
+                    foreach (var child in mapCanvas.Children)
                     {
-                        if (l.Stroke == Brushes.Red)
-                            l.Stroke = Brushes.Black;
+                        if (child is Line l) //is에다가 변수선언하면서 as 효과까지 주는 c#문법. 라인일 때만 true
+                        {
+                            if (l.Stroke == Brushes.Red)
+                                l.Stroke = Brushes.Black;
 
-                    }
-                }
-
-
-
-                curPoint = TranslatePointToCanvas(e, mapCanvas);
-                remainderToFindVertex(curPoint.X, curPoint.Y); //가장 가까운 꼭지점을 찾는다. 그 값은 튜플형식으로 Result_StartPoint에 담기게됨.
-                line.X2 = Result_StartPoint.Item1;
-                line.Y2 = Result_StartPoint.Item2;
-
-
-                //y가 x보다 크면 line.x1의 좌표를 line.x2에 대입한다. 
-                //왜냐면 y값이 변한다는 건 ㅣ선(수직선)이란 것이고 x값은 고정이기 때문이다.
-                if (Math.Abs(line.X1 - curPoint.X) < Math.Abs(line.Y1 - curPoint.Y))      //ㅣ선(수직선) 구분 및 선 보정 + 길이 25 이하 삭제          
-                {
-
-                    line.X2 = line.X1;
-
-                    //선을 그렸을 때 길이가 25보다 작을 경우 그 선은 삭제하는 로직
-                    if (Math.Abs(line.Y1 - curPoint.Y) < (_gridSize / 2)) //수직
-                    {
-                        //Line toDeleteLine = null;
-
-                        //foreach (var el in mapCanvas.Children)
-                        //{
-                        //    if (el is Line l)
-                        //    {
-                        //        if (l.Name == line.Name)
-                        //        {
-                        //            toDeleteLine = l;                                   
-                        //            break;
-                        //        }
-                        //    }
-                        //}
-                        //if (toDeleteLine != null)
-                        //    mapCanvas.Children.Remove(toDeleteLine as UIElement);
-
-                        mapCanvas.Children.Remove(line as UIElement);
-                        line = null;
-                        bMouseDown = false;
-                        return;
+                        }
                     }
 
-                    // y2가 y1보다 더 큰 경우 y2와 y1의 위치 스왑해준다.y2는 y1이 되고 y1은 y2가 된다.
-                    if (line.Y1 < line.Y2)
+
+
+                    curPoint = TranslatePointToCanvas(e, mapCanvas);
+                    remainderToFindVertex(curPoint.X, curPoint.Y); //가장 가까운 꼭지점을 찾는다. 그 값은 튜플형식으로 Result_StartPoint에 담기게됨.
+                    line.X2 = Result_StartPoint.Item1;
+                    line.Y2 = Result_StartPoint.Item2;
+
+
+                    //y가 x보다 크면 line.x1의 좌표를 line.x2에 대입한다. 
+                    //왜냐면 y값이 변한다는 건 ㅣ선(수직선)이란 것이고 x값은 고정이기 때문이다.
+                    if (Math.Abs(line.X1 - curPoint.X) < Math.Abs(line.Y1 - curPoint.Y))      //ㅣ선(수직선) 구분 및 선 보정 + 길이 25 이하 삭제          
                     {
-                        var temp = line.Y2;
-                        line.Y2 = line.Y1;
-                        line.Y1 = temp;
-                    }
 
-                }
-                else // ㅡ(수평선) 보정 및 스왑 + 길이 작을 때 삭제.
-                {
-                    line.Y2 = line.Y1; //보정
-
-
-                    //선을 그렸을 때 길이가 25보다 작을 경우 그 선은 삭제하는 로직
-                    if (Math.Abs(line.X1 - curPoint.X) < (_gridSize / 2)) //수평
-                    {
-                        //Line toDeleteLine = null;
-
-                        //foreach (var el in mapCanvas.Children)
-                        //{
-                        //    if (el is Line l)
-                        //    {
-                        //        if (l.Name == line.Name)
-                        //        {
-                        //            toDeleteLine = l;                                  
-                        //            break;
-                        //        }
-                        //    }
-                        //}
-                        //if (toDeleteLine != null)
-                        //    mapCanvas.Children.Remove(toDeleteLine as UIElement);
-
-                        mapCanvas.Children.Remove(line as UIElement);
-                        line = null;
-                        bMouseDown = false;
-                        return;
-
-
-                    }
-                    //x2가 x1보다 더 큰 경우 x2와 x1의 위치 스왑해준다.
-                    if (line.X1 < line.X2)
-                    {
-                        var temp = line.X2;
                         line.X2 = line.X1;
-                        line.X1 = temp;
+
+                        //선을 그렸을 때 길이가 25보다 작을 경우 그 선은 삭제하는 로직
+                        if (Math.Abs(line.Y1 - curPoint.Y) < (_gridSize / 2)) //수직
+                        {
+                            //Line toDeleteLine = null;
+
+                            //foreach (var el in mapCanvas.Children)
+                            //{
+                            //    if (el is Line l)
+                            //    {
+                            //        if (l.Name == line.Name)
+                            //        {
+                            //            toDeleteLine = l;                                   
+                            //            break;
+                            //        }
+                            //    }
+                            //}
+                            //if (toDeleteLine != null)
+                            //    mapCanvas.Children.Remove(toDeleteLine as UIElement);
+
+                            mapCanvas.Children.Remove(line as UIElement);
+                            line = null;
+                            bMouseDown = false;
+                            return;
+                        }
+
+                        // y2가 y1보다 더 큰 경우 y2와 y1의 위치 스왑해준다.y2는 y1이 되고 y1은 y2가 된다.
+                        if (line.Y1 < line.Y2)
+                        {
+                            var temp = line.Y2;
+                            line.Y2 = line.Y1;
+                            line.Y1 = temp;
+                        }
+
+                    }
+                    else // ㅡ(수평선) 보정 및 스왑 + 길이 작을 때 삭제.
+                    {
+                        line.Y2 = line.Y1; //보정
+
+
+                        //선을 그렸을 때 길이가 25보다 작을 경우 그 선은 삭제하는 로직
+                        if (Math.Abs(line.X1 - curPoint.X) < (_gridSize / 2)) //수평
+                        {
+                            //Line toDeleteLine = null;
+
+                            //foreach (var el in mapCanvas.Children)
+                            //{
+                            //    if (el is Line l)
+                            //    {
+                            //        if (l.Name == line.Name)
+                            //        {
+                            //            toDeleteLine = l;                                  
+                            //            break;
+                            //        }
+                            //    }
+                            //}
+                            //if (toDeleteLine != null)
+                            //    mapCanvas.Children.Remove(toDeleteLine as UIElement);
+
+                            mapCanvas.Children.Remove(line as UIElement);
+                            line = null;
+                            bMouseDown = false;
+                            return;
+
+
+                        }
+                        //x2가 x1보다 더 큰 경우 x2와 x1의 위치 스왑해준다.
+                        if (line.X1 < line.X2)
+                        {
+                            var temp = line.X2;
+                            line.X2 = line.X1;
+                            line.X1 = temp;
+
+                        }
+
+
+                    }
+
+                    writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스업-선그리기 로그");
+
+
+                    WpfUnityPacketHeader header = fillWallInfo(line, WallInfo.WallInfoAction.CREATE);
+                    server.Send(header);
+
+                    line = null;
+                    bMouseDown = false;
+
+
+                }
+                #endregion
+
+                #region 선 그리기 아닐 때(이동 및 축소확대)
+                else // 선 그리기 아닐 때(이동 및 축소확대)
+                {
+                    curPoint = TranslatePointToCanvas(e, mapCanvas);
+
+
+                    //선 축소 확대 로직
+                    if (linePlusMinus_Check && line != null)
+                    {
+                        writeLog(line.X1, line.X2, line.Y1, line.Y2, "라인바뀌기 전");
+
+                        if (Flag_HorizontalLinePlusMinus != null)
+                        {
+                            if (Flag_HorizontalLinePlusMinus == true)  //ㅡ선(수평선), true일 때 성립. 스왑된 x1에서 오른쪽으로 증가
+                            {
+
+                                //확대 축소가 끝났으니 다시 바꾼 값 원상복귀하기 위한 스왑.
+                                double tempLine = line.X1;
+                                line.X1 = line.X2;
+                                line.X2 = tempLine;
+
+                                writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스다운-line.x가 가까울 때, 마지막 스왑 전");
+
+                                remainderToFindVertex(curPoint.X, curPoint.Y); //가장 가까운 꼭지점을 찾는다. 그 값은 튜플형식으로 Result_StartPoint에 담기게됨.
+                                line.X1 = Result_StartPoint.Item1;
+
+                                if (Math.Abs(line.X1 - line.X2) < _gridSize - 1) //선을 줄 일 때 x1과 x2의 길이가 40미만
+                                {
+                                    //길이가 40미만이 되면 40으로 고정 시켜준다. 
+                                    line.X1 = line.X2 + _gridSize;
+
+                                }
+
+                                double tempY = line.Y1; //수평선의 y값은 동일하므로 다 같은 값 대입
+                                line.Y1 = tempY;
+                                line.Y2 = tempY;
+
+
+                            }
+                            else //ㅡ선(수평선), false일 때 성립. 
+                            {
+
+
+                                remainderToFindVertex(curPoint.X, curPoint.Y); //가장 가까운 꼭지점을 찾는다. 그 값은 튜플형식으로 Result_StartPoint에 담기게됨.
+                                line.X2 = Result_StartPoint.Item1;
+
+                                if (Math.Abs(line.X1 - line.X2) < _gridSize - 1) //선을 줄 일 때 x1과 x2의 길이가 40미만
+                                {
+                                    //길이가 40미만이 되면 40으로 고정 시켜준다. 
+                                    line.X2 = line.X1 - _gridSize;
+
+                                }
+
+                            }
+
+                        }
+
+
+                        if (Flag_VerticalLinePlusMinus != null)
+                        {
+                            if (Flag_VerticalLinePlusMinus == true)  //l선(수직선), true일 때 성립. 스왑된 y1에서 아래쪽으로 증가
+                            {
+
+                                //확대 축소가 끝났으니 다시 바꾼 값 원상복귀하기 위한 스왑.
+                                double tempLine = line.Y1;
+                                line.Y1 = line.Y2;
+                                line.Y2 = tempLine;
+
+                                writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스다운-line.Y가 가까울 때, 마지막 스왑 전");
+
+                                remainderToFindVertex(curPoint.X, curPoint.Y); //가장 가까운 꼭지점을 찾는다. 그 값은 튜플형식으로 Result_StartPoint에 담기게됨.
+                                line.Y1 = Result_StartPoint.Item2;
+                                writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스다운-line.Y가 가까울 때, 마지막 스왑 후");
+
+
+
+                                if (Math.Abs(line.Y1 - line.Y2) < _gridSize - 1) //선을 줄 일 때 y1과 y2의 길이가 40미만
+                                {
+                                    //길이가 40미만이 되면 40으로 고정 시켜준다. 
+                                    line.Y1 = line.Y2 + _gridSize;
+                                }
+
+
+                                double tempX = line.X1; //수직선의 x값은 동일하므로 같은 값 대입
+                                line.X1 = tempX;
+                                line.X2 = tempX;
+                            }
+                            else //l선(수직선), false일 때 성립. 
+                            {
+                                remainderToFindVertex(curPoint.X, curPoint.Y); //가장 가까운 꼭지점을 찾는다. 그 값은 튜플형식으로 Result_StartPoint에 담기게됨.
+                                line.Y2 = Result_StartPoint.Item2;
+
+                                if (Math.Abs(line.Y1 - line.Y2) < _gridSize - 1) //선을 줄 일 때 x1과 x2의 길이가 40미만
+                                {
+                                    //길이가 40미만이 되면 40으로 고정 시켜준다. 
+                                    line.Y2 = line.Y1 - _gridSize;
+
+                                }
+                            }
+                        }
+
+                        WpfUnityPacketHeader header = fillWallInfo(line, WallInfo.WallInfoAction.MOVE);
+                        server.Send(header);
+                        // line.Stroke = Brushes.Black;
+                        line = null; //이렇게 null로 참조를 끊어줘야 업이벤트가 끝나고 선이 마우스에서 떨어짐.                    
+                        bMouseDown = false;
+                        Result_StartPoint = null;
+
+                    }
+
+                    //선 이동 로직
+                    if (line != null && !bLine_check && !linePlusMinus_Check)
+                    {
+                        // 이동할 거리
+                        double movX = curPoint.X - stPoint.X;
+                        double movY = curPoint.Y - stPoint.Y;
+                        stPoint = curPoint; //현재점을 시작점으로. 근데 없어도 돌아가긴 함
+
+
+                        //선의 두 거리 차를 구한다. 그래야 나중에 시작점이 옮겨가도 구해진 거리만큼 더해서 원래의 형태로 선이 그려질 수 있다.
+                        double moveDistanceX2 = Math.Abs(line.X1 - line.X2);
+                        double moveDistanceY2 = Math.Abs(line.Y1 - line.Y2);
+
+                        writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스업 수평선구분전");
+                        bool Result_separateLine = separateLine(line.X1, line.Y1, line.X2, line.Y2); //수평인지 수직선인지 구별하는 함수
+                        remainderToFindVertex(line.X1, line.Y1); //선택된 선의 x1, y1의 좌표를 준다. 그러면 가장 가까운 꼭지점이 나올 것.
+                        writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스업 가까운꼭지점알아냄");
+                        //*******
+                        //고려해야 할 거.이동시 x1y1과 x2y2가 0보다 작아질 경우 0보다 작아진 값을 0으로 보정시켜줘야 함.
+                        //이동시 x1y1과 x2y2가 actualHeight/ actualWidth보다 커질 경우 커진 값을 -하여 보정시켜줘야 함.
+
+
+
+                        moveParallelLIne(Result_separateLine, moveDistanceX2, moveDistanceY2); //선 평행이동 함수
+
+
+                        //line.Stroke = Brushes.Black;
+
+                        WpfUnityPacketHeader header = fillWallInfo(line, WallInfo.WallInfoAction.MOVE);
+                        server.Send(header);
+                        bMouseDown = false;
+                        line = null; //이렇게 null로 참조를 끊어줘야 업이벤트가 끝나고 선이 마우스에서 떨어짐.
+
 
                     }
 
 
+                    Result_separateLine = null; //수직 수평인지 구분
+                    Flag_VerticalLinePlusMinus = null; // 선이 위증가--인지 , 밑으로 증가++인지
+                    Flag_HorizontalLinePlusMinus = null; // 선이 왼쪽증가--인지, 오른쪽 증가++인지
+
+
                 }
-
-                writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스업-선그리기 로그");
-
-
-                WpfUnityPacketHeader header = fillWallInfo( line, WallInfo.WallInfoAction.CREATE);
-                server.Send(header);
-
-                line = null;
-                bMouseDown = false;
-
+                #endregion
 
             }
-            #endregion
-
-#region 선 그리기 아닐 때(이동 및 축소확대)
-            else // 선 그리기 아닐 때(이동 및 축소확대)
+            else //imageClick == true
             {
-                curPoint = TranslatePointToCanvas(e, mapCanvas);
+                imageClick = false;
 
+                Canvas.SetLeft(obj_image, e.GetPosition(mapCanvas).X - obj_image.ActualWidth / 2);
+                Canvas.SetTop(obj_image, e.GetPosition(mapCanvas).Y - obj_image.ActualHeight / 2);
 
-                //선 축소 확대 로직
-                if (linePlusMinus_Check && line != null)
-                {
-                    writeLog(line.X1, line.X2, line.Y1, line.Y2, "라인바뀌기 전");
-
-                    if (Flag_HorizontalLinePlusMinus != null)
-                    {
-                        if (Flag_HorizontalLinePlusMinus == true)  //ㅡ선(수평선), true일 때 성립. 스왑된 x1에서 오른쪽으로 증가
-                        {
-
-                            //확대 축소가 끝났으니 다시 바꾼 값 원상복귀하기 위한 스왑.
-                            double tempLine = line.X1;
-                            line.X1 = line.X2;
-                            line.X2 = tempLine;
-
-                            writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스다운-line.x가 가까울 때, 마지막 스왑 전");
-
-                            remainderToFindVertex(curPoint.X, curPoint.Y); //가장 가까운 꼭지점을 찾는다. 그 값은 튜플형식으로 Result_StartPoint에 담기게됨.
-                            line.X1 = Result_StartPoint.Item1;
-
-                            if (Math.Abs(line.X1 - line.X2) < _gridSize - 1) //선을 줄 일 때 x1과 x2의 길이가 40미만
-                            {
-                                //길이가 40미만이 되면 40으로 고정 시켜준다. 
-                                line.X1 = line.X2 + _gridSize;
-
-                            }
-
-                            double tempY = line.Y1; //수평선의 y값은 동일하므로 다 같은 값 대입
-                            line.Y1 = tempY;
-                            line.Y2 = tempY;
-
-
-                        }
-                        else //ㅡ선(수평선), false일 때 성립. 
-                        {
-
-
-                            remainderToFindVertex(curPoint.X, curPoint.Y); //가장 가까운 꼭지점을 찾는다. 그 값은 튜플형식으로 Result_StartPoint에 담기게됨.
-                            line.X2 = Result_StartPoint.Item1;
-
-                            if (Math.Abs(line.X1 - line.X2) < _gridSize - 1) //선을 줄 일 때 x1과 x2의 길이가 40미만
-                            {
-                                //길이가 40미만이 되면 40으로 고정 시켜준다. 
-                                line.X2 = line.X1 - _gridSize;
-
-                            }
-
-                        }
-
-                    }
-
-
-                    if (Flag_VerticalLinePlusMinus != null)
-                    {
-                        if (Flag_VerticalLinePlusMinus == true)  //l선(수직선), true일 때 성립. 스왑된 y1에서 아래쪽으로 증가
-                        {
-
-                            //확대 축소가 끝났으니 다시 바꾼 값 원상복귀하기 위한 스왑.
-                            double tempLine = line.Y1;
-                            line.Y1 = line.Y2;
-                            line.Y2 = tempLine;
-
-                            writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스다운-line.Y가 가까울 때, 마지막 스왑 전");
-
-                            remainderToFindVertex(curPoint.X, curPoint.Y); //가장 가까운 꼭지점을 찾는다. 그 값은 튜플형식으로 Result_StartPoint에 담기게됨.
-                            line.Y1 = Result_StartPoint.Item2;
-                            writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스다운-line.Y가 가까울 때, 마지막 스왑 후");
-
-
-
-                            if (Math.Abs(line.Y1 - line.Y2) < _gridSize - 1) //선을 줄 일 때 y1과 y2의 길이가 40미만
-                            {
-                                //길이가 40미만이 되면 40으로 고정 시켜준다. 
-                                line.Y1 = line.Y2 + _gridSize;
-                            }
-
-
-                            double tempX = line.X1; //수직선의 x값은 동일하므로 같은 값 대입
-                            line.X1 = tempX;
-                            line.X2 = tempX;
-                        }
-                        else //l선(수직선), false일 때 성립. 
-                        {
-                            remainderToFindVertex(curPoint.X, curPoint.Y); //가장 가까운 꼭지점을 찾는다. 그 값은 튜플형식으로 Result_StartPoint에 담기게됨.
-                            line.Y2 = Result_StartPoint.Item2;
-
-                            if (Math.Abs(line.Y1 - line.Y2) < _gridSize - 1) //선을 줄 일 때 x1과 x2의 길이가 40미만
-                            {
-                                //길이가 40미만이 되면 40으로 고정 시켜준다. 
-                                line.Y2 = line.Y1 - _gridSize;
-
-                            }
-                        }
-                    }
-
-                    WpfUnityPacketHeader header = fillWallInfo(line, WallInfo.WallInfoAction.MOVE);
-                    server.Send(header);
-                    // line.Stroke = Brushes.Black;
-                    line = null; //이렇게 null로 참조를 끊어줘야 업이벤트가 끝나고 선이 마우스에서 떨어짐.                    
-                    bMouseDown = false;
-                    Result_StartPoint = null;
-
-                }
-
-                //선 이동 로직
-                if (line != null && !bLine_check && !linePlusMinus_Check)
-                {
-                    // 이동할 거리
-                    double movX = curPoint.X - stPoint.X;
-                    double movY = curPoint.Y - stPoint.Y;
-                    stPoint = curPoint; //현재점을 시작점으로. 근데 없어도 돌아가긴 함
-
-
-                    //선의 두 거리 차를 구한다. 그래야 나중에 시작점이 옮겨가도 구해진 거리만큼 더해서 원래의 형태로 선이 그려질 수 있다.
-                    double moveDistanceX2 = Math.Abs(line.X1 - line.X2);
-                    double moveDistanceY2 = Math.Abs(line.Y1 - line.Y2);
-
-                    writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스업 수평선구분전");
-                    bool Result_separateLine = separateLine(line.X1, line.Y1, line.X2, line.Y2); //수평인지 수직선인지 구별하는 함수
-                    remainderToFindVertex(line.X1, line.Y1); //선택된 선의 x1, y1의 좌표를 준다. 그러면 가장 가까운 꼭지점이 나올 것.
-                    writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스업 가까운꼭지점알아냄");
-                    //*******
-                    //고려해야 할 거.이동시 x1y1과 x2y2가 0보다 작아질 경우 0보다 작아진 값을 0으로 보정시켜줘야 함.
-                    //이동시 x1y1과 x2y2가 actualHeight/ actualWidth보다 커질 경우 커진 값을 -하여 보정시켜줘야 함.
-
-
-
-                    moveParallelLIne(Result_separateLine, moveDistanceX2, moveDistanceY2); //선 평행이동 함수
-
-
-                    //line.Stroke = Brushes.Black;
-
-                    WpfUnityPacketHeader header = fillWallInfo(line, WallInfo.WallInfoAction.MOVE);
-                    server.Send(header);
-                    bMouseDown = false;
-                    line = null; //이렇게 null로 참조를 끊어줘야 업이벤트가 끝나고 선이 마우스에서 떨어짐.
-
-
-                }
-
-
-                Result_separateLine = null; //수직 수평인지 구분
-                Flag_VerticalLinePlusMinus = null; // 선이 위증가--인지 , 밑으로 증가++인지
-                Flag_HorizontalLinePlusMinus = null; // 선이 왼쪽증가--인지, 오른쪽 증가++인지
-
-
+                obj_image = null;
             }
-#endregion
+
+        }
+
+        //tag에 넣을 클래스
+        public class obj_Info
+        {
+           public string obj_type;    //unity에서 어떤 걸로 표현할지(의자, 책상 etc..)
+           public string visualName;  //(UI에 보여줄 텍스트)
+
 
         }
 
@@ -1123,7 +1247,7 @@ namespace Nollan.Visual_Space
 
         }
 
-
+        
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -1387,7 +1511,7 @@ namespace Nollan.Visual_Space
         public void control_MouseEnter(object sender, MouseEventArgs e)
         {
            // timer1.Stop();
-            Cursor = Cursors.SizeAll;
+            Cursor = Cursors.Cross;
         }
 
         public void control_MouseLeave(object sender, EventArgs e)
@@ -1395,6 +1519,178 @@ namespace Nollan.Visual_Space
             Cursor = Cursors.Arrow;
            // timer1.Start();
         }
+
+        //마우스가 격자 캔버스 밖으로 나가도 다시 캔버스 안으로 돌아오면 마우스 이벤트 다시 연결시킴.
+        public void mapCanvas_LostMouseCapture(object sender, MouseEventArgs e)
+        {
+            if(sender is Line)
+            ((Line)sender).ReleaseMouseCapture();
+        }
+
+
+
+        //-------0802
+
+        private void panel_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("Object"))
+            {
+                // These Effects values are used in the drag source's
+                // GiveFeedback event handler to determine which cursor to display.
+                if (e.KeyStates == DragDropKeyStates.ControlKey)
+                {
+                    e.Effects = DragDropEffects.Copy;
+                }
+                else
+                {
+                    e.Effects = DragDropEffects.Move;
+                }
+            }
+
+            /*
+             이 DragOver 이벤트의 처리기는 다음 작업을 수행합니다.
+
+    Circle 사용자 정의 컨트롤이 T:system.Windows.DataObject에 패키지하여 DoDragDrop 호출 시 전달한 "개체" 데이터가 끌어온 데이터에 포함되어 있는지 확인합니다.
+
+    "개체" 데이터가 있으면 Ctrl 키가 누른 상태인지 확인합니다.
+
+    Ctrl 키가 누른 상태이면 Effects 속성을 Copy로 설정합니다. 그렇지 않으면 Effects 속성을 Move로 설정합니다.
+             */
+
+
+        }
+
+
+
+        private void panel_Drop(object sender, DragEventArgs e)
+        {
+            // If an element in the panel has already handled the drop,
+            // the panel should not also handle it.
+            if (e.Handled == false)
+            {
+                Canvas _panel = (Canvas)sender; //버블링된 sender(캔버스)를 판넬로 형변환.
+                DockingWindows.Categori _element = (DockingWindows.Categori)e.Data.GetData("Object");
+               
+
+                if (_panel != null && _element != null)
+                {
+                    // Get the panel that the element currently belongs to,
+                    // then remove it from that panel and add it the Children of
+                    // the panel that its been dropped on.
+                    WrapPanel _parent = (WrapPanel)VisualTreeHelper.GetParent(_element);
+
+
+
+                    if (_parent != null)
+                    {
+                        if (e.KeyStates == DragDropKeyStates.ControlKey &&
+                            e.AllowedEffects.HasFlag(DragDropEffects.Copy)) //컨트롤 눌렀을 때 무브
+                        {
+                           
+                       //     Circle _circle = new Circle((Circle)_element);
+                        //    _panel.Children.Add(_circle);
+                            // set the value to return to the DoDragDrop call
+                        //    e.Effects = DragDropEffects.Copy;
+                        }
+                        else if (e.AllowedEffects.HasFlag(DragDropEffects.Move)) //컨트롤 안눌렀을 모든 경우 
+                        {
+                           
+                           dropPoint = e.GetPosition(mapCanvas);
+                            
+
+
+
+                           var myContent = _element.Content as Canvas;
+
+                            string txt = null;
+                            foreach (Image myImage in myContent.Children.OfType<Image>())
+                            {
+                                txt = myImage.Name;
+                                break;
+                            }
+
+
+                            /*
+
+                            string txt = null;
+                            foreach (TextBox tb in sp.Children.OfType<TextBox>())
+                            {
+
+                                if (tb.Name == "_" + $"{Selectedidx}")
+                                {
+                                    txt = tb.Text;
+                                    break;
+                                }
+                            }   
+                            */
+
+                            
+
+
+                            Image myImage3 = new Image();
+                            BitmapImage bi3 = new BitmapImage();
+                            bi3.BeginInit();
+                            bi3.UriSource = new Uri($"../../pictures/{txt}.PNG", UriKind.Relative);
+                            bi3.EndInit();
+                            myImage3.Stretch = Stretch.Uniform;
+                            myImage3.Source = bi3;
+                            Canvas.SetLeft(myImage3, e.GetPosition(mapCanvas).X );
+                            Canvas.SetTop(myImage3, e.GetPosition(mapCanvas).Y );
+
+
+                            obj_Info newinfo = new obj_Info();
+                            newinfo.obj_type = "의자";
+                            newinfo.visualName = "이케아의자";
+
+                            myImage3.Tag = newinfo;                  
+                            
+
+                            _panel.Children.Add(myImage3);
+
+
+
+                            // MessageBox.Show(string.Format("x: {0} || y: {1}",dropPoint.X, dropPoint.Y));
+
+
+                            /*
+                            _parent.Children.Remove(_element); //부모(도킹)
+                           _panel.Children.Add(_element);
+                           */
+
+
+                            // set the value to return to the DoDragDrop call
+                            //  e.Effects = DragDropEffects.Move;
+                          //  e.Effects = DragDropEffects.Copy;
+
+                            
+                        }
+                    }
+                }
+            }
+        }
+
+        object ICloneable.Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
+        Point dropPoint;
+        //--------------
+
+
+        public UIElement DeepCopy(UIElement element)
+
+        {
+          //  string oriName
+            string shapestring = XamlWriter.Save(element);
+          //  ((FrameworkElement)element).Name = oriName;
+            StringReader stringReader = new StringReader(shapestring);
+            XmlTextReader xmlTextReader = new XmlTextReader(stringReader);
+            UIElement DeepCopyobject = (UIElement)XamlReader.Load(xmlTextReader);
+            return DeepCopyobject;
+
+        }
+        //-----------------------------
 
 
         enum Direction
@@ -1423,48 +1719,68 @@ namespace Nollan.Visual_Space
             MouseButtonEventArgs e 마우스버튼업
              */
 
-        private void control_MouseDown(object sender, MouseButtonEventArgs e)
+
+        public void control_Drop(object sender, DragEventArgs e)
         {
-            if (e.LeftButton == Mouse.LeftButton)
-            {
-              //  this.Invalidate();  //unselect other control
-                SelectedControl = (Control)sender;
-                Control control = (Control)sender;
-                mouseX = -e.GetPosition(null).X;
-                mouseY = -e.GetPosition(null).Y;
-           //     control.Invalidate();
-            //   DrawControlBorder(sender);
-                propertyGrid1.SelectedObject = SelectedControl;
-            }
+
+
+
+
         }
-        private void control_MouseMove(object sender, MouseEventArgs e)
+
+      
+
+        public void control_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton == Mouse.LeftButton)
-            {
-                Control control = (Control)sender;
-                Point nextPosition = new Point();
-                nextPosition = this.TranslatePoint(nextPosition, this.mainWindow);
-                //   nextPosition = this.PointToClient(MousePosition);
-                nextPosition.Offset(mouseX, mouseY);
-
-           //     control. = nextPosition;
-
-
-
-                //  control.Location = nextPosition;
-          //      Invalidate();
-            }
+            this.DragMove();
+            
         }
-        private void control_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == Mouse.LeftButton)
-            {
-                Control control = (Control)sender;
-       //         Cursor.Clip = System.Drawing.Rectangle.Empty;
-       //         control.Invalidate();
-                //DrawControlBorder(control);
-            }
-        }
+
+    
+
+      
+        // private void control_MouseDown(object sender, MouseButtonEventArgs e)
+        // {
+        //     if (e.LeftButton == Mouse.LeftButton)
+        //     {
+        //       //  this.Invalidate();  //unselect other control
+        //         SelectedControl = (Control)sender;
+        //         Control control = (Control)sender;
+        //         mouseX = -e.GetPosition(null).X;
+        //         mouseY = -e.GetPosition(null).Y;
+        //    //     control.Invalidate();
+        //     //   DrawControlBorder(sender);
+        //         propertyGrid1.SelectedObject = SelectedControl;
+        //     }
+        // }
+        // private void control_MouseMove(object sender, MouseEventArgs e)
+        // {
+        //     if (e.LeftButton == Mouse.LeftButton)
+        //     {
+        //        Control control = (System.Windows.Forms.Control)sender;
+        //         Point nextPosition = new Point();
+        //         nextPosition = this.TranslatePoint(nextPosition, this.mainWindow);
+        //         //   nextPosition = this.PointToClient(MousePosition);
+        //         nextPosition.Offset(mouseX, mouseY);
+
+        //    //     control. = nextPosition;
+
+
+
+        //    //       control.Location = nextPosition;
+        //   //      Invalidate();
+        //     }
+        // }
+        // private void control_MouseUp(object sender, MouseButtonEventArgs e)
+        // {
+        //     if (e.LeftButton == Mouse.LeftButton)
+        //     {
+        //         Control control = (Control)sender;
+        ////         Cursor.Clip = System.Drawing.Rectangle.Empty;
+        ////         control.Invalidate();
+        //         //DrawControlBorder(control);
+        //     }
+        // }
 
         //public bool dragAction = false;
 
