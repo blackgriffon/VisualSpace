@@ -97,7 +97,7 @@ namespace Nollan.Visual_Space.Network
     }
 
     [ProtoContract]
-    public class ObjectInfo
+    public class ObjectInfoPacket
     {
 
         public enum ObjectAction

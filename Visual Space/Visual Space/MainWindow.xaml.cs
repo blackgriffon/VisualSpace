@@ -1,4 +1,4 @@
-﻿#define RUN_3DVIWER_IN_UNITY_EDITER
+﻿//#define RUN_3DVIWER_IN_UNITY_EDITER
 #define RUN_3DVIWER
 
 
@@ -17,7 +17,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -251,11 +250,7 @@ namespace Nollan.Visual_Space
             // 클라이언트를 EXE로 enbedded안하고 unity프로그램으로 돌리거나
             // 3Dviwer를 실행시킬 때만 되도록한다.
 #if !RUN_3DVIWER_IN_UNITY_EDITER && RUN_3DVIWER
-            //ExeViewer exeViewer = new ExeViewer();
-            host.Child = new UnityExe(AppDomain.CurrentDomain.BaseDirectory+@"..\..\exe\3D Viewer.exe");
-
-            //mainGrid.Children.Add(exeViewer);            
-            //Grid.SetRow(exeViewer, 1);
+            host.Child = new UnityExe(AppDomain.CurrentDomain.BaseDirectory+ @"..\..\..\exe\3D Viewer.exe");
 #endif
 
             //-----
@@ -875,21 +870,13 @@ namespace Nollan.Visual_Space
 
                 Canvas.SetLeft(obj_image, e.GetPosition(mapCanvas).X - obj_image.ActualWidth / 2);
                 Canvas.SetTop(obj_image, e.GetPosition(mapCanvas).Y - obj_image.ActualHeight / 2);
-                server.Send(fillObjectInfo(obj_image, ObjectInfo.ObjectAction.MOVE));
+                server.Send(fillObjectInfo(obj_image, ObjectInfoPacket.ObjectAction.MOVE));
 
                 //obj_image = null;
             }
 
         }
 
-        //tag에 넣을 클래스
-        public class obj_Info
-        {
-           public string ObjectType;    //unity에서 어떤 걸로 표현할지(의자, 책상 etc..)
-           public string VisualName;  //(UI에 보여줄 텍스트)
-
-
-        }
 
         public void createObject()
         {
@@ -1010,12 +997,12 @@ namespace Nollan.Visual_Space
 #endregion
 
 
-        private WpfUnityPacketHeader fillObjectInfo(Image img, ObjectInfo.ObjectAction action)
+        private WpfUnityPacketHeader fillObjectInfo(Image img, ObjectInfoPacket.ObjectAction action)
         {
             // 공통적인 작업
-            ObjectInfo objectInfo = new ObjectInfo();
+            ObjectInfoPacket objectInfo = new ObjectInfoPacket();
             objectInfo.Name = img.Name;//img.Name;
-            obj_Info ObjInfo = (obj_Info)img.Tag;
+            ObjConvertImageInfo ObjInfo = (ObjConvertImageInfo)img.Tag;
             objectInfo.ObjectType = "bed_1";//임시로 테스트ObjInfo.ObjectType;
             objectInfo.Action = action;
 
@@ -1023,8 +1010,8 @@ namespace Nollan.Visual_Space
             switch (action)
             {
 
-                case ObjectInfo.ObjectAction.CREATE:
-                case ObjectInfo.ObjectAction.MOVE:
+                case ObjectInfoPacket.ObjectAction.CREATE:
+                case ObjectInfoPacket.ObjectAction.MOVE:
 
                     int zeroPos = 400;
                     // 계산
@@ -1841,8 +1828,6 @@ namespace Nollan.Visual_Space
                         //  ObjConvertimgInfo.rotationPoint = null;//회전값을 위한 2차원의 x,y point좌표.    
 
                             convertimg.Tag = ObjConvertimgInfo; //이미지의 tag에 정보를 기억.
-                            newinfo.obj_type = "의자";
-                            newinfo.visualName = "이케아의자";
 
                             Canvas.SetLeft(convertimg, e.GetPosition(mapCanvas).X);
                             Canvas.SetTop(convertimg, e.GetPosition(mapCanvas).Y);
@@ -1854,7 +1839,7 @@ namespace Nollan.Visual_Space
 
                             ObjConvertimgList.Add(ObjConvertimgInfo); //왼쪽 UI에서 지울 수 있도록 이미지의 tag에 넣었던 정보를 리스트 안에도 저장. 
                             _panel.Children.Add(convertimg); //캔버스에 이미지 출력하기 위한 자식으로 추가.
-                            server.Send(fillObjectInfo(myImage3, ObjectInfo.ObjectAction.CREATE));
+                            server.Send(fillObjectInfo(convertimg, ObjectInfoPacket.ObjectAction.CREATE));
 
 
 

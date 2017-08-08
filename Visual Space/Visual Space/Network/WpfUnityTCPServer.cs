@@ -112,7 +112,7 @@ namespace Nollan.Visual_Space.Network
                             break;
 
                         case WpfUnityPacketType.ObjectInfo:
-                            ProtoBuf.Serializer.SerializeWithLengthPrefix<ObjectInfo>(_NetworkStream, (ObjectInfo)header.Data, ProtoBuf.PrefixStyle.Fixed32);
+                            ProtoBuf.Serializer.SerializeWithLengthPrefix<ObjectInfoPacket>(_NetworkStream, (ObjectInfoPacket)header.Data, ProtoBuf.PrefixStyle.Fixed32);
                             break;
                     }
                 }
