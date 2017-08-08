@@ -23,22 +23,44 @@ namespace Nollan.Visual_Space.DockingWindows
         public Categori()
         {
             InitializeComponent();
-
+           
         }
+    
 
 
-
-        private Brush _previousFill = null;
-
-
-
-        public Categori(Categori c)
+        ///pictures/chair.PNG
+        public Categori(string _ObjectType, string _FilePath, string _VisualName) //오브젝트 타입, 경로, 비쥬얼네임.
         {
             InitializeComponent();
-            this.ractangleUI.Height = c.ractangleUI.Height;
-            this.ractangleUI.Width = c.ractangleUI.Height;
-            this.ractangleUI.Fill = c.ractangleUI.Fill;
+
+            ObjectInfo NewInfo = new ObjectInfo();
+            NewInfo.ObjectType = _ObjectType;
+            NewInfo.FilePath = _FilePath;
+            NewInfo.VisualName = _VisualName;
+            
+
+            //Image myImage3 = new Image();
+            //상대 파일경로의 png를 bitmap으로 변환.
+            BitmapImage bitimage = new BitmapImage();
+            bitimage.BeginInit();
+            bitimage.UriSource = new Uri(_FilePath, UriKind.Relative);
+            bitimage.EndInit();
+
+
+            //bitmap으로 바꾼 걸 카테고리의 이미지.source에 대입.
+            img_cate.Stretch = Stretch.UniformToFill;
+            img_cate.Source = bitimage;
+            img_cate.Width = 60;
+            img_cate.Height = 60;
+            img_cate.Tag = NewInfo; //태그 정보 입력
+
+            img_cate.ToolTip = NewInfo.VisualName; //비주얼 이름으로 툴팁 팝업
+
+
         }
+
+
+
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -47,8 +69,8 @@ namespace Nollan.Visual_Space.DockingWindows
             {
                 // Package the data.
                 DataObject data = new DataObject();
-                data.SetData(DataFormats.StringFormat, ractangleUI.Fill.ToString());
-                data.SetData("Double", ractangleUI.Height);
+                //  data.SetData(DataFormats.StringFormat, ractangleUI.Fill.ToString());
+                //  data.SetData("Double", ractangleUI.Height);
                 data.SetData("Object", this);
 
                 // Inititate the drag-and-drop operation.
@@ -129,7 +151,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 if (converter.IsValid(dataString))
                 {
                     Brush newFill = (Brush)converter.ConvertFromString(dataString);
-                    ractangleUI.Fill = newFill;
+              //      ractangleUI.Fill = newFill;
 
                     // Set Effects to notify the drag source what effect
                     // the drag-and-drop operation had.
@@ -222,7 +244,7 @@ TextBox에서 gre라는 텍스트를 선택합니다.
         {
             base.OnDragEnter(e);
             // Save the current Fill brush so that you can revert back to this value in DragLeave.
-            _previousFill = ractangleUI.Fill;
+          //  _previousFill = ractangleUI.Fill;
 
             // If the DataObject contains string data, extract it.
             if (e.Data.GetDataPresent(DataFormats.StringFormat))
@@ -234,7 +256,7 @@ TextBox에서 gre라는 텍스트를 선택합니다.
                 if (converter.IsValid(dataString))
                 {
                     Brush newFill = (Brush)converter.ConvertFromString(dataString.ToString());
-                    ractangleUI.Fill = newFill;
+             //       ractangleUI.Fill = newFill;
                 }
             }
 
@@ -257,7 +279,7 @@ TextBox에서 gre라는 텍스트를 선택합니다.
         {
             base.OnDragLeave(e);
             // Undo the preview that was applied in OnDragEnter.
-            ractangleUI.Fill = _previousFill;
+        //    ractangleUI.Fill = _previousFill;
 
             /*
              재정의된 이 OnDragLeave는 다음 작업을 수행합니다.
@@ -266,6 +288,12 @@ TextBox에서 gre라는 텍스트를 선택합니다.
              */
 
         }
+
+
+
+
+
+
 
 
 

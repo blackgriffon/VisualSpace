@@ -5,17 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Nollan.Visual_Space.DockingWindows"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    
-    <Canvas>
-        <Rectangle x:Name="ractangleUI" 
-                 Height="63" Width="80"
-                 Fill="Transparent" Panel.ZIndex="10">            
-        </Rectangle>
-        <Image Name="chair"  Width="50.75" Height="56.25" Source="/pictures/chair.PNG" />
-        
+             d:DesignHeight="55" d:DesignWidth="55" >
 
 
-    </Canvas>
-    
+        <Image Name="img_cate"  Width="55" Height="55" >
+            <Image.ToolTip>
+                <TextBlock HorizontalAlignment="Center" IsHitTestVisible="False" Width="150" TextWrapping="Wrap" TextAlignment="Center" >
+                                <Image Width="150" Height="150" VerticalAlignment="Top" Stretch="Fill" HorizontalAlignment="Center"/>
+                                  설명 : 테이블
+                </TextBlock>
+            </Image.ToolTip>
+        </Image>
+    <!--<Border BorderThickness="3" BorderBrush="Black">
+    </Border>-->
 </UserControl>
