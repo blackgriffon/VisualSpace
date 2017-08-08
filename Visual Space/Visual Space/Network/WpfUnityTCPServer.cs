@@ -110,6 +110,10 @@ namespace Nollan.Visual_Space.Network
                         case WpfUnityPacketType.WallInfo:
                             ProtoBuf.Serializer.SerializeWithLengthPrefix<WallInfo>(_NetworkStream, (WallInfo)header.Data, ProtoBuf.PrefixStyle.Fixed32);
                             break;
+
+                        case WpfUnityPacketType.ObjectInfo:
+                            ProtoBuf.Serializer.SerializeWithLengthPrefix<ObjectInfo>(_NetworkStream, (ObjectInfo)header.Data, ProtoBuf.PrefixStyle.Fixed32);
+                            break;
                     }
                 }
                 catch (System.IO.IOException)

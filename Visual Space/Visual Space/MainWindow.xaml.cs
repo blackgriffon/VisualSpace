@@ -1,7 +1,9 @@
-//#define RUN_3DVIWER_IN_UNITY_EDITER
-//#define RUN_3DVIWER
+﻿#define RUN_3DVIWER_IN_UNITY_EDITER
+#define RUN_3DVIWER
+
 
 using Nollan.Visual_Space.DockingWindows;
+
 using Nollan.Visual_Space.Network;
 using System;
 using System.Collections.Generic;
@@ -34,9 +36,7 @@ namespace Nollan.Visual_Space
    public partial class MainWindow : Window , ICloneable
     {
         
-
-
-        IWpfUnityTCPServer server = null;
+                IWpfUnityTCPServer server = null;
 
 
         public MainWindow()
@@ -163,24 +163,26 @@ namespace Nollan.Visual_Space
         private List<int> convert3DPosTo2D(WallInfo wallInfo)
         {
 
-            int zeroPos = 200;
+            int zeroPos = 400;
             // 계산
 
             // 2D 상의 중심점을 구한다.
-            int xc = (int)wallInfo.PosX * 20 + zeroPos;
-            int yc = (int)wallInfo.PosZ * 20 * -1 + zeroPos;
+            int xc = (int)(wallInfo.PosX * 20 + zeroPos);
+            int yc = (int)(wallInfo.PosZ * 20 * -1 + zeroPos);
             int w, h;
 
             // 2D 상의 길이를 구한다.
+            // float이기 때문에 유니티상에서 정확하게 소수점 1자리로 안떨어지고 2.6이면 2.5xxxxx 로 나온다.
+            // 따라서 반올림을 해줘서 값을 보정한다.
             if (wallInfo.ScaleX > wallInfo.ScaleZ)
             {
-                w = (int)wallInfo.ScaleX * 20;
+                w = (int)(Math.Round(wallInfo.ScaleX-0.2, 0)) * 20;
                 h = 0;
             }
             else
             {
                 w = 0;
-                h = (int)wallInfo.ScaleZ * 20;
+                h = (int)(Math.Round(wallInfo.ScaleZ-0.2, 0)) * 20;
             }
 
             // 이만큼 더해주면 x1,x2 빼주면 x2, y2가된다.
@@ -194,8 +196,6 @@ namespace Nollan.Visual_Space
             pos.Add(yc + h);
 
             return pos;
-
-
         }
 
 
@@ -251,9 +251,11 @@ namespace Nollan.Visual_Space
             // 클라이언트를 EXE로 enbedded안하고 unity프로그램으로 돌리거나
             // 3Dviwer를 실행시킬 때만 되도록한다.
 #if !RUN_3DVIWER_IN_UNITY_EDITER && RUN_3DVIWER
-            ExeViewer exeViewer = new ExeViewer();
-            mainGrid.Children.Add(exeViewer);            
-            Grid.SetRow(exeViewer, 1);
+            //ExeViewer exeViewer = new ExeViewer();
+            host.Child = new UnityExe(AppDomain.CurrentDomain.BaseDirectory+@"..\..\exe\3D Viewer.exe");
+
+            //mainGrid.Children.Add(exeViewer);            
+            //Grid.SetRow(exeViewer, 1);
 #endif
 
             //-----
@@ -873,6 +875,7 @@ namespace Nollan.Visual_Space
 
                 Canvas.SetLeft(obj_image, e.GetPosition(mapCanvas).X - obj_image.ActualWidth / 2);
                 Canvas.SetTop(obj_image, e.GetPosition(mapCanvas).Y - obj_image.ActualHeight / 2);
+                server.Send(fillObjectInfo(obj_image, ObjectInfo.ObjectAction.MOVE));
 
                 //obj_image = null;
             }
@@ -1007,6 +1010,41 @@ namespace Nollan.Visual_Space
 #endregion
 
 
+        private WpfUnityPacketHeader fillObjectInfo(Image img, ObjectInfo.ObjectAction action)
+        {
+            // 공통적인 작업
+            ObjectInfo objectInfo = new ObjectInfo();
+            objectInfo.Name = img.Name;//img.Name;
+            obj_Info ObjInfo = (obj_Info)img.Tag;
+            objectInfo.ObjectType = "bed_1";//임시로 테스트ObjInfo.ObjectType;
+            objectInfo.Action = action;
+
+            // del 일때는 굳이 좌표정보가 필요없다.
+            switch (action)
+            {
+
+                case ObjectInfo.ObjectAction.CREATE:
+                case ObjectInfo.ObjectAction.MOVE:
+
+                    int zeroPos = 400;
+                    // 계산
+                    // 2d 좌표 기준으로 200 / 200 센터로 지정한다.
+
+                    float xc = (float)Canvas.GetLeft(img)- zeroPos + (float)img.ActualWidth / 2;
+                    float yc = ((float)Canvas.GetTop(img)- zeroPos + (float)img.ActualHeight / 2) * -1;
+
+
+                    objectInfo.PosX = xc / 20;
+                    objectInfo.PosY = 0f;
+                    objectInfo.PosZ = yc / 20;
+                    break;
+
+            }
+
+            WpfUnityPacketHeader header = new WpfUnityPacketHeader(WpfUnityPacketType.ObjectInfo, objectInfo);
+            return header;
+        }
+
 
         private WpfUnityPacketHeader fillWallInfo(Line line, WallInfo.WallInfoAction action)
         {
@@ -1022,8 +1060,8 @@ namespace Nollan.Visual_Space
                 case WallInfo.WallInfoAction.CREATE:
                 case WallInfo.WallInfoAction.MOVE:
 
-                    int zeroPos = 200;
-                    float wallThickness = 0.3f;
+                    int zeroPos = 400;
+                    float wallThickness = 0.2f;
                     // 계산
                     // 2d 좌표 기준으로 200 / 200 센터로 지정한다.
 
@@ -1043,6 +1081,7 @@ namespace Nollan.Visual_Space
 
                     wallInfo.PosX = xc / 20;
                     wallInfo.PosY = 1f;
+
                     wallInfo.PosZ = yc / 20;
 
                     wallInfo.ScaleX = w / 20;
@@ -1788,7 +1827,6 @@ namespace Nollan.Visual_Space
                             convertimg.Source = convertbitmap;
                             convertimg.MouseEnter += Convertimg_MouseEnter;
                             convertimg.MouseLeave += Convertimg_MouseLeave;
-                            convertimg.Name = $"Object{innerObjName}";
 
 
                             //tag에 저장하기 위한 정보들
@@ -1803,6 +1841,8 @@ namespace Nollan.Visual_Space
                         //  ObjConvertimgInfo.rotationPoint = null;//회전값을 위한 2차원의 x,y point좌표.    
 
                             convertimg.Tag = ObjConvertimgInfo; //이미지의 tag에 정보를 기억.
+                            newinfo.obj_type = "의자";
+                            newinfo.visualName = "이케아의자";
 
                             Canvas.SetLeft(convertimg, e.GetPosition(mapCanvas).X);
                             Canvas.SetTop(convertimg, e.GetPosition(mapCanvas).Y);
@@ -1814,6 +1854,7 @@ namespace Nollan.Visual_Space
 
                             ObjConvertimgList.Add(ObjConvertimgInfo); //왼쪽 UI에서 지울 수 있도록 이미지의 tag에 넣었던 정보를 리스트 안에도 저장. 
                             _panel.Children.Add(convertimg); //캔버스에 이미지 출력하기 위한 자식으로 추가.
+                            server.Send(fillObjectInfo(myImage3, ObjectInfo.ObjectAction.CREATE));
 
 
 

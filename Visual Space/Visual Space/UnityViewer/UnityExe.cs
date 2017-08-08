@@ -19,7 +19,6 @@ namespace VisualSpace.UnityViewer
         [DllImport("user32.dll")]
         static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
         [DllImport("user32.dll")]
-        //MoveWindow 함수를 호출한다.
         internal static extern bool MoveWindow(IntPtr hwnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
         [DllImport("user32.dll")]
         public static extern void SetForegroundWindow(IntPtr hWnd);
@@ -39,7 +38,6 @@ namespace VisualSpace.UnityViewer
         public UnityExe()
         {
             InitializeComponent();
-            this.Load += UnityExe_Load;
          }
 
  
@@ -47,6 +45,9 @@ namespace VisualSpace.UnityViewer
         {
             Path = exePath;
             InitializeComponent();
+            this.LostFocus += UnityExe_LostFocus;
+
+
         }
 
 
@@ -81,6 +82,10 @@ namespace VisualSpace.UnityViewer
                 p = Process.Start(Path);
                 p.WaitForInputIdle();
                 Thread.Sleep(1000);
+
+                //BringWindowToTop(p.MainWindowHandle);
+                //SetWindowPos(p.MainWindowHandle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE);
+
                 IntPtr child = SetParent(p.MainWindowHandle, this.panel.Handle);
 
 
@@ -88,42 +93,18 @@ namespace VisualSpace.UnityViewer
 
                 WindowStyle myStyle = (WindowStyle)style;
 
-                myStyle = myStyle & ~WindowStyle.WS_CAPTION;
-                myStyle = myStyle | WindowStyle.WS_BORDER | WindowStyle.WS_MINIMIZEBOX;
+               myStyle = myStyle & ~WindowStyle.WS_CAPTION;
+               myStyle = myStyle | WindowStyle.WS_BORDER | WindowStyle.WS_MINIMIZEBOX;
 
                 SetWindowLong(p.MainWindowHandle, GWL_STYLE, (int)myStyle);
 
                 MoveWindow(p.MainWindowHandle, 0, 0, panel.Width, panel.Height, true);
+
+
                 firstLoad = false;
                 UnityExeOn = true;
 
             }
-        }
-
-        public void ExeLoad()
-        {
-            if (firstLoad)
-            {
-                p = Process.Start(Path);
-                p.WaitForInputIdle();
-                Thread.Sleep(500);
-                IntPtr child = SetParent(p.MainWindowHandle, this.panel.Handle);
-
-
-                int style = GetWindowLong(this.Handle, GWL_STYLE);
-
-                WindowStyle myStyle = (WindowStyle)style;
-
-                myStyle = myStyle & ~WindowStyle.WS_CAPTION;
-                myStyle = myStyle | WindowStyle.WS_BORDER | WindowStyle.WS_MAXIMIZEBOX;
-
-                SetWindowLong(p.Handle, GWL_STYLE, (int)myStyle);
-
-                MoveWindow(p.MainWindowHandle, 0, 0, this.Width, this.Height, true);
-                firstLoad = false;
-                UnityExeOn = true;
-            }
-
         }
 
     }

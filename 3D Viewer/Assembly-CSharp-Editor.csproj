@@ -51,10 +51,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\AssetBundleManager\Editor\AssetbundlesMenuItems.cs" />
-     <Compile Include="Assets\AssetBundleManager\Editor\BuildScript.cs" />
-     <Compile Include="Assets\AssetBundleManager\Editor\ExecuteInternalMono.cs" />
-     <Compile Include="Assets\AssetBundleManager\Editor\LaunchAssetBundleServer.cs" />
      <Compile Include="Assets\Editor\DoCreateAssetBundles.cs" />
      <None Include="Assets\07.Assets\OutlineEffect\Resources\OutlineShader.shader" />
      <None Include="Assets\07.Assets\OutlineEffect\Resources\OutlineBufferShader.shader" />
@@ -127,10 +123,6 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{73B17BF9-2ACB-BDBB-C098-034373BCDFA0}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
-    <ProjectReference Include="Assembly-UnityScript-firstpass.csproj">
-      <Project>{0D53DC11-AE8C-3ED1-50A2-E190622BC4DB}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{0F3BA85E-FE6D-CA68-9F57-3D56E5285F7D}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
   </ItemGroup>

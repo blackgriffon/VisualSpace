@@ -52,7 +52,8 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\02.Scripts\csCameraControl.cs" />
-     <Compile Include="Assets\02.Scripts\csMoveWall.cs" />
+     <Compile Include="Assets\02.Scripts\csLoadAssetBundle.cs" />
+     <Compile Include="Assets\02.Scripts\csMoveObjectControl.cs" />
      <Compile Include="Assets\02.Scripts\csSaveAssertBundle.cs" />
      <Compile Include="Assets\02.Scripts\csTCPClientManager.cs" />
      <Compile Include="Assets\02.Scripts\Pakect.cs" />
@@ -63,13 +64,6 @@
      <Compile Include="Assets\07.Assets\OutlineEffect\LinkedSet.cs" />
      <Compile Include="Assets\07.Assets\OutlineEffect\Outline.cs" />
      <Compile Include="Assets\07.Assets\OutlineEffect\OutlineEffect.cs" />
-     <Compile Include="Assets\AssetBundleManager\AssetBundleLoadOperation.cs" />
-     <Compile Include="Assets\AssetBundleManager\AssetBundleManager.cs" />
-     <Compile Include="Assets\AssetBundleManager\Utility.cs" />
-     <Compile Include="Assets\AssetBundleSample\Scripts\LoadAssets.cs" />
-     <Compile Include="Assets\AssetBundleSample\Scripts\LoadScenes.cs" />
-     <Compile Include="Assets\AssetBundleSample\Scripts\LoadTanks.cs" />
-     <Compile Include="Assets\AssetBundleSample\Scripts\LoadVariants.cs" />
      <None Include="Assets\07.Assets\OutlineEffect\Resources\OutlineShader.shader" />
      <None Include="Assets\07.Assets\OutlineEffect\Resources\OutlineBufferShader.shader" />
      <None Include="Assets\07.Assets\OutlineEffect\Resources\OutlineBufferCullOffShader.shader" />
@@ -97,12 +91,6 @@
  <Reference Include="protobuf-net">
  <HintPath>C:/Users/TAEWOO/Desktop/VisualSpace/3D Viewer/Assets/07.Assets/protobuf-net.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{73B17BF9-2ACB-BDBB-C098-034373BCDFA0}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
-    <ProjectReference Include="Assembly-UnityScript-firstpass.csproj">
-      <Project>{0D53DC11-AE8C-3ED1-50A2-E190622BC4DB}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

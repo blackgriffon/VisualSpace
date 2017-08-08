@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4561857764467806}
+  - component: {fileID: 65159267216971942}
   m_Layer: 0
   m_Name: coffee_table_1
   m_TagString: Untagged
@@ -179,3 +180,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1949361663400132}
   m_Mesh: {fileID: 4300002, guid: 7cd4ce41d004a7c4f9fda3a3ae2e9bf3, type: 3}
+--- !u!65 &65159267216971942
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1056456154990700}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.9, y: 0.5, z: 0.3}
+  m_Center: {x: 0, y: 0, z: 0.15}

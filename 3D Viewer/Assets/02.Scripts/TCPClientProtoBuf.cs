@@ -96,6 +96,11 @@ namespace TransportTCP
                         case Packet.PacketType.WallInfo:
                             header.Data = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Packet.WallInfo>(_NetworkStream, ProtoBuf.PrefixStyle.Fixed32);
                             break;
+
+                        case Packet.PacketType.ObjectInfo:
+                            header.Data = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Packet.ObjectInfo>(_NetworkStream, ProtoBuf.PrefixStyle.Fixed32);
+                            break;
+
                     }
 
                     // 받은 데이터를 큐에 넣는다.

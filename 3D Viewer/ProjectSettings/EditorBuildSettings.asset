@@ -6,5 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/01.Scenes/testUsingGoogleProtoBuf.unity
-    guid: ba6256ab9953b0d40b2d3d6968b06765
+    path: Assets/01.Scenes/3D Viewer.unity
+    guid: 9416ce3b00cb68e41856ab419cf8392f

@@ -36,6 +36,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4659842287296324}
+  - component: {fileID: 65952790273580288}
   m_Layer: 0
   m_Name: kitchen_chair_1
   m_TagString: Untagged
@@ -79,7 +80,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1241933412926900}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: -3.2314627}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -87,7 +88,7 @@ Transform:
   - {fileID: 4822734414421512}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90.00001, y: 90, z: 0}
 --- !u!4 &4822734414421512
 Transform:
   m_ObjectHideFlags: 1
@@ -179,3 +180,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1034470451424174}
   m_Mesh: {fileID: 4300000, guid: aab68a45c7d5bcb428bbbfbda224b2cb, type: 3}
+--- !u!65 &65952790273580288
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1241933412926900}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5, z: 1}
+  m_Center: {x: 0, y: 0, z: 0.5}

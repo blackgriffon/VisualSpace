@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4795232836323228}
+  - component: {fileID: 65984468714278124}
   m_Layer: 0
   m_Name: bed_2
   m_TagString: Untagged
@@ -599,3 +600,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1993998014473516}
   m_Mesh: {fileID: 4300002, guid: 15427fb62be34b141aacac4503ec8e37, type: 3}
+--- !u!65 &65984468714278124
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1003890088916130}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.8, y: 2.15, z: 0.9}
+  m_Center: {x: 0, y: 0, z: 0.47}

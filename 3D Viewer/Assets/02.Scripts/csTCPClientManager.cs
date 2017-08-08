@@ -10,9 +10,12 @@ public class csTCPClientManager : MonoBehaviour
 
     TCPClientProtoBuf client = null;
     Packet.Header header = null;
-    GameObject parentObject = null;
-    csMoveWall moveWall = null;
+    csMoveObjectControl moveObjectControl = null;
+    private csLoadAssetBundle assertBundle = null;
+
     public GameObject WallObject = null;
+    public GameObject ParentObject = null;
+
 
 
     private void Awake()
@@ -22,8 +25,8 @@ public class csTCPClientManager : MonoBehaviour
         client.Connect("127.0.0.1", 9000);
         header = new Header();
         Debug.Log("connected...");
-        parentObject = GameObject.Find("Objects");
-        moveWall = GameObject.Find("MoveObjectManager").GetComponent<csMoveWall>();
+        moveObjectControl = GameObject.Find("MoveObjectManager").GetComponent<csMoveObjectControl>();
+        assertBundle = ParentObject.GetComponent<csLoadAssetBundle>();
         //StartCoroutine(coRecevicePacket());
     }
 
@@ -58,7 +61,7 @@ public class csTCPClientManager : MonoBehaviour
                             cube.name = wallInfo.Name;
                             cube.transform.position = new Vector3(wallInfo.PosX, wallInfo.PosY, wallInfo.PosZ);
                             cube.transform.localScale = new Vector3(wallInfo.ScaleX, wallInfo.ScaleY, wallInfo.ScaleZ);
-                            cube.transform.parent = parentObject.transform;
+                            cube.transform.parent = ParentObject.transform;
                             cube.tag = "Wall";
                             break;
 
@@ -111,8 +114,8 @@ public class csTCPClientManager : MonoBehaviour
                         gameObj.name = wallInfo.Name;
                         gameObj.transform.position = new Vector3(wallInfo.PosX, wallInfo.PosY, wallInfo.PosZ);
                         gameObj.transform.localScale = new Vector3(wallInfo.ScaleX, wallInfo.ScaleY, wallInfo.ScaleZ);
-                        gameObj.transform.parent = parentObject.transform;
-                        gameObj.tag = "Object";
+                        gameObj.transform.parent = ParentObject.transform;
+                        gameObj.tag = "Wall";
                         break;
 
                     case WallInfoAction.MOVE:
@@ -128,18 +131,33 @@ public class csTCPClientManager : MonoBehaviour
 
 
                     case WallInfoAction.SELECT:
-                        moveWall.SelecetdObject = GameObject.Find(wallInfo.Name);
+                        moveObjectControl.SelecetdObject = GameObject.Find(wallInfo.Name);
                         break;
 
 
                     case WallInfoAction.DESELECT:
-                        moveWall.SelecetdObject = null;
+                        moveObjectControl.SelecetdObject = null;
                         break;
                 }
+                break;
 
 
+            case PacketType.ObjectInfo:
+                {
+                    ObjectInfo objectInfo = (ObjectInfo)header.Data;
 
+                    switch(objectInfo.Action)
+                    {
+                        case ObjectAction.CREATE:
+                            assertBundle.LoadGameObject(objectInfo);
+                            break;
 
+                        case ObjectAction.MOVE:
+                            gameObj = GameObject.Find(objectInfo.Name);
+                            gameObj.transform.position = new Vector3(objectInfo.PosX, objectInfo.PosY, objectInfo.PosZ);
+                            break;
+                    }
+                }
                 break;
         }
     }

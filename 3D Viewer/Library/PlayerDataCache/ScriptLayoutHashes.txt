@@ -45,7 +45,6 @@ c63db43c730fa2cbb8ca07de15898cb6 UnityEngine.UI.dll:UnityEngine.UI.Toggle
 f61c0793411f10cf5fbfa1473fef5ef2 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 86d36c43c53541d667100dc90b89cfba UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 1b8c02d0aa82fbf036a2b9b2d713eec3 UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:AssetBundles.AssetBundleManager
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:cakeslice.OutlineAnimation
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
@@ -113,11 +112,9 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingRenderer
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:cakeslice.Rotate
-05524b8f659e7bfe5756d1335fec24ba Assembly-UnityScript-firstpass.dll:.FPSInputController
-e2552c4be71926c44a45d92023eec038 Assembly-CSharp.dll:.csCommunicationManager
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.csTCPClientManager
-9c4d5c8ec8a190483dc7d452819ad5bd Assembly-CSharp.dll:.csMoveWall
-aaf9acfd3fe0bf55ba778d84761064f7 Assembly-CSharp.dll:.LoadAssets
+b505a510e241d43f7c0d66654938b5f8 Assembly-CSharp.dll:.csTCPClientManager
+01f39e50d8f9576ec51d1d6611e39611 Assembly-CSharp.dll:.csMoveObjectControl
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.csLoadAssetBundle
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
 60b2bb652410a5867a5ab9a01cd38461 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkDiscovery
@@ -132,8 +129,6 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 3f32f08a64daf40b09ed864d96fe3840 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransform
 73843688b51256aed059f049c540bca8 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformChild
 528ea1fd7c01796fc60c4e2f172ea229 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
-44011b67387efa624f0263267e18f8d0 Assembly-CSharp.dll:.LoadScenes
-783bf6d659235f53a950684dd61ab5b9 Assembly-CSharp-firstpass.dll:.MouseLook
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.PlayModeRunnerCallback
 5f2ad81aa8994e8fbe25d1e57afe6773 UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.PlaymodeTestsController
 64eb32cc721b1cc68a91ed57461e188c UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.RemoteTestResultSender
@@ -143,6 +138,3 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingRenderer
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:cakeslice.Toggle
-1a707aff1f65078bb95e9eb726e61b65 Assembly-CSharp.dll:.LoadTanks
-563daf171b5d1c7c75b1108951401223 Assembly-UnityScript-firstpass.dll:.CharacterMotor
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.LoadVariants
