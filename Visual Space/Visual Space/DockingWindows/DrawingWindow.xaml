@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:Nollan.Visual_Space.DockingWindows"
                   xmlns:docking="clr-namespace:DockingLibrary;assembly=DockingLibrary" 
         mc:Ignorable="d"
-        Title="DrawingWindow" Height="300" Width="300" >           
+        Title="DrawingWindow" Height="2000" Width="300" >           
             
 
     <Grid>

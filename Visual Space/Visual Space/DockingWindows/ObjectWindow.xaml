@@ -9,7 +9,8 @@
         xmlns:docking="clr-namespace:DockingLibrary;assembly=DockingLibrary" 
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-             Width="300" Height="300" Title="ObjectWindow" AllowDrop="True" AllowsTransparency="True" >
+             d:DesignHeight="300" d:DesignWidth="300"
+             Title="ObjectWindow" AllowDrop="True" AllowsTransparency="True"  >
 
 
 
@@ -313,16 +314,10 @@
     </Window.Resources>
 
 
-    <ScrollViewer Background="Transparent">
-
-        <Canvas x:Name="_myCanvas" Background="Transparent" AllowDrop="True"                
-              
-                
-                >
+    <ScrollViewer Background="Transparent" VerticalScrollBarVisibility="Visible" >  
             
-    
         
-        <StackPanel Width="Auto" Height="700" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <StackPanel Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top">
             <StackPanel.Resources>
                 <Style x:Key="TestContentStyle" TargetType="Button">
                     <Setter Property="Content" Value="Test Button"/>
@@ -336,14 +331,14 @@
                 
           
 
-            <Expander Header="Using Default Expander" 
+            <Expander Header="침대" 
                   HorizontalAlignment="Left" AllowDrop="True"
                   VerticalAlignment="Top">
 
 
-                <WrapPanel Name="Wrap_BathRoom"  HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="1, 1, 1, 1" AllowDrop="True">
+                    <WrapPanel Name="Expd_beds"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True">
 
-                    <Button Width="63" Height="80" Margin="1, 1, 1, 1" x:Name="BathRoom1"  FontSize="11" Background="#00000000">
+                    <!--<Button Width="63" Height="80" Margin="1, 1, 1, 1" x:Name="BathRoom1"  FontSize="11" Background="#00000000">
                         <Button.ToolTip>
                             <TextBlock HorizontalAlignment="Center" IsHitTestVisible="False" Width="150" TextWrapping="Wrap" TextAlignment="Center"><InlineUIContainer>
             						<Image Width="150" Height="150" Source="/pictures/BathRoom1.PNG" VerticalAlignment="Top" Stretch="Fill" HorizontalAlignment="Center"/>
@@ -364,12 +359,10 @@
                         <TextBlock  HorizontalAlignment="Center" Height="70" Width="63" TextWrapping="Wrap" TextAlignment="Center"><InlineUIContainer>    
             					<Image Width="50.75" Height="56.25" Source="/pictures/BathRoom2.PNG" />
             				</InlineUIContainer><Run Text=" BathRoom2"/></TextBlock>
-                    </Button>
-                                      
+                    </Button>-->                                     
 
                        
-                        <local:Categori Width="50" Height="50" />
-
+                       
 
                         <!--<Button Style="{StaticResource TestContentStyle}"/>-->
 
@@ -382,16 +375,18 @@
 
             <Expander Template="{StaticResource SimpleExpanderTemp}"
                   OverridesDefaultStyle="True"
-                  Header="Using SimpleExpanderTemp"
+                  Header="의자"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   >
 
+                    <WrapPanel Name="Expd_chairs"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True">
+                            
+                            
 
-
-
-
-                <Button Style="{StaticResource TestContentStyle}"/>
+                        
+                        
+                        </WrapPanel>                   
             </Expander>
 
 
@@ -416,8 +411,6 @@
 
 
         </StackPanel>
-
-        </Canvas>
 
     </ScrollViewer>
 

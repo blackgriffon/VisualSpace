@@ -88,11 +88,11 @@
       <DependentUpon>UnityExeViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="MapCanvas.cs" />
-    <Compile Include="MyDrag.xaml.cs">
-      <DependentUpon>MyDrag.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="MyTreeNode.cs" />
     <Compile Include="Network\NullWpfUnityTCPServer.cs" />
     <Compile Include="Network\IWpfUnityTCPServer.cs" />
+    <Compile Include="ObjConvertImageInfo.cs" />
+    <Compile Include="ObjectInfo.cs" />
     <Compile Include="SimpleCircleAdorner.cs" />
     <Compile Include="UnityViewer\ExeViewer.xaml.cs">
       <DependentUpon>ExeViewer.xaml</DependentUpon>
@@ -139,10 +139,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MyDrag.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UnityViewer\ExeViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -182,10 +178,23 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="exe\3D Viewer.exe" />
+    <Resource Include="icons\Toolbar\file-upload.png" />
+    <Resource Include="icons\Toolbar\Load.png" />
+    <Resource Include="icons\Toolbar\New.png" />
+    <Resource Include="icons\Toolbar\Save.png" />
+    <Resource Include="pictures\beds\bed0.png" />
+    <Resource Include="pictures\beds\convert\beds.PNG" />
+    <Resource Include="pictures\beds\bed1.PNG" />
+    <Resource Include="pictures\chairs\chair0.PNG" />
+    <Resource Include="pictures\chairs\chair1.PNG" />
+    <Resource Include="pictures\chairs\chair2.PNG" />
+    <Resource Include="pictures\chairs\chair3.PNG" />
+    <Resource Include="pictures\chairs\chair4.PNG" />
+    <Resource Include="pictures\chairs\chair5.PNG" />
+    <Resource Include="pictures\chairs\convert\chairs.PNG" />
     <Resource Include="pictures\apple.png" />
     <Resource Include="pictures\grape.png" />
     <Resource Include="pictures\mango.png" />
-    <Resource Include="pictures\chair.PNG" />
     <Resource Include="pictures\BathRoom1.png" />
     <Resource Include="pictures\BathRoom2.png" />
   </ItemGroup>

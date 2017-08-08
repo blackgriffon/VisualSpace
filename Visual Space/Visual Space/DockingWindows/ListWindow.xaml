@@ -6,14 +6,41 @@
              xmlns:local="clr-namespace:Nollan.Visual_Space.DockingWindows"
              xmlns:docking="clr-namespace:DockingLibrary;assembly=DockingLibrary" 
              mc:Ignorable="d" 
-             Title="ListWindow" Height="300" Width="300">
-    <Grid>
-        <ListBox Name="list" SelectionChanged="OnSelectionChanged">
-            <ListBoxItem >Item1</ListBoxItem>
-            <ListBoxItem >Item2</ListBoxItem>
-            <ListBoxItem >Item3</ListBoxItem>
-            <ListBoxItem >Item4</ListBoxItem>
+             Title="ListWindow" Height="600" Width="Auto" >
 
-        </ListBox>
-    </Grid>
+
+    <WrapPanel Name="WrapPanel_List"  Background="White" Height="Auto" Width="Auto" >
+
+        
+        <TreeView Margin = "0,0,0,0" Name = "MyTreeView" HorizontalAlignment = "Left" Background="Transparent"
+                VerticalAlignment = "Top" Width ="600" Height = "Auto" Grid.Column="0"  >
+
+            <!--<TreeViewItem Name="desk" Header = "책상상">
+
+                <TreeViewItem Header = "콜라"></TreeViewItem >
+                <TreeViewItem Header = "Pepsi"></TreeViewItem >
+                <TreeViewItem Header = "Orange Juice"></TreeViewItem >
+
+            </TreeViewItem >-->
+        </TreeView >
+
+    
+
+
+      
+
+
+        <!--<TreeView Margin = "0,0,0,0" Name = "TREEVIEW_CHAIRS" HorizontalAlignment = "Left" Background="Transparent"
+                VerticalAlignment = "Top" Width ="600" Height = "Auto" Grid.Column="0"  >
+
+            <TreeViewItem Name="chairs" Header = "의자">
+
+                <TreeViewItem Header = "콜라"></TreeViewItem >
+                <TreeViewItem Header = "Pepsi"></TreeViewItem >
+                <TreeViewItem Header = "Orange Juice"></TreeViewItem >
+
+            </TreeViewItem >
+        </TreeView >-->        
+       
+    </WrapPanel>
 </docking:DockableContent>

@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-﻿#define RUN_3DVIWER_IN_UNITY_EDITER
-#define RUN_3DVIWER
-=======
 //#define RUN_3DVIWER_IN_UNITY_EDITER
 //#define RUN_3DVIWER
+
 using Nollan.Visual_Space.DockingWindows;
->>>>>>> develop
 using Nollan.Visual_Space.Network;
 using System;
 using System.Collections.Generic;
@@ -57,6 +53,8 @@ namespace Nollan.Visual_Space
 #endif
             this.Loaded += MainWindow_Loaded;
         }
+
+
 
         private void OnReceviedCompleted(WpfUnityPacketHeader header)
         {
@@ -259,16 +257,19 @@ namespace Nollan.Visual_Space
 #endif
 
             //-----
-         //   Window1_Loaded(); //리사이징 코드
+            //   Window1_Loaded(); //리사이징 코드
             //----//
 
-
+           
+            checkCanvasWidthCount();
             showSubPanel(); //왼쪽 오른쪽 UI 띄우기
-
+            
 
 
         }
 
+
+        DockingWindows.ListWindow listWindow;
         public void showSubPanel()
         {
             //0731추가-----
@@ -276,7 +277,11 @@ namespace Nollan.Visual_Space
             ListDockManager.ParentWindow = this;
             ExpenderDockManager.ParentWindow = this;
 
-            DockingWindows.ListWindow listWindow = new DockingWindows.ListWindow();
+            listWindow = new DockingWindows.ListWindow();
+
+            listWindow.call_mainwindow = this; // 자식폼에서 부모폼을 등록??? 자식에서 부모에게 갑 전달 실험용.
+
+
             listWindow.DockManager = ListDockManager;
             listWindow.Show(Dock.Top);
 
@@ -296,6 +301,8 @@ namespace Nollan.Visual_Space
         bool? Flag_VerticalLinePlusMinus = null;
         bool? Result_separateLine = null;
         int i = 0;
+        Image obj_image;
+        bool imageClick = false;
 
         //선 증가 감소 플래그
         public bool linePlusMinus_Check;
@@ -306,6 +313,10 @@ namespace Nollan.Visual_Space
         Point curPoint;
         Line line;
         int _gridSize = 20; //캔버스 격자 간격 변수. 이걸 바꾸면 MapCanvas의 거도 바꿔줘야함.
+
+
+
+        
 
 
 
@@ -327,6 +338,9 @@ namespace Nollan.Visual_Space
          2. 선 이동시 x1은 꼭지점에 위치해야 함. 가장 가까운 꼭지점으로 x1 과 x2를 이동시킨다? 예외처리는 어떻게?             
              */
 
+   
+
+
         //로그 찍는 함수
         public void writeLog(double linex1, double liney1, double linex2, double liney2, string str)
         {
@@ -346,14 +360,13 @@ namespace Nollan.Visual_Space
 
         }
 
-        Point imageStPoint;
-        Point imageCurPoint;
-        Image obj_image;
-        bool imageClick = false;
+       
+       
      
         //마우스다운시
         private void MapCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+
 
             if (e.OriginalSource.GetType() != typeof(Image)) //클릭했을 시 오리지널소스가 image가 아닌 경우
             {
@@ -397,6 +410,7 @@ namespace Nollan.Visual_Space
                     line = new Line();
                     line.MouseEnter += control_MouseEnter;
                     line.MouseLeave += control_MouseLeave;
+                   
                     line.X1 = Result_StartPoint.Item1;
                     line.X2 = Result_StartPoint.Item1;
                     line.Y1 = Result_StartPoint.Item2;
@@ -457,10 +471,14 @@ namespace Nollan.Visual_Space
             else //클릭했을 때 original source가 image인 경우
             {
                 obj_image = e.OriginalSource as Image; //현재 클릭된 이미지를 기억?
-                // MessageBox.Show("이미지");
-              //  imageStPoint = TranslatePointToCanvas(e, mapCanvas); //클릭한 좌표를 맵캔버스 기준으로 변환해서 반환값을 가져온다.
+                                                       // MessageBox.Show("이미지");
+                                                       //  imageStPoint = TranslatePointToCanvas(e, mapCanvas); //클릭한 좌표를 맵캔버스 기준으로 변환해서 반환값을 가져온다.
                 imageClick = true;
 
+
+                txtBox.Text = obj_image.Name;
+
+              //  MessageBox.Show((obj_image.Name).ToString());
 
             }
 
@@ -856,7 +874,7 @@ namespace Nollan.Visual_Space
                 Canvas.SetLeft(obj_image, e.GetPosition(mapCanvas).X - obj_image.ActualWidth / 2);
                 Canvas.SetTop(obj_image, e.GetPosition(mapCanvas).Y - obj_image.ActualHeight / 2);
 
-                obj_image = null;
+                //obj_image = null;
             }
 
         }
@@ -864,12 +882,129 @@ namespace Nollan.Visual_Space
         //tag에 넣을 클래스
         public class obj_Info
         {
-           public string obj_type;    //unity에서 어떤 걸로 표현할지(의자, 책상 etc..)
-           public string visualName;  //(UI에 보여줄 텍스트)
+           public string ObjectType;    //unity에서 어떤 걸로 표현할지(의자, 책상 etc..)
+           public string VisualName;  //(UI에 보여줄 텍스트)
 
 
         }
 
+        public void createObject()
+        {
+
+            for (int i = 0; i < 6; i++)
+            { 
+            Categori cate = new Categori();
+            var image = cate.Content as Image;
+            image.Name = "chair" + "i";
+                // Byte[] result_ByteImage = GetBytesFromImageFile($"../../pictures/{image.Name}.png");
+                // string str = Convert.ToString(result_ByteImage);
+
+
+                BitmapImage bitimg = convertImageToBitmap(image, image.Name);
+
+                image.Source = bitimg;
+                image.Stretch = Stretch.Uniform;
+
+
+
+            }
+            //   pack://application:,,,/Resources/MyImage.png
+
+
+            /*
+                Image myImage3 = new Image();
+                            BitmapImage bi3 = new BitmapImage();
+                            bi3.BeginInit();
+                            bi3.UriSource = new Uri($"../../pictures/{txt}.PNG", UriKind.Relative);
+                            bi3.EndInit();
+                            myImage3.Stretch = Stretch.Uniform;
+                            myImage3.Source = bi3;
+             */
+
+        }
+
+
+        public BitmapImage convertImageToBitmap(Image myImage3, string txt) //이미지 파일을 비트맵이미지로 바꿔줌. 이러면 바로 image.source에 넣어주면 됨.
+        {
+
+            myImage3 = new Image();
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+            bi3.UriSource = new Uri($"../../pictures/{txt}.PNG", UriKind.Relative);
+            bi3.EndInit();          
+
+            return bi3;
+
+        }
+
+
+        //로컬에 있는 데이터를 연결하는 방법. image element를 동적생성하여 source를 설정할 때.
+        public Byte[] GetBytesFromImageFile(string path)
+        {
+            //path는 이미지의 경로
+            Byte[] array = null;
+            FileStream aFile = null;
+            try
+            {
+                if (File.Exists(path))
+                {
+                    aFile = new FileStream(path, FileMode.Open, FileAccess.Read);
+                    array = new Byte[(int)aFile.Length];
+                    aFile.Read(array, 0, (int)aFile.Length);
+                    aFile.Close();
+                    return array;
+
+
+                }
+                else
+                {
+                    return null;
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+
+            return null;
+            
+        }
+
+
+        #region Byte로 된 이미지를 연결하는 방법
+        //Byte로 된 이미지를 연결하는 방법. FileStream과 비슷한 방법으로 사용하면 됨. 대신 MemoryStream을 사용하면 됨
+        public void GetCardImage(Byte[] imageBytes, object obj)
+        {
+
+            MemoryStream ms = new MemoryStream(imageBytes);
+
+            if (ms != null)
+            {
+                try
+                {
+
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.StreamSource = ms;
+                    bitmap.EndInit();
+                    Image img = (Image)obj;
+                    img.Source = bitmap;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+            ms.Close();            
+
+
+        }
+#endregion
 
 
 
@@ -1257,34 +1392,19 @@ namespace Nollan.Visual_Space
 
         
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            string toDeleteName = txtBox.Text;
-            Line toDeleteLine = null;
-
-            foreach (var el in mapCanvas.Children)
-            {
-                if (el is Line l)
-                {
-                    if (l.Name == toDeleteName)
-                    {
-                        toDeleteLine = l;
-                        break;
-                    }
-                }
-            }
-
-            if (toDeleteLine != null)
-            {
-                WpfUnityPacketHeader header = fillWallInfo(toDeleteLine, WallInfo.WallInfoAction.REMOVE);
-                server.Send(header);
-                mapCanvas.Children.Remove(toDeleteLine as UIElement);
-            }
-        }
+       
 
         private void Ch_line_Checked(object sender, RoutedEventArgs e)
         {
-            bLine_check = true;
+            if (bLine_check == false)
+            {
+                bLine_check = true;
+            }
+            else //bLine_check == true
+            {
+                bLine_check = false;
+            }
+
         }
 
         private void Ch_line_Unchecked(object sender, RoutedEventArgs e)
@@ -1308,41 +1428,14 @@ namespace Nollan.Visual_Space
 
 
 
-        private void Ch_linePlusMinus_Unchecked(object sender, RoutedEventArgs e)
+        public void Ch_linePlusMinus_Unchecked(object sender, RoutedEventArgs e)
         {
             linePlusMinus_Check = false;
             Ch_line.IsEnabled = true;
         }
 
 
-        private void mapCanvas_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Delete)
-            {
-                string toDeleteName = txtBox.Text;
-                Line toDeleteLine = null;
-
-                foreach (var el in mapCanvas.Children)
-                {
-                    if (el is Line l)
-                    {
-                        if (l.Name == toDeleteName)
-                        {
-                            toDeleteLine = l;
-                            break;
-                        }
-                    }
-                }
-                if (toDeleteLine != null)
-                {
-
-                    WpfUnityPacketHeader header = fillWallInfo(toDeleteLine, WallInfo.WallInfoAction.REMOVE);
-                    server.Send(header);
-                    mapCanvas.Children.Remove(toDeleteLine as UIElement);
-                }
-            }
-        }
-
+      
 
 
         public void mapCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -1421,6 +1514,7 @@ namespace Nollan.Visual_Space
 
         }
 
+      
 
 
         private void ScViewer_canvas_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -1474,6 +1568,8 @@ namespace Nollan.Visual_Space
         private void btn_PlusWidthHeight_Click(object sender, RoutedEventArgs e)
         {
 
+          
+
             ++btn_clickWidthCount;
             ++btn_clickHeightCount;
 
@@ -1485,33 +1581,51 @@ namespace Nollan.Visual_Space
             mapCanvas.Width = canvas_TotalWidth;
             mapCanvas.Height = canvas_TotalHeight;
 
+            checkCanvasWidthCount();
+
+            btn_PlusWidthHeight.IsChecked = false;
+        }
+
+     
+
+        public void checkCanvasWidthCount()
+        {
+            if (btn_clickWidthCount == 0)
+            {
+                btn_MinusWidhtHeight.IsEnabled = false;
+
+            }
+            else if(btn_clickWidthCount > 0) //0보다 클 경우
+            {
+                btn_MinusWidhtHeight.IsEnabled = true;
+            }
 
         }
 
 
         private void btn_MinusWidhtHeight_Click(object sender, RoutedEventArgs e)
         {
-
-
-
-            if (btn_clickWidthCount < 0 && btn_clickHeightCount < 0)
-            {
-                btn_clickWidthCount = 0;
-                btn_clickHeightCount = 0;
-
-                return;
-
-            }
-
-
+            
             canvas_TotalWidth = mapCanvas.Width - (plusCellDistance * btn_clickWidthCount);
             canvas_TotalHeight = mapCanvas.Height - (plusCellDistance * btn_clickHeightCount);
 
             --btn_clickWidthCount;
             --btn_clickHeightCount;
 
+          
+
             mapCanvas.Width = canvas_TotalWidth;
             mapCanvas.Height = canvas_TotalHeight;
+
+            if (btn_clickWidthCount <= 0 && btn_clickHeightCount <= 0)
+            {
+                btn_clickWidthCount = 0;
+                btn_clickHeightCount = 0;
+
+                checkCanvasWidthCount();
+                btn_MinusWidhtHeight.IsEnabled = false;
+                btn_MinusWidhtHeight.IsChecked = false;
+            }
 
         }
 
@@ -1527,6 +1641,18 @@ namespace Nollan.Visual_Space
             Cursor = Cursors.Arrow;
            // timer1.Start();
         }
+
+        private void Convertimg_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Arrow;
+        }
+
+        private void Convertimg_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+      
+
 
         //마우스가 격자 캔버스 밖으로 나가도 다시 캔버스 안으로 돌아오면 마우스 이벤트 다시 연결시킴.
         public void mapCanvas_LostMouseCapture(object sender, MouseEventArgs e)
@@ -1570,6 +1696,15 @@ namespace Nollan.Visual_Space
 
 
 
+        public void AppendToChildList(ObjConvertImageInfo ObjConvertimgInfo) // 매개변수를 주고 이 함수를 호출하면 자식의 변수에 값을 넣어주게 된다.
+        {
+
+            listWindow.ReceiveAppendedList(ObjConvertimgInfo); //자식 함수에 값 추가.
+
+        }
+
+
+        public int innerObjName = 0;
         private void panel_Drop(object sender, DragEventArgs e)
         {
             // If an element in the panel has already handled the drop,
@@ -1602,20 +1737,20 @@ namespace Nollan.Visual_Space
                         }
                         else if (e.AllowedEffects.HasFlag(DragDropEffects.Move)) //컨트롤 안눌렀을 모든 경우 
                         {
-                           
-                           dropPoint = e.GetPosition(mapCanvas);
-                            
 
+                            //if (_element.Content is Image img)
+                            //{
+                            //    txt = img.Name;  
 
+                            //}
 
-                           var myContent = _element.Content as Canvas;
-
-                            string txt = null;
-                            foreach (Image myImage in myContent.Children.OfType<Image>())
-                            {
-                                txt = myImage.Name;
-                                break;
-                            }
+                            //var myContent = _element.Content as Grid;
+                            // //string txt = null;
+                            // foreach (Image myImage in myContent.Children.OfType<Image>())
+                            // {
+                            //     txt = myImage.Name;
+                            //     break;
+                            // }
 
 
                             /*
@@ -1632,28 +1767,78 @@ namespace Nollan.Visual_Space
                             }   
                             */
 
+
+                            Image img = _element.Content as Image;
+                            ObjectInfo newInfo = new ObjectInfo();
+                            object tag = img.Tag;
+                            newInfo =  (ObjectInfo)tag;
+                            
+                          //  newInfo = (ObjectInfo)img.Tag;
+                            string _ObjectType = newInfo.ObjectType;
+                            string _FilePath = newInfo.FilePath; //원본 이미지 경로(오른쪽 UI에 있는 이미지 경로)
+                            string _VisualName = newInfo.VisualName;
+
+
+                            Image convertimg = new Image();
+                            BitmapImage convertbitmap = new BitmapImage();
+                            convertbitmap.BeginInit();
+                            convertbitmap.UriSource = new Uri($"../../pictures/{_ObjectType}/convert/{_ObjectType}.png", UriKind.Relative);
+                            convertbitmap.EndInit();
+                            convertimg.Stretch = Stretch.Uniform;
+                            convertimg.Source = convertbitmap;
+                            convertimg.MouseEnter += Convertimg_MouseEnter;
+                            convertimg.MouseLeave += Convertimg_MouseLeave;
+                            convertimg.Name = $"Object{innerObjName}";
+
+
+                            //tag에 저장하기 위한 정보들
+                            ObjConvertImageInfo ObjConvertimgInfo = new ObjConvertImageInfo();
+                            ObjConvertimgInfo.canvasPoint = e.GetPosition(mapCanvas); //캔버스에서 이미지가 위치한 좌표 정보 기억
+                            ObjConvertimgInfo.ObjectType = _ObjectType; //오브젝트타입
+                            ObjConvertimgInfo.ImgFilePath = _FilePath; //원본 이미지 경로
+                            ObjConvertimgInfo.VisualName = _VisualName; //비주얼 네임. 툴팁에 뜨는 이름.
+
+                            ObjConvertimgInfo.convertFilePath = $"../../pictures/{_ObjectType}/convert/{_ObjectType}.png"; //변환 이미지 경로. 혹시 필요할까봐...
+                            ObjConvertimgInfo.ObjectName = $"Object{innerObjName}"; //이 이름을 가지고 유니티와 연동해서 양쪽으로 지우고 움직이고 함.
+                        //  ObjConvertimgInfo.rotationPoint = null;//회전값을 위한 2차원의 x,y point좌표.    
+
+                            convertimg.Tag = ObjConvertimgInfo; //이미지의 tag에 정보를 기억.
+
+                            Canvas.SetLeft(convertimg, e.GetPosition(mapCanvas).X);
+                            Canvas.SetTop(convertimg, e.GetPosition(mapCanvas).Y);
                             
 
-
-                            Image myImage3 = new Image();
-                            BitmapImage bi3 = new BitmapImage();
-                            bi3.BeginInit();
-                            bi3.UriSource = new Uri($"../../pictures/{txt}.PNG", UriKind.Relative);
-                            bi3.EndInit();
-                            myImage3.Stretch = Stretch.Uniform;
-                            myImage3.Source = bi3;
-                            Canvas.SetLeft(myImage3, e.GetPosition(mapCanvas).X );
-                            Canvas.SetTop(myImage3, e.GetPosition(mapCanvas).Y );
+                            AppendToChildList(ObjConvertimgInfo); // 컨버트된 이미지 태그에 등록한 클래스 정보들을 자식의 함수를 통해 넘겨줌.
 
 
-                            obj_Info newinfo = new obj_Info();
-                            newinfo.obj_type = "의자";
-                            newinfo.visualName = "이케아의자";
 
-                            myImage3.Tag = newinfo;                  
-                            
+                            ObjConvertimgList.Add(ObjConvertimgInfo); //왼쪽 UI에서 지울 수 있도록 이미지의 tag에 넣었던 정보를 리스트 안에도 저장. 
+                            _panel.Children.Add(convertimg); //캔버스에 이미지 출력하기 위한 자식으로 추가.
 
-                            _panel.Children.Add(myImage3);
+
+
+
+
+
+
+                            //트리뷰 노드에 이름 추가.
+                            //WrapPanel wrPanel = listWindow as WrapPanel;                            
+
+
+                            //foreach (TreeView myTreeView in wrPanel.Children.OfType<TreeView>())
+                            //{
+                            //    txt = myTreeView;
+                            //    break;
+                            //}
+
+
+
+
+
+
+
+
+                            innerObjName++;
 
 
 
@@ -1668,14 +1853,44 @@ namespace Nollan.Visual_Space
 
                             // set the value to return to the DoDragDrop call
                             //  e.Effects = DragDropEffects.Move;
-                          //  e.Effects = DragDropEffects.Copy;
+                            //  e.Effects = DragDropEffects.Copy;
 
-                            
+
                         }
                     }
                 }
             }
         }
+
+
+
+        //델리게이트이벤트로값전달
+        //public delegate void OnChildTextInputHandler(string Parameters);
+        //public event OnChildTextInputHandler OnChildTextInputEvent;
+
+        //public void button1_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (OnChildTextInputEvent != null)
+        //        OnChildTextInputEvent(textBox1.Text);
+        //}
+        
+
+
+
+
+        //메인윈도우에서 캔버스에 추가된 이미지에 대한 정보를 가지고 있어야됨. 그래야 왼쪽에서 지우면 그 정보를 가지고 캔버스의 것도 지움.
+        public List<ObjConvertImageInfo> ObjConvertimgList = new List<ObjConvertImageInfo>();
+
+
+
+
+        //왼쪽 트리뷰에 추가할 거.
+        public void addTreeViewNodes(string _ObjectType ,string _VisualName)
+        {
+
+
+        }
+       
 
         object ICloneable.Clone()
         {
@@ -1698,6 +1913,169 @@ namespace Nollan.Visual_Space
             return DeepCopyobject;
 
         }
+
+        private void mainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            MessageBox.Show(e.OriginalSource.ToString());
+        }
+
+
+
+        private void ScViewer_canvas_KeyDown(object sender, KeyEventArgs e)
+        {
+          //  MessageBox.Show("들어옴");
+
+            if (e.Key == Key.Delete)
+            {
+                string toDeleteName = txtBox.Text;
+                Line toDeleteLine = null;
+                Image toDeleteImage = null;
+
+                foreach (var el in mapCanvas.Children)
+                {
+                    if (el is Line l)
+                    {
+                        if (l.Name == toDeleteName)
+                        {
+                            toDeleteLine = l;                           
+                            break;
+                        }
+                    }
+                }
+                if (toDeleteLine != null)
+                {
+
+                    WpfUnityPacketHeader header = fillWallInfo(toDeleteLine, WallInfo.WallInfoAction.REMOVE);
+                    server.Send(header);
+                    mapCanvas.Children.Remove(toDeleteLine as UIElement);
+                }
+
+
+                //이미지지우기
+                if (obj_image != null) //이미지 선택한 게 있다면
+                {
+                    foreach (var el in mapCanvas.Children)
+                    {
+                        if (el is Image l)
+                        {
+                            if (l.Name == toDeleteName)
+                            {
+                                toDeleteImage = l;
+
+                                //여기서 지우면 자식에게 값을 줘서 해당 오브젝트네임을 가진 녀석을 지우게 해야함.
+
+                               ObjConvertImageInfo oct = (ObjConvertImageInfo)toDeleteImage.Tag;
+                                listWindow.DeleteList(oct);
+
+
+
+                                mapCanvas.Children.Remove(toDeleteImage as UIElement);
+
+                               
+
+
+                                break;
+                            }
+                        }
+                    }
+                }
+
+
+
+
+            }
+        }
+
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string toDeleteName = txtBox.Text;
+            Line toDeleteLine = null;
+            Image toDeleteImage = null;
+
+            foreach (var el in mapCanvas.Children)
+            {
+                if (el is Line l)
+                {
+                    if (l.Name == toDeleteName)
+                    {
+                        toDeleteLine = l;
+                        break;
+                    }
+                }
+            }
+
+            if (toDeleteLine != null)
+            {
+                WpfUnityPacketHeader header = fillWallInfo(toDeleteLine, WallInfo.WallInfoAction.REMOVE);
+                server.Send(header);
+                mapCanvas.Children.Remove(toDeleteLine as UIElement);
+            }
+
+            
+            //이미지지우기
+            if (obj_image != null) //이미지 선택한 게 있다면
+            {
+                foreach (var el in mapCanvas.Children)
+                {
+                    if (el is Image l)
+                    {
+                        if (l.Name == toDeleteName)
+                        {
+                            toDeleteImage = l;
+
+                            //여기서 지우면 자식에게 값을 줘서 해당 오브젝트네임을 가진 녀석을 지우게 해야함.
+
+                            ObjConvertImageInfo oct = (ObjConvertImageInfo)toDeleteImage.Tag;
+                            listWindow.DeleteList(oct);
+
+                            mapCanvas.Children.Remove(toDeleteImage as UIElement);
+                            
+
+
+                            break;
+                        }
+                    }
+                }
+            }
+
+
+        }
+
+
+
+        public void treeviewTomainwindow_ReceiveDelimg(string _objName)
+        {
+            if (_objName != null)
+            {
+
+                Image delimg = null;
+                foreach (var i in mapCanvas.Children)
+                {
+                    if (i is Image img)
+                    {
+                        ObjConvertImageInfo oci = (ObjConvertImageInfo)img.Tag;
+
+                        //트리뷰에서 건내받은 _objName이 맵캔버스에 있는 이미지의 오브젝트 네임과 같다면 그걸 저장하고
+                       
+
+                        if (oci.ObjectName == _objName)
+                        { 
+
+                            delimg = img;
+                            break;
+                        }
+
+                    }
+                }
+
+                mapCanvas.Children.Remove(delimg);  // 포이치문을 빠져나간 후 삭제한다.(포이치문 안에서는 삭제하면 오류남)
+
+
+            }
+        }
+
+
         //-----------------------------
 
 
@@ -1714,35 +2092,13 @@ namespace Nollan.Visual_Space
             None
         }
 
-        const int DRAG_HANDLE_SIZE = 7;
-        double mouseX, mouseY;
-        Control SelectedControl;
-        Direction direction;
-        Point newLocation;
-        Size newSize;
-        private System.Windows.Forms.PropertyGrid propertyGrid1;
+     
         /*
             MouseButtonEventArgs e 마우스버튼다운
         MouseEventArgs e 마우스무브
             MouseButtonEventArgs e 마우스버튼업
              */
 
-
-        public void control_Drop(object sender, DragEventArgs e)
-        {
-
-
-
-
-        }
-
-      
-
-        public void control_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DragMove();
-            
-        }
 
     
 
