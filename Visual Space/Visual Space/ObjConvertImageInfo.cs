@@ -12,6 +12,7 @@ namespace Nollan.Visual_Space
     public class ObjConvertImageInfo
     {
         public string VisualName; //사용자가 변경할 수 있는 이름.
+        public string AssetBundleName; // 에셋번들이름
         public string convertFilePath; //변환시켜줄 이미지
         public string ImgFilePath; //드롭할 때 tag에서 받아올 오른쪽 UI에 있는 원본 이미지 경로
         public string ObjectName; //같은 오브젝트를 여러개 놓는다면 그걸 구분하기 위한 이름이 필요.

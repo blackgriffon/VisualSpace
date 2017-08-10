@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Nollan.Visual_Space.Network
 {
 
-    public enum WpfUnityPacketType : byte { eError = 0, WallInfo, ObjectInfo };
+    public enum WpfUnityPacketType : byte { eError = 0, WallInfo, ObjectInfoPacket };
 
     [ProtoContract]
     public class WpfUnityPacketHeader
@@ -115,7 +115,7 @@ namespace Nollan.Visual_Space.Network
 
         [ProtoMember(1)] public ObjectAction Action;
         [ProtoMember(2)] public string Name;
-        [ProtoMember(3)] public string ObjectType;
+        [ProtoMember(3)] public string AssetBundleName;
         [ProtoMember(4)] public float PosX;
         [ProtoMember(5)] public float PosY;
         [ProtoMember(6)] public float PosZ;

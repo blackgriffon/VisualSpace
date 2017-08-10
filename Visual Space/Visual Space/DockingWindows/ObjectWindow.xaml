@@ -381,14 +381,22 @@
                   >
 
                     <WrapPanel Name="Expd_chairs"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True">
-                            
-                            
 
-                        
-                        
                         </WrapPanel>                   
             </Expander>
 
+
+            <Expander Template="{StaticResource SimpleExpanderTemp}"
+                  OverridesDefaultStyle="True"
+                  Header="테이블"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"
+                  >
+
+                <WrapPanel Name="Expd_tables"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True">
+
+                </WrapPanel>
+            </Expander>
 
 
             <Expander Template="{StaticResource StretchyExpanderTemp}"

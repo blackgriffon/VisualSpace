@@ -25,7 +25,33 @@ namespace Nollan.Visual_Space.DockingWindows
             InitializeComponent();
            
         }
-    
+
+
+        public Categori(ObjectInfo NewInfo) //오브젝트 타입, 경로, 비쥬얼네임.
+        {
+            InitializeComponent();
+
+
+
+            //Image myImage3 = new Image();
+            //상대 파일경로의 png를 bitmap으로 변환.
+            BitmapImage bitimage = new BitmapImage();
+            bitimage.BeginInit();
+            bitimage.UriSource = new Uri(NewInfo.FilePath, UriKind.RelativeOrAbsolute);
+            bitimage.EndInit();
+   
+
+            //bitmap으로 바꾼 걸 카테고리의 이미지.source에 대입.
+            img_cate.Stretch = Stretch.UniformToFill;
+            img_cate.Source = bitimage;
+            img_cate.Width = 60;
+            img_cate.Height = 60;
+            img_cate.Tag = NewInfo; //태그 정보 입력
+
+            img_cate.ToolTip = NewInfo.VisualName; //비주얼 이름으로 툴팁 팝업
+
+
+        }
 
 
         ///pictures/chair.PNG
@@ -248,7 +274,7 @@ TextBox에서 gre라는 텍스트를 선택합니다.
 
             // If the DataObject contains string data, extract it.
             if (e.Data.GetDataPresent(DataFormats.StringFormat))
-            {
+            {           
                 string dataString = (string)e.Data.GetData(DataFormats.StringFormat);
 
                 // If the string can be converted into a Brush, convert it.

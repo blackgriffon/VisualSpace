@@ -61,17 +61,6 @@ public class csMoveObjectControl : MonoBehaviour
                         Destroy(child[i].gameObject.GetComponent<cakeslice.Outline>());
                 }
 
-                // 테그에 따라서 2D 도면에 선택이 해제되었다고 메세지를 보낸다.
-                switch (selecetdObject.tag)
-                {
-                    case "Wall":
-                        networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.WallInfo));
-                        break;
-
-                    case "Object":
-                        networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.ObjectInfo));
-                        break;
-                }
             }
 
 
@@ -93,19 +82,6 @@ public class csMoveObjectControl : MonoBehaviour
                 {
                     if (child[i].gameObject.GetComponent<MeshRenderer>() != null)
                         child[i].gameObject.AddComponent<cakeslice.Outline>();
-                }
-
-
-                // 테그에 따라서 2D 도면에 선택되었다고 메세지를 보낸다.
-                switch (selecetdObject.tag)
-                {
-                    case "Wall":
-                        networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, PacketType.WallInfo));
-                        break;
-
-                    case "Object":
-                        networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, PacketType.ObjectInfo));
-                        break;
                 }
 
             }
@@ -144,14 +120,60 @@ public class csMoveObjectControl : MonoBehaviour
                 // 2-1.SupportObject는 나중에 움직이면 안되는 오브젝트를 추가할 수 있으니 미리 조건을 걸어놨다.
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity) && hit.transform.gameObject.tag != "SupportObject")
                 {
+
+                    // 전에 선택된것이 있으면 해제 후
+                    if (selecetdObject != null)
+                    {
+                        switch (selecetdObject.tag)
+                        {
+                            case "Wall":
+                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.WallInfo));
+                                break;
+
+                            case "Object":
+                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.ObjectInfoPacket));
+                                break;
+                        }
+
+                    }
+
+
                     // 2-2.레이캐스트가 되면, SelecetdObject에 선택된 오브젝트를 대입한다.
                     SelecetdObject = hit.transform.gameObject;
+                    // 테그에 따라서 2D 도면에 선택되었다고 메세지를 보낸다.
+                    switch (selecetdObject.tag)
+                    {
+                        case "Wall":
+                            networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, PacketType.WallInfo));
+                            break;
+
+                        case "Object":
+                            networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, PacketType.ObjectInfoPacket));
+                            break;
+                    }
                 }
 
                 else
                 {
-                    // 2-3.레이캐스트가 안되면, SelecetdObject에 null을 넣은다.
+                    // 테그에 따라서 2D 도면에 선택이 해제되었다고 메세지를 보낸다.
+                    if (selecetdObject != null)
+                    {
+                        switch (selecetdObject.tag)
+                        {
+                            case "Wall":
+                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.WallInfo));
+                                break;
+
+                            case "Object":
+                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.ObjectInfoPacket));
+                                break;
+                        }
+
+                    }
+
+                    // 2-3.레이캐스트가 안되거나 선택이 해지되었지 때문에, SelecetdObject에 null을 넣은다.
                     SelecetdObject = null;
+
                 }
             }
 
@@ -263,8 +285,8 @@ public class csMoveObjectControl : MonoBehaviour
         else if (SelecetdObject.tag == "Object")
         {
             Packet.Header header = new Packet.Header();
-            header.ObjectType = Packet.PacketType.ObjectInfo;
-            ObjectInfo objectInfo = new ObjectInfo();
+            header.ObjectType = Packet.PacketType.ObjectInfoPacket;
+            ObjectInfoPacket objectInfo = new ObjectInfoPacket();
             objectInfo.Action = ObjectAction.MOVE3D;
             objectInfo.Name = SelecetdObject.name;
             objectInfo.PosX = SelecetdObject.transform.position.x;
@@ -301,13 +323,32 @@ public class csMoveObjectControl : MonoBehaviour
     public void DeleteObject()
     {
         Packet.Header header = new Packet.Header();
-        header.ObjectType = Packet.PacketType.WallInfo;
-        WallInfo wallInfo = new WallInfo();
-        wallInfo.Action = WallInfoAction.REMOVE3D;
-        wallInfo.Name = SelecetdObject.gameObject.name;
-        header.Data = wallInfo;
+
+
+        switch(SelecetdObject.tag)
+        {
+
+            case "Wall":
+                header.ObjectType = Packet.PacketType.WallInfo;
+                WallInfo wallInfo = new WallInfo();
+                wallInfo.Action = WallInfoAction.REMOVE3D;
+                wallInfo.Name = SelecetdObject.gameObject.name;
+                header.Data = wallInfo;
+                break;
+
+            case "Object":
+                header.ObjectType = Packet.PacketType.ObjectInfoPacket;
+                ObjectInfoPacket objectInfo = new ObjectInfoPacket();
+                objectInfo.Action = ObjectAction.REMOVE3D;
+                objectInfo.Name = SelecetdObject.gameObject.name;
+                header.Data = objectInfo;
+                break;
+        }
+
+
         networkManager.Send(header);
-        Destroy(hit.transform.gameObject);
+        Destroy(SelecetdObject.gameObject);
         SelecetdObject = null;
+
     }
 }

@@ -7,7 +7,7 @@ using ProtoBuf;
 
 namespace Packet
 {
-    public enum PacketType : byte { eError = 0, WallInfo, ObjectInfo };
+    public enum PacketType : byte { eError = 0, WallInfo, ObjectInfoPacket };
 
 
     [ProtoContract]
@@ -89,9 +89,9 @@ namespace Packet
                     break;
 
 
-                case PacketType.ObjectInfo:
-                    header.ObjectType = PacketType.ObjectInfo;
-                    ObjectInfo objectInfo = new ObjectInfo();
+                case PacketType.ObjectInfoPacket:
+                    header.ObjectType = PacketType.ObjectInfoPacket;
+                    ObjectInfoPacket objectInfo = new ObjectInfoPacket();
                     objectInfo.Action = ObjectAction.DESELECT3D;
                     objectInfo.Name = name;
                     header.Data = objectInfo;
@@ -117,9 +117,9 @@ namespace Packet
                     break;
 
 
-                case PacketType.ObjectInfo:
-                    header.ObjectType = PacketType.ObjectInfo;
-                    ObjectInfo objectInfo = new ObjectInfo();
+                case PacketType.ObjectInfoPacket:
+                    header.ObjectType = PacketType.ObjectInfoPacket;
+                    ObjectInfoPacket objectInfo = new ObjectInfoPacket();
                     objectInfo.Action = ObjectAction.SELECT3D;
                     objectInfo.Name = name;
                     header.Data = objectInfo;
@@ -133,11 +133,11 @@ namespace Packet
 
 
     [ProtoContract]
-    public class ObjectInfo
+    public class ObjectInfoPacket
     {
         [ProtoMember(1)] public ObjectAction Action;
         [ProtoMember(2)] public string Name;
-        [ProtoMember(3)] public string ObjectType;
+        [ProtoMember(3)] public string AssetBundleName;
         [ProtoMember(4)] public float PosX;
         [ProtoMember(5)] public float PosY;
         [ProtoMember(6)] public float PosZ;

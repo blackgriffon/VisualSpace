@@ -97,8 +97,8 @@ namespace TransportTCP
                             header.Data = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Packet.WallInfo>(_NetworkStream, ProtoBuf.PrefixStyle.Fixed32);
                             break;
 
-                        case Packet.PacketType.ObjectInfo:
-                            header.Data = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Packet.ObjectInfo>(_NetworkStream, ProtoBuf.PrefixStyle.Fixed32);
+                        case Packet.PacketType.ObjectInfoPacket:
+                            header.Data = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Packet.ObjectInfoPacket>(_NetworkStream, ProtoBuf.PrefixStyle.Fixed32);
                             break;
 
                     }
@@ -138,6 +138,10 @@ namespace TransportTCP
                     {
                         case Packet.PacketType.WallInfo:
                             ProtoBuf.Serializer.SerializeWithLengthPrefix<Packet.WallInfo>(_NetworkStream, (Packet.WallInfo)header.Data, ProtoBuf.PrefixStyle.Fixed32);
+                            break;
+
+                        case Packet.PacketType.ObjectInfoPacket:
+                            ProtoBuf.Serializer.SerializeWithLengthPrefix<Packet.ObjectInfoPacket>(_NetworkStream, (Packet.ObjectInfoPacket)header.Data, ProtoBuf.PrefixStyle.Fixed32);
                             break;
                     }
                 }

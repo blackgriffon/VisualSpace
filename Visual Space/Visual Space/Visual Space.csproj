@@ -88,9 +88,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Circle.xaml.cs">
-      <DependentUpon>Circle.xaml</DependentUpon>
-    </Compile>
     <Compile Include="DockingWindows\Categori.xaml.cs">
       <DependentUpon>Categori.xaml</DependentUpon>
     </Compile>
@@ -123,10 +120,6 @@
     <Compile Include="UnityViewer\UnityExe.designer.cs">
       <DependentUpon>UnityExe.cs</DependentUpon>
     </Compile>
-    <Page Include="Circle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="DockingWindows\Categori.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -202,21 +195,6 @@
     <Resource Include="icons\Toolbar\Load.png" />
     <Resource Include="icons\Toolbar\New.png" />
     <Resource Include="icons\Toolbar\Save.png" />
-    <Resource Include="pictures\beds\bed0.png" />
-    <Resource Include="pictures\beds\convert\beds.PNG" />
-    <Resource Include="pictures\beds\bed1.PNG" />
-    <Resource Include="pictures\chairs\chair0.PNG" />
-    <Resource Include="pictures\chairs\chair1.PNG" />
-    <Resource Include="pictures\chairs\chair2.PNG" />
-    <Resource Include="pictures\chairs\chair3.PNG" />
-    <Resource Include="pictures\chairs\chair4.PNG" />
-    <Resource Include="pictures\chairs\chair5.PNG" />
-    <Resource Include="pictures\chairs\convert\chairs.PNG" />
-    <Resource Include="pictures\apple.png" />
-    <Resource Include="pictures\grape.png" />
-    <Resource Include="pictures\mango.png" />
-    <Resource Include="pictures\BathRoom1.png" />
-    <Resource Include="pictures\BathRoom2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

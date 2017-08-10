@@ -31,59 +31,6 @@ public class csTCPClientManager : MonoBehaviour
     }
 
 
-    IEnumerator coRecevicePacket()
-    {
-        while (true)
-        {
-            if (header == null)
-            {
-                yield return new WaitForSeconds(0.01f);
-                continue;
-            }
-
-            if (!client.Recevie(ref header))
-            {
-                yield return new WaitForSeconds(0.01f);
-                continue;
-            }
-
-            switch (header.ObjectType)
-            {
-                case Packet.PacketType.WallInfo:
-                    GameObject cube;
-                    Debug.Log("recevied Data PacketType.WallInfo");
-                    WallInfo wallInfo = (WallInfo)header.Data;
-                    switch (wallInfo.Action)
-                    {
-                        case WallInfoAction.CREATE:
-                            //cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                            cube = Instantiate(WallObject);
-                            cube.name = wallInfo.Name;
-                            cube.transform.position = new Vector3(wallInfo.PosX, wallInfo.PosY, wallInfo.PosZ);
-                            cube.transform.localScale = new Vector3(wallInfo.ScaleX, wallInfo.ScaleY, wallInfo.ScaleZ);
-                            cube.transform.parent = ParentObject.transform;
-                            cube.tag = "Wall";
-                            break;
-
-                        case WallInfoAction.MOVE:
-                            cube = GameObject.Find(wallInfo.Name);
-                            cube.transform.position = new Vector3(wallInfo.PosX, wallInfo.PosY, wallInfo.PosZ);
-                            cube.transform.localScale = new Vector3(wallInfo.ScaleX, wallInfo.ScaleY, wallInfo.ScaleZ);
-                            break;
-
-                        case WallInfoAction.REMOVE:
-                            cube = GameObject.Find(wallInfo.Name);
-                            Destroy(cube);
-                            break;
-                    }
-                    break;
-
-            }
-
-            yield return new WaitForSeconds(0.01f);
-        }
-    }
-
     public void Send(Packet.Header data)
     {
         client.Send(data);
@@ -142,9 +89,9 @@ public class csTCPClientManager : MonoBehaviour
                 break;
 
 
-            case PacketType.ObjectInfo:
+            case PacketType.ObjectInfoPacket:
                 {
-                    ObjectInfo objectInfo = (ObjectInfo)header.Data;
+                    ObjectInfoPacket objectInfo = (ObjectInfoPacket)header.Data;
 
                     switch(objectInfo.Action)
                     {
@@ -156,6 +103,22 @@ public class csTCPClientManager : MonoBehaviour
                             gameObj = GameObject.Find(objectInfo.Name);
                             gameObj.transform.position = new Vector3(objectInfo.PosX, objectInfo.PosY, objectInfo.PosZ);
                             break;
+
+
+                        case ObjectAction.SELECT:
+                            moveObjectControl.SelecetdObject = GameObject.Find(objectInfo.Name);
+                            break;
+
+                        case ObjectAction.REMOVE:
+                            gameObj = GameObject.Find(objectInfo.Name);
+                            Destroy(gameObj);
+                            break;
+
+
+                        case ObjectAction.DESELECT:
+                            moveObjectControl.SelecetdObject = null;
+                            break;
+
                     }
                 }
                 break;

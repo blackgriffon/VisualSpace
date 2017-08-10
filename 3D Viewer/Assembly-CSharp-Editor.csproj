@@ -52,8 +52,10 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Editor\DoCreateAssetBundles.cs" />
+     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\07.Assets\OutlineEffect\Resources\OutlineShader.shader" />
      <None Include="Assets\07.Assets\OutlineEffect\Resources\OutlineBufferShader.shader" />
+     <None Include="Assets\StreamingAssets\Vuforia\ITTtest.xml" />
      <None Include="Assets\07.Assets\OutlineEffect\Resources\OutlineBufferCullOffShader.shader" />
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
@@ -125,6 +127,8 @@
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{0F3BA85E-FE6D-CA68-9F57-3D56E5285F7D}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
+    <ProjectReference Include="Assembly-UnityScript-Editor-firstpass.csproj">
+      <Project>{E8893723-8B6B-DA27-7CD9-CD10635D84BF}</Project>      <Name>Assembly-UnityScript-Editor-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

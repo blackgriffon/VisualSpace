@@ -46,6 +46,7 @@ namespace VisualSpace.UnityViewer
             Path = exePath;
             InitializeComponent();
             this.LostFocus += UnityExe_LostFocus;
+            
 
 
         }

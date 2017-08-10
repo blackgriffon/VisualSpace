@@ -29,7 +29,7 @@ namespace Nollan.Visual_Space.DockingWindows
 
             createObjList(); //서버에서 받아올 리스트. 서버가 아직 없음으로 내가 임의로 리스트를 만든다. 만든 리스트 정보는 ObjectList에 추가된다.(총 6개)
             createbed(); //임시로 침대 때려박음. 위의 것과 동일.
-
+            createTable();
             // appendImageToExpender();
 
 
@@ -49,18 +49,19 @@ namespace Nollan.Visual_Space.DockingWindows
         //서버에서 받아올 리스트. 서버가 아직 없음으로 내가 임의로 리스트를 만든다. 이걸 받아서 여기에 있는 정보로 익스펜더 안의 랩패널의 자식으로 추가
         public void createObjList()
         {            
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 4; i++)
             {
                 ObjectInfo objInfo = new ObjectInfo();
                 objInfo.ObjectType = "chairs";
                 objInfo.VisualName = $"이케아의자{i}";
-                objInfo.FilePath = $"../../pictures/chairs/chair{i}.png";
-
-                
-
+                objInfo.AssetBundleName = $"chair_{i + 1}";
+#if DEBUG
+                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\chairs\chair{i + 1}.png";
+#else
+                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"pictures\chairs\chair{i + 1}.png";
+#endif
                 ObjectList.Add(objInfo);
-
-              
+                
             }             
         }
 
@@ -70,20 +71,36 @@ namespace Nollan.Visual_Space.DockingWindows
             for (int i = 0; i < 2; i++)
             {
                 ObjectInfo objInfo = new ObjectInfo();
-                objInfo.ObjectType = "beds";
+                objInfo.ObjectType = "beds"; 
                 objInfo.VisualName = $"이케아침대{i}";
-                objInfo.FilePath = $"../../pictures/beds/bed{i}.png";
-
-
-
+                objInfo.AssetBundleName = $"bed_{i+1}";
+#if DEBUG
+                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\chairs\chair{i + 1}.png";
+#else
+                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"pictures\beds\bed{i + 1}.png";
+#endif
                 ObjectList.Add(objInfo);
-
-
-
-
-
             }
         }
+
+        public void createTable()
+        {
+
+            for (int i = 0; i < 3; i++)
+            {
+                ObjectInfo objInfo = new ObjectInfo();
+                objInfo.ObjectType = "tables";
+                objInfo.VisualName = $"이케아테이블{i}";
+                objInfo.AssetBundleName = $"table_{i + 1}";
+#if DEBUG
+                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\chairs\chair{i + 1}.png";
+#else
+                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"pictures\tables\table{i + 1}.png";
+#endif
+                ObjectList.Add(objInfo);
+            }
+        }
+
 
 
 
@@ -109,21 +126,19 @@ namespace Nollan.Visual_Space.DockingWindows
                 {
                     case "chairs":
 
-                        Categori cate_chairs = new Categori(obj_List.ObjectType, obj_List.FilePath, obj_List.VisualName);
+                        Categori cate_chairs = new Categori(obj_List);
                         Expd_chairs.Children.Add(cate_chairs);
-
-
                         break;
 
 
-
-
                     case "beds":
-
-                        Categori cate_beds = new Categori(obj_List.ObjectType, obj_List.FilePath, obj_List.VisualName);
+                        Categori cate_beds = new Categori(obj_List);
                         Expd_beds.Children.Add(cate_beds);
+                        break;
 
-
+                    case "tables":
+                        Categori cate_tables = new Categori(obj_List);
+                        Expd_tables.Children.Add(cate_tables);
                         break;
 
 
@@ -146,7 +161,7 @@ namespace Nollan.Visual_Space.DockingWindows
         {            
             BitmapImage Bitmap = new BitmapImage();
             Bitmap.BeginInit();
-            Bitmap.UriSource = new Uri(FilePath, UriKind.Relative);
+            Bitmap.UriSource = new Uri(FilePath, UriKind.RelativeOrAbsolute);
             Bitmap.EndInit();
             return Bitmap;
         }
@@ -156,7 +171,7 @@ namespace Nollan.Visual_Space.DockingWindows
 
 
 
-        #region 이전 로직
+#region 이전 로직
 
         //어떤 정보를 리스트로 받아야 될지 고민해보자.
         //List<string> strs = new List<string>
@@ -285,7 +300,7 @@ namespace Nollan.Visual_Space.DockingWindows
 
         //      }
 
-        #endregion
+#endregion
 
         //   pack://application:,,,/Resources/MyImage.png
 
@@ -307,7 +322,7 @@ namespace Nollan.Visual_Space.DockingWindows
 
 
 
-        #region 마우스 드래그
+#region 마우스 드래그
 
         //        protected override void OnMouseMove(MouseEventArgs e)
         //        {
@@ -534,7 +549,7 @@ namespace Nollan.Visual_Space.DockingWindows
 
         //        }
 
-        #endregion
+#endregion
 
 
 
@@ -546,7 +561,7 @@ namespace Nollan.Visual_Space.DockingWindows
 
 
         /*
-        #region Dragging a WPF user control
+#region Dragging a WPF user control
 
 
         Point anchorPoint;
@@ -590,7 +605,7 @@ namespace Nollan.Visual_Space.DockingWindows
             }
         }
 
-        #endregion
+#endregion
 
         */
 

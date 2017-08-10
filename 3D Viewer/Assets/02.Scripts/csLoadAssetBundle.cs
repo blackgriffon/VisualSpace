@@ -35,15 +35,15 @@ public class csLoadAssetBundle : MonoBehaviour
     }
 
 
-    public void LoadGameObject(ObjectInfo objInfo)
+    public void LoadGameObject(ObjectInfoPacket objInfo)
     {
         StartCoroutine(coLoadGameObject(objInfo));
     }
 
 
-    public IEnumerator coLoadGameObject(ObjectInfo objInfo)
+    public IEnumerator coLoadGameObject(ObjectInfoPacket objInfo)
     {
-        AssetBundleRequest assetPrefeb = assetBundle.LoadAssetAsync<GameObject>(objInfo.ObjectType);
+        AssetBundleRequest assetPrefeb = assetBundle.LoadAssetAsync<GameObject>(objInfo.AssetBundleName);
         yield return assetPrefeb;
 
         if (assetPrefeb.isDone)

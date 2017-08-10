@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2566601815
+CRC: 4245674853
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 07b96ebc3fe99f25a6904c96d25daf38
+    Hash: c4476165c2fe2f49141c87f688d71b81
   TypeTreeHash:
     serializedVersion: 2
     Hash: f451c2fa900e9178a57db1d033fd31a7
@@ -31,19 +31,21 @@ Assets:
 - Assets/bundle/sofa_2.prefab
 - Assets/bundle/shower.prefab
 - Assets/bundle/sofa_4.prefab
-- Assets/bundle/coffee_table_1.prefab
+- Assets/bundle/chair_1.prefab
+- Assets/bundle/table_1.prefab
 - Assets/bundle/corner_sofa.prefab
 - Assets/bundle/modular_kitchen_table_2.prefab
 - Assets/bundle/rack_1.prefab
-- Assets/bundle/kitchen_chair_1.prefab
+- Assets/bundle/chair_3.prefab
 - Assets/bundle/tv_table_2.prefab
 - Assets/bundle/bed_2.prefab
 - Assets/bundle/washbasin.prefab
 - Assets/bundle/rack_5.prefab
 - Assets/bundle/chair_2.prefab
-- Assets/bundle/kitchen_table_2.prefab
+- Assets/bundle/table_3.prefab
 - Assets/bundle/cabinet_3.prefab
 - Assets/bundle/table_2.prefab
 - Assets/bundle/modular_kitchen_table_1.prefab
+- Assets/bundle/chair_4.prefab
 - Assets/bundle/bed_1.prefab
 Dependencies: []
