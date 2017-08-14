@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using DockingLibrary;
 using SampleExpander;
 
+
 namespace Nollan.Visual_Space.DockingWindows
 {
     /// <summary>
@@ -30,6 +31,8 @@ namespace Nollan.Visual_Space.DockingWindows
             createObjList(); //서버에서 받아올 리스트. 서버가 아직 없음으로 내가 임의로 리스트를 만든다. 만든 리스트 정보는 ObjectList에 추가된다.(총 6개)
             createbed(); //임시로 침대 때려박음. 위의 것과 동일.
             createTable();
+            createDoor();
+            createWindow();
             // appendImageToExpender();
 
 
@@ -55,6 +58,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 objInfo.ObjectType = "chairs";
                 objInfo.VisualName = $"이케아의자{i}";
                 objInfo.AssetBundleName = $"chair_{i + 1}";
+
 #if DEBUG
                 objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\chairs\chair{i + 1}.png";
 #else
@@ -75,7 +79,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 objInfo.VisualName = $"이케아침대{i}";
                 objInfo.AssetBundleName = $"bed_{i+1}";
 #if DEBUG
-                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\chairs\chair{i + 1}.png";
+                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\beds\bed{i + 1}.png";
 #else
                 objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"pictures\beds\bed{i + 1}.png";
 #endif
@@ -93,9 +97,45 @@ namespace Nollan.Visual_Space.DockingWindows
                 objInfo.VisualName = $"이케아테이블{i}";
                 objInfo.AssetBundleName = $"table_{i + 1}";
 #if DEBUG
-                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\chairs\chair{i + 1}.png";
+                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\tables\table{i + 1}.png";
 #else
                 objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"pictures\tables\table{i + 1}.png";
+#endif
+                ObjectList.Add(objInfo);
+            }
+        }
+
+        public void createDoor()
+        {
+
+            for (int i = 0; i < 2; i++)
+            {
+                ObjectInfo objInfo = new ObjectInfo();
+                objInfo.ObjectType = "doors";
+                objInfo.VisualName = $"이케아문{i}";
+                objInfo.AssetBundleName = $"door_{i + 1}";
+#if DEBUG
+                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\doors\door{i + 1}.png";
+#else
+                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"pictures\doors\door{i + 1}.png";
+#endif
+                ObjectList.Add(objInfo);
+            }
+        }
+
+        public void createWindow()
+        {
+
+            for (int i = 0; i < 2; i++)
+            {
+                ObjectInfo objInfo = new ObjectInfo();
+                objInfo.ObjectType = "windows";
+                objInfo.VisualName = $"이케아창문{i}";
+                objInfo.AssetBundleName = $"window_{i + 1}";
+#if DEBUG
+                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\windows\window{i + 1}.png";
+#else
+                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\windows\window{i + 1}.png";
 #endif
                 ObjectList.Add(objInfo);
             }
@@ -141,6 +181,16 @@ namespace Nollan.Visual_Space.DockingWindows
                         Expd_tables.Children.Add(cate_tables);
                         break;
 
+                    case "doors":
+                        Categori cate_doors = new Categori(obj_List);
+                        Expd_doors.Children.Add(cate_doors);
+                        break;
+
+                    case "windows":
+                        Categori cate_windows = new Categori(obj_List);
+                        Expd_windows.Children.Add(cate_windows);
+                        break;
+                        
 
 
                 }

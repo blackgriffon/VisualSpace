@@ -110,6 +110,7 @@
     <Compile Include="Network\IWpfUnityTCPServer.cs" />
     <Compile Include="ObjConvertImageInfo.cs" />
     <Compile Include="ObjectInfo.cs" />
+    <Compile Include="ResizingAdorner.cs" />
     <Compile Include="SimpleCircleAdorner.cs" />
     <Compile Include="UnityViewer\ExeViewer.xaml.cs">
       <DependentUpon>ExeViewer.xaml</DependentUpon>

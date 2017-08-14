@@ -15,5 +15,10 @@ namespace Nollan.Visual_Space
             public string VisualName; //이케아 의자 
 
 
+        public int price; //가격
+        public string brand; //이케아, 삼성, lg 등 가구 브랜드
+        public string explain; //가구 간단한 설명
+
+
     }
 }
