@@ -327,14 +327,14 @@
             </StackPanel.Resources>
 
 
-           
-                
-          
 
-            <Expander Header="침대" 
-                  HorizontalAlignment="Left" AllowDrop="True"
-                  VerticalAlignment="Top">
 
+            <Expander Template="{StaticResource SimpleExpanderTemp}"
+                  OverridesDefaultStyle="True"
+                  Header="침대"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"
+                  >               
 
                     <WrapPanel Name="Expd_beds"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True">
 
@@ -399,21 +399,31 @@
             </Expander>
 
 
-            <Expander Template="{StaticResource StretchyExpanderTemp}"
+            <Expander Template="{StaticResource SimpleExpanderTemp}"
                   OverridesDefaultStyle="True"
-                  Header="Using StretchyExpanderTemp"
+                  Header="문"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   >
-                <Button Style="{StaticResource TestContentStyle}"/>
+
+                <WrapPanel Name="Expd_doors"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True">
+
+                    
+                </WrapPanel>
             </Expander>
-            <Expander Template="{StaticResource RevealExpanderTemp}"
+
+
+            <Expander Template="{StaticResource SimpleExpanderTemp}"
                   OverridesDefaultStyle="True"
-                  Header="Using RevealExpanderTemp"
+                  Header="창문"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   >
-                <Button Style="{StaticResource TestContentStyle}"/>
+
+                <WrapPanel Name="Expd_windows"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True">
+
+
+                </WrapPanel>
             </Expander>
 
 

@@ -18,7 +18,7 @@ namespace Nollan.Visual_Space
         public string ObjectName; //같은 오브젝트를 여러개 놓는다면 그걸 구분하기 위한 이름이 필요.
         public string ObjectType;
         public Point canvasPoint; //캔버스 좌표
-        public RotateTransform rotationPoint; //시계방향으로 회전하기 위한 2차원 x,y 정보 좌표계.  
+        public double rotationAngle; //시계방향으로 회전하기 위한 2차원 x,y 정보 좌표계.   
 
     }
 }

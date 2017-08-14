@@ -67,8 +67,12 @@
                               Checked="Ch_line_Checked" Unchecked="Ch_line_Unchecked" />
                 <ToggleButton Name="Ch_linePlusMinus" Content="선 길이조정"  FontSize="15" Height="24"  Margin="3"  FontWeight="Bold" 
                               Checked="Ch_linePlusMinus_Checked" Unchecked="Ch_linePlusMinus_Unchecked"/>
+               
+                <ToggleButton Name="Toggle_Floor" Content="바닥생성"  FontSize="15" Height="24"  Margin="3"  FontWeight="Bold" 
+                              Checked="Toggle_Floor_Checked" Unchecked="Toggle_Floor_Unchecked"/>
+                
                 <Button Content="지우기" Click="Button_Click" FontSize="15" Height="24"  Margin="3"  FontWeight="Bold" />
-
+                
 
             </ToolBar>
 
@@ -77,19 +81,25 @@
                             Click="btn_PlusWidthHeight_Click" />
                 <ToggleButton Name="btn_MinusWidhtHeight" Click="btn_MinusWidhtHeight_Click"
                         Content="캔버스감소"  FontSize="15" Height="24"  Margin="3"  FontWeight="Bold" />
-
+                
             </ToolBar>
 
             <ToolBar Name="Toolbar_RotationControl">
-                <Button Content="왼쪽 회전" FontSize="15" Height="28"  Margin="3"  FontWeight="Bold"/>
-                <Button Content="오른쪽 회전" FontSize="15" Height="28"  Margin="3"  FontWeight="Bold"/>
+                <Button Name="LeftAngleTransform" Content="왼쪽 회전" FontSize="15" Height="28"  Margin="3"  FontWeight="Bold"
+                        Click="LeftAngleTransform_Click"
+                        />
+                <Button Name="RightAngleTransform" Content="오른쪽 회전" FontSize="15" Height="28"  Margin="3"  FontWeight="Bold"
+                        Click="RightAngleTransform_Click"/>
+                
 
             </ToolBar>
 
             <ToolBar Name="Toolbar_HelpControl">
+                <Button Name="btn_CreateListWindow" Content="왼쪽창생성" FontSize="15" Height="28"  Margin="3"  FontWeight="Bold" Click="btn_CreateListWindow_Click"/>
+                <Button Name="btn_CreateObjectWindow" Content="오른쪽창생성" FontSize="15" Height="28"  Margin="3"  FontWeight="Bold" Click="btn_CreateObjectWindow_Click"/>
                 <Button Content="도움말" FontSize="15" Height="28"  Margin="3"  FontWeight="Bold"/>
                 <Button Content="튜토리얼" FontSize="15" Height="28"  Margin="3"  FontWeight="Bold"/>
-                <TextBox x:Name="txtBox" Background="RosyBrown" Width="100" Visibility="Hidden"/>
+                <TextBox x:Name="txtBox" Background="RosyBrown" Width="10" Visibility="Hidden"/>
             </ToolBar>
 
 
@@ -133,6 +143,12 @@
                      Drop="panel_Drop"             
                      Grid.Row="0"
                      
+                                     
+                     MouseRightButtonDown="mapCanvas_MouseRightButtonDown"
+                     MouseRightButtonUp="mapCanvas_MouseRightButtonUp"
+                                     
+                                     
+                    
                      >
 
 
@@ -149,8 +165,11 @@
             <!--격자 <docking:DockManager Name ="DrawingManager" Background="LightGray"  Width="500" Height="800" Grid.Column="1" Grid.Row="0"/>-->
 
             <StackPanel Name="stackPanel_listWindow" Grid.Column="0" Background="Black" Width="Auto" Height="2000" DockPanel.Dock="Top"
-                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SizeChanged="stackPanel_listWindow_SizeChanged"  Margin="0,0,0,-282.96">
-                <docking:DockManager Name ="ListDockManager" Background="LightGray"  Width="Auto" Height="Auto"  DockPanel.Dock="Top" />
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SizeChanged="stackPanel_listWindow_SizeChanged"  Margin="0,0,0,-282.96"
+                        
+                        >
+                <docking:DockManager Name ="ListDockManager" Background="LightGray"  Width="Auto" Height="Auto"  DockPanel.Dock="Top"
+                                     />
             </StackPanel>
 
 

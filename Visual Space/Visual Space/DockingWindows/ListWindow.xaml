@@ -6,10 +6,10 @@
              xmlns:local="clr-namespace:Nollan.Visual_Space.DockingWindows"
              xmlns:docking="clr-namespace:DockingLibrary;assembly=DockingLibrary" 
              mc:Ignorable="d" 
-             Title="ListWindow" Height="600" Width="Auto" >
+             Title="ListWindow" Height="600" Width="Auto"  >
 
 
-    <WrapPanel Name="WrapPanel_List"  Background="White" Height="Auto" Width="Auto" >
+    <WrapPanel Name="WrapPanel_List"  Background="White" Height="Auto" Width="Auto"  >
 
         
         <TreeView Margin = "0,0,0,0" Name = "MyTreeView" HorizontalAlignment = "Left" Background="Transparent"
