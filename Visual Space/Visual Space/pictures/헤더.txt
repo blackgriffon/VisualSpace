@@ -1,7 +1,0 @@
-1.오브젝트타입 - "chairs"; 이게 뭔 분류인지 알아야 익스펜더 안에 넣지
-2.비쥬얼 네임 - $"이케아의자{i}";
-3.에셋번들네임 - $"chair_{i + 1}";
-4.파일경로 - AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\chairs\chair{i + 1}.png"; <picture까지만?
-5.가격 - 1500
-6.브랜드 - 이케아, lg ...
-7.설명 - 가구 간단한 설명?

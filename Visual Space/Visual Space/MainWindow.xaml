@@ -1,24 +1,60 @@
-﻿<Window x:Class="Nollan.Visual_Space.MainWindow"
+﻿<metro:MetroWindow x:Class="Nollan.Visual_Space.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Nollan.Visual_Space"
+                   
         xmlns:UIWindow="clr-namespace:Nollan.Visual_Space.DockingWindows"
         xmlns:docking="clr-namespace:DockingLibrary;assembly=DockingLibrary"        
+        xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d" 
+        
         Title="Visual Space" Height="800" Width="1200" 
-        Name="mainWindow" WindowState="Normal" MinHeight="800" MinWidth="1200" 
-        >
+        Name="mainWindow" 
+        
+                 
+        BorderBrush="{DynamicResource AccentColorBrush}"
+        BorderThickness="1"
+        WindowStartupLocation="CenterScreen"
+        GlowBrush="Black"
+        ShowIconOnTitleBar="True"
+        Icon="icons\windowicons\windowicon.PNG"
+                   WindowState="Maximized"
+                   ResizeMode="CanResize"
+                  AllowsTransparency="True"
+                   >
 
-    <Window.Resources>
 
-        <docking:DockManager x:Key="dockManager" />
-        <docking:DocumentContent x:Key="documentContent" />
-        <local:MapCanvas x:Key="Key_mapCanvas" />
-        <UIWindow:ListWindow x:Key="Key_ListWindow" />
 
-    </Window.Resources>
+    <metro:MetroWindow.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+
+
+
+                <!-- this window should be blue App.xaml.cs 에 가서 색 바꿔주면 적용됨.-->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Cyan.xaml" />
+                <!-- and should use the light theme -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+
+            <docking:DockManager x:Key="dockManager" />
+            <docking:DocumentContent x:Key="documentContent" />
+            <local:MapCanvas x:Key="Key_mapCanvas" />
+            <UIWindow:ListWindow x:Key="Key_ListWindow" />
+
+
+
+
+        </ResourceDictionary>
+
+
+
+
+    </metro:MetroWindow.Resources>
 
 
     <!--<Menu DockPanel.Dock="Top">
@@ -38,66 +74,122 @@
 
     <DockPanel Name="myDockPanel_Main" Height="Auto" Width="Auto" Background="Transparent"  AllowDrop="True">
 
-        <ToolBarTray VerticalAlignment="Top" Margin="0,0,0,-11" Height="45" DockPanel.Dock="Top" >
-            <ToolBar  Name="BasicToolBar" HorizontalAlignment="Left" Height="auto" Background="Aquamarine"
+
+
+        <ToolBarTray VerticalAlignment="Top" Margin="0,-2,0,0" Height="70" DockPanel.Dock="Top" >
+            <ToolBar  Name="BasicToolBar" HorizontalAlignment="Left" Height="auto" Background="Transparent" Width="116" MinWidth="116"
             DockPanel.Dock="Top">
 
-                <Button Name="btn_New" Height="28"  >
+                <Button Name="btn_New" Height="28" Click="btn_New_Click"  >
                     <Image Width="24" Height="24" Source="/icons/Toolbar/New.png" Stretch="UniformToFill" />
                     <Button.ToolTip>
-                        새 파일
+                        새 파일 : 이 버튼을 누르면 모눈 캔버스 및 유니티 뷰어의 내용이 모두 삭제 됩니다.
                     </Button.ToolTip>
                 </Button>
                 <Button Name="btn_Save" Height="28" >
                     <Image Width="24" Height="24" Source="/icons/Toolbar/Save.png" Stretch="Fill"/>
                     <Button.ToolTip>
-                        저장하기
+                        저장하기 : 사용자가 지금까지 해온 모눈 캔버스 및 유니티 뷰어의 내용들을 저장합니다.
                     </Button.ToolTip>
                 </Button>
                 <Button x:Name="btn_Load" Height="28" >
                     <Image Width="24" Height="22" Source="/icons/Toolbar/Load.png" Stretch="Fill"/>
                     <Button.ToolTip>
-                        불러오기
+                        불러오기 : 사용자가 저장한 내용들을 다시 불러옵니다.
                     </Button.ToolTip>
                 </Button>
             </ToolBar>
 
-            <ToolBar Name="Toolbar_ContentsControl" Padding="2,0,2,0" Background="Brown" HorizontalAlignment="Left" VerticalAlignment="Top" Height="auto">
-                <ToggleButton Name="Ch_line" Content="선 그리기"  FontSize="15" Height="24"  Margin="3"  FontWeight="Bold" 
-                              Checked="Ch_line_Checked" Unchecked="Ch_line_Unchecked" />
-                <ToggleButton Name="Ch_linePlusMinus" Content="선 길이조정"  FontSize="15" Height="24"  Margin="3"  FontWeight="Bold" 
-                              Checked="Ch_linePlusMinus_Checked" Unchecked="Ch_linePlusMinus_Unchecked"/>
-               
-                <ToggleButton Name="Toggle_Floor" Content="바닥생성"  FontSize="15" Height="24"  Margin="3"  FontWeight="Bold" 
+            <ToolBar Name="Toolbar_ContentsControl" Padding="2,0,2,0" Background="White" 
+                     HorizontalAlignment="Left" VerticalAlignment="Top" Height="auto">
+
+
+                <metro:ToggleSwitch Header="  벽 그리기" Name="Ch_line" OffSwitchBrush="Silver"
+                                    VerticalContentAlignment="Center"
+                                    FontSize="14" Foreground="Blue"  FontWeight="Bold" 
+                                    Checked="Ch_line_Checked" Unchecked="Ch_line_Unchecked" 
+                                            Margin="0,5,0,0" OnLabel="On" OffLabel="off"  Width="92"  />
+
+                <metro:ToggleSwitch Name="Ch_linePlusMinus" OnLabel="On" OffLabel="off" 
+                                    SwitchForeground="BlueViolet" Foreground="BlueViolet" OffSwitchBrush="Silver"
+                                    Header="  벽 길이조정"  FontSize="14"    FontWeight="Bold" Margin="3,5,0,0"
+                              Checked="Ch_linePlusMinus_Checked" Unchecked="Ch_linePlusMinus_Unchecked" Width="97.123"
+                              />
+
+                <metro:ToggleSwitch Header="    바닥 생성" OnLabel="On" OffLabel="off" SwitchForeground="LightGreen" OffSwitchBrush="Silver"
+                    Name="Toggle_Floor"  FontSize="14"  Margin="3,5,3,0"  FontWeight="Bold" Foreground="LightGreen"
                               Checked="Toggle_Floor_Checked" Unchecked="Toggle_Floor_Unchecked"/>
-                
-                <Button Content="지우기" Click="Button_Click" FontSize="15" Height="24"  Margin="3"  FontWeight="Bold" />
-                
+
+             
+
+
+
+
+
+
+
 
             </ToolBar>
 
-            <ToolBar Name="Toolbar_CanvasControl" Padding="2,0,2,0" Background="BlueViolet" HorizontalAlignment="Left" VerticalAlignment="Top" Height="auto">
-                <ToggleButton Name="btn_PlusWidthHeight" Content="캔버스증가" FontSize="15" Height="24"  Margin="3"  FontWeight="Bold" 
-                            Click="btn_PlusWidthHeight_Click" />
-                <ToggleButton Name="btn_MinusWidhtHeight" Click="btn_MinusWidhtHeight_Click"
-                        Content="캔버스감소"  FontSize="15" Height="24"  Margin="3"  FontWeight="Bold" />
+            <ToolBar Name="Toolbar_CanvasControl" >
                 
+                <ToggleButton Name="btn_PlusWidthHeight" FontSize="15" Height="30"  Margin="2,6,0,0"  FontWeight="Bold" 
+                            Click="btn_PlusWidthHeight_Click"  
+                              >
+                    <Image Width="38" Height="24" Source="/icons/Toolbar/mapplus.png" Stretch="Fill"/>
+                    <ToggleButton.ToolTip>
+                        모눈캔버스 크기 증가 : 모눈캔버스의 크기가 4칸씩 증가합니다.
+                    </ToggleButton.ToolTip>
+
+                </ToggleButton>
+                <ToggleButton Name="btn_MinusWidhtHeight" Click="btn_MinusWidhtHeight_Click"  BorderBrush="Black" BorderThickness="1" 
+                          FontSize="15" Height="30"  Margin="3,6,0,0"  FontWeight="Bold" >
+                    <Image Width="38" Height="24" Source="/icons/Toolbar/mapminus.png" Stretch="Fill"/>
+                    <ToggleButton.ToolTip>
+                        모눈캔버스 크기 감소 : 모눈캔버스의 크기가 4칸씩 감소합니다.
+                    </ToggleButton.ToolTip>
+
+                </ToggleButton>
+
+                <Button Click="DeleteButton_Click" FontSize="15" Height="33"  Margin="3,6,0,0"  FontWeight="Bold" Width="46" >
+
+                    <Image Width="38" Height="24" Source="/icons/Toolbar/eraser.png" Stretch="Fill"/>
+                    <Button.ToolTip>
+                        지우개 버튼 : 지우고 싶은 것을 클릭하고 이 버튼을 누르면 지워집니다.
+                    </Button.ToolTip>
+                </Button>
+
+                <Button Name="LeftAngleTransform" FontSize="15" Height="28"  Margin="3,6,0,0"  FontWeight="Bold"
+                        Click="LeftAngleTransform_Click"   >
+                    <Image Width="24" Height="22" Source="/icons/Toolbar/ViewLeft.png" Stretch="Fill"/>
+                    <Button.ToolTip>
+                        왼쪽 회전 : 소품을 클릭한 후 이 버튼을 누르게 되면 왼쪽으로 45도 회전하게 됩니다.
+                    </Button.ToolTip>
+                </Button>
+
+
+                <Button Name="RightAngleTransform"  FontSize="15" Height="28"  Margin="3, 6, 0 ,0"  FontWeight="Bold"
+                        Click="RightAngleTransform_Click">
+                    <Image Width="24" Height="22" Source="/icons/Toolbar/ViewRight.png" Stretch="Fill"/>
+                    <Button.ToolTip>
+                        오른쪽 회전 : 소품을 클릭한 후 이 버튼을 누르게 되면 오른쪽으로 45도 회전하게 됩니다.
+                    </Button.ToolTip>
+                </Button>
+
             </ToolBar>
 
-            <ToolBar Name="Toolbar_RotationControl">
-                <Button Name="LeftAngleTransform" Content="왼쪽 회전" FontSize="15" Height="28"  Margin="3"  FontWeight="Bold"
-                        Click="LeftAngleTransform_Click"
-                        />
-                <Button Name="RightAngleTransform" Content="오른쪽 회전" FontSize="15" Height="28"  Margin="3"  FontWeight="Bold"
-                        Click="RightAngleTransform_Click"/>
-                
-
-            </ToolBar>
+           
 
             <ToolBar Name="Toolbar_HelpControl">
-                <Button Name="btn_CreateListWindow" Content="왼쪽창생성" FontSize="15" Height="28"  Margin="3"  FontWeight="Bold" Click="btn_CreateListWindow_Click"/>
-                <Button Name="btn_CreateObjectWindow" Content="오른쪽창생성" FontSize="15" Height="28"  Margin="3"  FontWeight="Bold" Click="btn_CreateObjectWindow_Click"/>
-                <Button Content="도움말" FontSize="15" Height="28"  Margin="3"  FontWeight="Bold"/>
+                <Button Name="btn_CreateListWindow" Content="리스트창" FontSize="15" Height="36.5"  Margin="0,13.5,0,5"  FontWeight="Bold"
+                        Click="btn_CreateListWindow_Click"
+                        Style="{DynamicResource SquareButtonStyle}"
+                        />
+                <Button Name="btn_CreateObjectWindow" Content="소품창" FontSize="15" Height="36.5"  Margin="3,13.5,0,5"  FontWeight="Bold" 
+                        Click="btn_CreateObjectWindow_Click"
+                         Style="{StaticResource AccentedSquareButtonStyle}"
+                        />
+                <Button Content="도움말" FontSize="15" Height="28"  Margin="0,3"  FontWeight="Bold" Width="52"/>
                 <Button Content="튜토리얼" FontSize="15" Height="28"  Margin="3"  FontWeight="Bold"/>
                 <TextBox x:Name="txtBox" Background="RosyBrown" Width="10" Visibility="Hidden"/>
             </ToolBar>
@@ -111,20 +203,23 @@
 
         <Grid Name="rootGrid" DockPanel.Dock="Top" Width="Auto" Height="Auto" Background="Transparent"
               
-              
               >
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.3*"/>
+
                 <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="1.7*"/>
+                <ColumnDefinition Width="1.4*"/>
             </Grid.ColumnDefinitions>
 
 
 
-            <Grid Grid.Column="1" Name="mainGrid" Background="Transparent" >
+            <Grid Grid.Column="0" Name="mainGrid" Background="Transparent" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="187*"/>
+                    <ColumnDefinition Width="694*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.8*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -132,52 +227,48 @@
 
 
                 <ScrollViewer Name="ScViewer_canvas" HorizontalScrollBarVisibility="Visible"  Background="Transparent" 
-                              SizeChanged="ScViewer_canvas_SizeChanged" KeyDown="ScViewer_canvas_KeyDown">
+                              SizeChanged="ScViewer_canvas_SizeChanged" KeyDown="ScViewer_canvas_KeyDown" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
 
                     <local:MapCanvas x:Name="mapCanvas" Background="Transparent"  AllowDrop="True" 
                      MouseLeftButtonDown="MapCanvas_MouseLeftButtonDown"
                      MouseMove="MapCanvas_MouseMove"
-                     SizeChanged="mapCanvas_SizeChanged"                     
+                                        
                      MouseLeftButtonUp="MapCanvas_MouseLeftButtonUp"  
                      DragOver="panel_DragOver"
                      Drop="panel_Drop"             
-                     Grid.Row="0"
-                     
-                                     
-                     MouseRightButtonDown="mapCanvas_MouseRightButtonDown"
-                     MouseRightButtonUp="mapCanvas_MouseRightButtonUp"
-                                     
-                                     
+                     Grid.Row="0" Grid.Column="0"
                     
-                     >
+                      >
+
 
 
                     </local:MapCanvas>
 
 
+
                 </ScrollViewer>
 
-                <WindowsFormsHost Grid.Column="1" Grid.Row="1" Name="host" Margin="0, 0, 0, 0"  VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Width="auto" Height="auto" />
+                <WindowsFormsHost Grid.Column="0" Grid.Row="1" Name="host" Margin="0, 0, 0, 0"  
+                                  VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Width="auto" Height="auto" Grid.ColumnSpan="2" />
+
+
+
+
 
 
             </Grid>
 
             <!--격자 <docking:DockManager Name ="DrawingManager" Background="LightGray"  Width="500" Height="800" Grid.Column="1" Grid.Row="0"/>-->
 
-            <StackPanel Name="stackPanel_listWindow" Grid.Column="0" Background="Black" Width="Auto" Height="2000" DockPanel.Dock="Top"
-                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SizeChanged="stackPanel_listWindow_SizeChanged"  Margin="0,0,0,-282.96"
-                        
-                        >
-                <docking:DockManager Name ="ListDockManager" Background="LightGray"  Width="Auto" Height="Auto"  DockPanel.Dock="Top"
+
+
+            <docking:DockManager Name ="ListDockManager" Background="Yellow"  Width="Auto" Height="Auto"  DockPanel.Dock="Top" Visibility="Hidden"
                                      />
-            </StackPanel>
+
+            <docking:DockManager Name ="ExpenderDockManager"  Grid.Column="1" 
+                                     Background="LightGray"  Width="Auto" Height="Auto" DockPanel.Dock="Top" />
 
 
-            <StackPanel Name="stackPanel_objectWindow" Grid.Column="2" Background="Black" Width="Auto" Height="2000" DockPanel.Dock="Top"
-                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SizeChanged="stackPanel_objectWindow_SizeChanged" Margin="0,0,0,-282.96">
-                <docking:DockManager Name ="ExpenderDockManager" Background="LightGray"  Width="Auto" Height="Auto" DockPanel.Dock="Top" />
-
-            </StackPanel>
 
 
 
@@ -191,4 +282,4 @@
 
 
 
-</Window>
+</metro:MetroWindow>

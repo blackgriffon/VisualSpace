@@ -54,9 +54,12 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DockingLibrary, Version=0.1.6419.34951, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DockingLibrary, Version=0.1.6435.33316, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\DockingLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="protobuf-net">
       <HintPath>dll\protobuf-net.dll</HintPath>
@@ -69,6 +72,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -88,8 +94,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="classes\colorTag.cs" />
     <Compile Include="DockingWindows\Categori.xaml.cs">
       <DependentUpon>Categori.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DockingWindows\ColorWindow.xaml.cs">
+      <DependentUpon>ColorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DockingWindows\DrawingWindow.xaml.cs">
       <DependentUpon>DrawingWindow.xaml</DependentUpon>
@@ -125,6 +135,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DockingWindows\ColorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DockingWindows\DrawingWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -153,6 +167,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Properties\DesignTimeResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+    </Page>
+    <Page Include="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\IconsNonShared.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UnityViewer\ExeViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -181,17 +208,37 @@
     <EmbeddedResource Include="UnityViewer\UnityExe.resx">
       <DependentUpon>UnityExe.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ColorReflectionwithWPF\ColorReflectionwithWPF.csproj">
+      <Project>{c8d2fd8e-47a8-4aa3-9ccf-cea852f89251}</Project>
+      <Name>ColorReflectionwithWPF</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="exe\3D Viewer.exe" />
+    <Resource Include="icons\Toolbar\mapminus.png" />
+    <Resource Include="icons\Toolbar\mapplus.png" />
+    <Resource Include="icons\Toolbar\eraser.png" />
+    <Resource Include="icons\Toolbar\ObjLeft.png" />
+    <Resource Include="icons\Toolbar\ObjRight.png" />
+    <Resource Include="icons\tiles\linetile1_h.png" />
+    <Resource Include="icons\tiles\linetile1.PNG" />
+    <Resource Include="icons\Toolbar\ViewLeft.png" />
+    <Resource Include="icons\Toolbar\ViewRight.png" />
+    <Resource Include="icons\windowicons\houseclipart.jpg" />
+    <Resource Include="icons\windowicons\windowicon.PNG" />
+    <Resource Include="Resources\Entypo-license.txt" />
+    <Resource Include="Resources\WindowsIcons-license.txt" />
     <Resource Include="icons\Toolbar\file-upload.png" />
     <Resource Include="icons\Toolbar\Load.png" />
     <Resource Include="icons\Toolbar\New.png" />

@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Nollan.Visual_Space.Properties">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Visual_Space;component/Resources/Icons.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

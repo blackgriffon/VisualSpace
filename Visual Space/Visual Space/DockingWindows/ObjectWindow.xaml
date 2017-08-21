@@ -317,7 +317,7 @@
     <ScrollViewer Background="Transparent" VerticalScrollBarVisibility="Visible" >  
             
         
-        <StackPanel Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+        <StackPanel Background="LightCyan" Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top">
             <StackPanel.Resources>
                 <Style x:Key="TestContentStyle" TargetType="Button">
                     <Setter Property="Content" Value="Test Button"/>
@@ -328,12 +328,12 @@
 
 
 
-
             <Expander Template="{StaticResource SimpleExpanderTemp}"
-                  OverridesDefaultStyle="True"
+                  OverridesDefaultStyle="True" 
                   Header="침대"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
+                      
                   >               
 
                     <WrapPanel Name="Expd_beds"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True">
@@ -378,6 +378,7 @@
                   Header="의자"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
+                      
                   >
 
                     <WrapPanel Name="Expd_chairs"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True">
