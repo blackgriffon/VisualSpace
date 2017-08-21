@@ -114,7 +114,7 @@ namespace Packet
                     break;
 
                 case PacketType.FloorInfoPacket:
-                    header.ObjectType = PacketType.ObjectInfoPacket;
+                    header.ObjectType = PacketType.FloorInfoPacket;
                     FloorInfoPacket floorInfo = new FloorInfoPacket();
                     floorInfo.Action = FloorInfoAction.DESELECT3D;
                     floorInfo.Name = name;
@@ -147,6 +147,14 @@ namespace Packet
                     objectInfo.Action = ObjectAction.SELECT3D;
                     objectInfo.Name = name;
                     header.Data = objectInfo;
+                    break;
+
+                case PacketType.FloorInfoPacket:
+                    header.ObjectType = PacketType.FloorInfoPacket;
+                    FloorInfoPacket floorInfo = new FloorInfoPacket();
+                    floorInfo.Action = FloorInfoAction.SELECT3D;
+                    floorInfo.Name = name;
+                    header.Data = floorInfo;
                     break;
             }
 

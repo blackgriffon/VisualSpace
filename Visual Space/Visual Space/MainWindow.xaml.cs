@@ -1,5 +1,5 @@
-﻿//#define RUN_3DVIWER_IN_UNITY_EDITER
-//#define RUN_3DVIWER
+﻿#define RUN_3DVIWER_IN_UNITY_EDITER
+#define RUN_3DVIWER
 
 
 using Nollan.Visual_Space.DockingWindows;
@@ -49,7 +49,7 @@ namespace Nollan.Visual_Space
             InitializeComponent();
 
 #if RUN_3DVIWER
-            server = new WpfUnityTCPServer("127.0.0.1", 9000);
+            server = new WpfUnityTCPServer("127.0.0.1", 9010);
             server.Connect();
             server.OnReceviedCompleted += OnReceviedCompleted;
 
@@ -317,7 +317,8 @@ namespace Nollan.Visual_Space
                                     {
 
                                         SelectedRectangle = toSelect;
-                                        //TODO : 사각형 선택된 로직 넣기
+                                        DrawControlRectangleBorder(SelectedRectangle);
+
 
                                         //selectedLine.Stroke = Brushes.Red;
                                     }
@@ -326,8 +327,11 @@ namespace Nollan.Visual_Space
                                 break;
 
                             case FloorInfoPacket.FloorInfoAction.DESELECT3D:
-                                //TODO : 사각형 선택 해제된 로직 넣기
-                                SelectedRectangle = null;
+                                Dispatcher.Invoke(() =>
+                                {
+                                    DeleteControlRectangleBorder(SelectedRectangle);
+                                    SelectedRectangle = null;
+                                });
                                 break;
 
 
@@ -1019,7 +1023,6 @@ namespace Nollan.Visual_Space
 
                     Canvas.SetLeft(SelectedRectangle, prePosition.X + Rc_distanceX - (SelectedRectangle.ActualWidth / 2));
                     Canvas.SetTop(SelectedRectangle, prePosition.Y + Rc_distanceY - (SelectedRectangle.ActualHeight / 2));
-
 
                     Flag_imgMove = true; //818 여기서 트루해줘야 바닥 움직일 수 있음.
                 }
@@ -2813,8 +2816,6 @@ namespace Nollan.Visual_Space
         {
 
             mapCanvas.Children.Remove(SelectedRectangle as UIElement);
-
-
             SelectedRectangle = null;
 
         }
@@ -2992,7 +2993,7 @@ namespace Nollan.Visual_Space
 
                     //814
                     DeleteControlRectangleBorder(SelectedRectangle);
-
+                    server.Send(fillFloorInfo(SelectedRectangle, FloorInfoPacket.FloorInfoAction.DESELECT));
                     SelectedRectangle = null;
 
 
@@ -3074,11 +3075,13 @@ namespace Nollan.Visual_Space
                     if (SelectedRectangle != null)
                     {
                         DeleteControlRectangleBorder(SelectedRectangle);
+                        server.Send(fillFloorInfo(SelectedRectangle, FloorInfoPacket.FloorInfoAction.DESELECT));
                         SelectedRectangle = null;
                     }
 
                     SelectedRectangle = e.OriginalSource as Rectangle;
-                    Point prePosition = e.GetPosition(mapCanvas); //오른쪽 클릭 시작점
+                    Point prePosition = e.GetPosition(mapCanvas);
+                    server.Send(fillFloorInfo(SelectedRectangle, FloorInfoPacket.FloorInfoAction.SELECT));
 
 
                     //814 바닥 보더 생성
@@ -3151,10 +3154,17 @@ namespace Nollan.Visual_Space
                 currentRect.Height = Math.Abs(prePosition.Y - Result_StartPoint.Item2);
                 currentRect.Name = $"Object{innerObjName++}";
 
-                SetRectangleProperty();
+                if (currentRect.Width == 0 && currentRect.Height == 0)
+                {
+                    mapCanvas.Children.Remove(currentRect);
+                }
+                else
+                {
 
+                    SetRectangleProperty();
+                    server.Send(fillFloorInfo(currentRect, FloorInfoPacket.FloorInfoAction.CREATE));
+                }
 
-                server.Send(fillFloorInfo(currentRect, FloorInfoPacket.FloorInfoAction.CREATE));
                 currentRect = null;
                 isFloorClicked = false;
 
