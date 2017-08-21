@@ -39,6 +39,7 @@ namespace Nollan.Visual_Space
             Pen pen = new Pen(Brushes.IndianRed, 0.5d);
 
 
+
             for (int i = 1; i < xlineCount + 1; i++)
             {
 

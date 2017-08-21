@@ -25,17 +25,23 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using VisualSpace.UnityViewer;
+using MahApps.Metro.Controls;
+using System.Windows.Interop;
+using DockingLibrary;
+using Nollan.Visual_Space.classes;
+using System.Windows.Media.Media3D;
 
-namespace Nollan.Visual_Space 
+
+namespace Nollan.Visual_Space
 {
     /// <summary>
     /// MainWindow.xaml에 대한 상호 작용 논리
     /// </summary>
 
-   public partial class MainWindow : Window , ICloneable
+    public partial class MainWindow : MetroWindow, ICloneable
     {
-        
-                IWpfUnityTCPServer server = null;
+
+        IWpfUnityTCPServer server = null;
 
 
         public MainWindow()
@@ -51,8 +57,11 @@ namespace Nollan.Visual_Space
             server = new NullWpfUnityTCPServer();
 #endif
             this.Loaded += MainWindow_Loaded;
-
             this.Closed += MainWindow_Closed;
+
+
+
+
         }
 
         private void MainWindow_Closed(object sender, EventArgs e)
@@ -153,7 +162,36 @@ namespace Nollan.Visual_Space
                             Dispatcher.Invoke(() =>
                             {
                                 if (selectedLine != null)
+
+                                    ////815
+                                    //if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
+                                    //{
+                                    //    selectedLine.Stroke = lineBrush;
+                                    //}
+                                    //else
+                                    //{
+                                    //    selectedLine.Stroke = Brushes.Black;
+                                    //}
+
+                                //817
+                                if (ib != null)
+                                {
+                                    selectedLine.Stroke = ib;
+                                }
+                                else if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
+                                {
+                                    selectedLine.Stroke = lineBrush;
+                                }
+                                else
+                                {
                                     selectedLine.Stroke = Brushes.Black;
+                                    selectedLine.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
+                                }
+
+                                // selectedLine.Stroke = Brushes.Black;
+
+
+
                                 selectedLine = null;
 
                             });
@@ -177,7 +215,7 @@ namespace Nollan.Visual_Space
 
 
                             case ObjectInfoPacket.ObjectAction.MOVE3D:
-                                List<float> pos= convert3DObjectPosTo2DImage(objInfoPk);
+                                List<float> pos = convert3DObjectPosTo2DImage(objInfoPk);
                                 Dispatcher.Invoke(() =>
                                 {
                                     Canvas.SetLeft(obj_image, pos[0] - obj_image.ActualWidth / 2);
@@ -239,13 +277,13 @@ namespace Nollan.Visual_Space
             // 따라서 반올림을 해줘서 값을 보정한다.
             if (wallInfo.ScaleX > wallInfo.ScaleZ)
             {
-                w = (int)(Math.Round(wallInfo.ScaleX-0.2, 0)) * 20;
+                w = (int)(Math.Round(wallInfo.ScaleX - 0.2, 0)) * 20;
                 h = 0;
             }
             else
             {
                 w = 0;
-                h = (int)(Math.Round(wallInfo.ScaleZ-0.2, 0)) * 20;
+                h = (int)(Math.Round(wallInfo.ScaleZ - 0.2, 0)) * 20;
             }
 
             // 이만큼 더해주면 x1,x2 빼주면 x2, y2가된다.
@@ -295,18 +333,18 @@ namespace Nollan.Visual_Space
 
         }
 
-        
+
         void Window1_Loaded()
         {
 
             orginalWidth = this.Width;
             originalHeight = this.Height;
-            
+
             if (this.WindowState == WindowState.Maximized)
             {
                 ChangeSize(this.ActualWidth, this.ActualHeight);
             }
-            
+
             this.SizeChanged += new SizeChangedEventHandler(Window1_SizeChanged);
         }
 
@@ -318,12 +356,12 @@ namespace Nollan.Visual_Space
 
             FrameworkElement rootElement = this.Content as FrameworkElement;
             rootElement.LayoutTransform = scale;
-        }        
+        }
 
-#endregion
+        #endregion
 
 
-   
+
 
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -346,10 +384,15 @@ namespace Nollan.Visual_Space
             //   Window1_Loaded(); //리사이징 코드
             //----//
 
-           
+            //818
+            initActualWidth = mapCanvas.ActualWidth; // 맥시마이즈 시작시 맵캔버스의 렌더링 사이즈 초기값 저장
+            initActualHeight = mapCanvas.ActualHeight;
+            drawCircle(); //유니티 뷰어 중심점 표시
+
+
             checkCanvasWidthCount();
             showSubPanel(); //왼쪽 오른쪽 UI 띄우기
-            
+
 
 
         }
@@ -357,28 +400,57 @@ namespace Nollan.Visual_Space
 
         DockingWindows.ListWindow listWindow;
         DockingWindows.ObjectWindow objWindowDocking;
+        DockingWindows.ColorWindow colorWindow;
         public void showSubPanel()
         {
             //0731추가-----
             //set window parent for dragging operations
-            ListDockManager.ParentWindow = this;
+          //  ListDockManager.ParentWindow = this;
             ExpenderDockManager.ParentWindow = this;
 
             listWindow = new DockingWindows.ListWindow();
             listWindow.call_mainwindow = this; // 자식폼에서 부모폼을 등록??? 자식에서 부모에게 갑 전달 실험용.
-
-
-            listWindow.DockManager = ListDockManager;            
-            listWindow.Show(Dock.Top);
+            listWindow.DockManager = ExpenderDockManager;// ListDockManager;            
+                                                         // listWindow.Show(Dock.Top);
 
 
             objWindowDocking = new DockingWindows.ObjectWindow();
             objWindowDocking.DockManager = ExpenderDockManager;
-            objWindowDocking.Show(Dock.Top);
+
+            colorWindow = new DockingWindows.ColorWindow();
+            colorWindow.Call_MainWindow = this;
+            colorWindow.DockManager = ExpenderDockManager;
+
+
+          
+            listWindow.ShowAsDocument();
+            objWindowDocking.ShowAsDocument();
+            colorWindow.ShowAsDocument();
+
+
+            //  Show(Dock.Top);
             //-------//
+            ;            /*
+             
+             //set window parent for dragging operations
+        dockManager.ParentWindow = this;
+
+        //Show PropertyWindow docked to the top border
+        propertyWindow.DockManager = dockManager;
+        propertyWindow.Show(Dock.Top);
+
+        //Show ExplorerWindow docked to the right border as default
+        explorerWindow.DockManager = dockManager;
+        explorerWindow.Show();
+
+        //Show ListWindow in documents pane
+        listWindow.DockManager = dockManager;
+        listWindow.ShowAsDocument();             
+             */
+
         }
 
-      
+
 
         public static List<Point> ListRenderPoint = new List<Point>();//각 꼭지점 좌표를 기억하는 리스트
 
@@ -393,16 +465,20 @@ namespace Nollan.Visual_Space
         //선 증가 감소 플래그
         public bool linePlusMinus_Check;
 
+        double initActualWidth; //처음 시작시 사용자의 맥시마이즈 캔버스 초기값
+        double initActualHeight; //처음 시작시 사용자의 맥시마이즈 캔버스 초기값
+
         bool bMouseDown = false;
-        bool bLine_check = false;
+        bool bLine_check = false; //선 그리기 플래그
         Point stPoint;
         Point curPoint;
         Line line;
         int _gridSize = 20; //캔버스 격자 간격 변수. 이걸 바꾸면 MapCanvas의 거도 바꿔줘야함.
+        bool Flag_ImageOneClick = false;
 
 
 
-        
+
 
 
 
@@ -413,18 +489,18 @@ namespace Nollan.Visual_Space
          --x와 y 둘 다 %40이 0일 때 꼭지점이 성립한다?
          --점들에 대한 정보를 리스트 안에 기록 후 >> 
          --foreach를 통해 유저가 입력한 마우스 값과 비교하여 가장 가까운 점을 매칭시켜 그 점을 stPoint로 지정한다.
-            
+
 
          (0 0)   (40 0)  (80 0)   (120 0)
          (0 40)  (40 40) (80 40)  (120 40)
          (0 80)  (40 80) (80 80)  (120 80) 
          (0 120) (40 120 (80 120) (120 120)
-            
+
          1. 격자선의 꼭지점.(마우스다운 이벤트 시 좌표검사로 가장 가까운 꼭지점 부분으로 이동? 
          2. 선 이동시 x1은 꼭지점에 위치해야 함. 가장 가까운 꼭지점으로 x1 과 x2를 이동시킨다? 예외처리는 어떻게?             
              */
 
-   
+
 
 
         //로그 찍는 함수
@@ -448,12 +524,57 @@ namespace Nollan.Visual_Space
 #endif
         }
 
-     
+        public Brush lineBrush;
+        public ImageBrush ib;
+        public string Wallpaper_imgFilePath; //컬러창에서 받은 이미지 경로. 이걸로 유니티에서 월페이어 정보를 얻을 수 있다.
+        //817
+        public void ChangeImgBrush(BitmapImage bitmap, string Receive_WallpaperPath)
+        {
+            ib = new ImageBrush(bitmap);
+            Wallpaper_imgFilePath = Receive_WallpaperPath;
+
+        }
+        public void DeleteImgBrush()
+        {
+            if (ib != null)
+            {
+                ib = null;
+                Wallpaper_imgFilePath = null;
+            }
+
+        }
+
+
+        //820
+        public string Floor_imgFilePath; //유니티로 보낼 바닥 파일 경로
+        public ImageBrush Floorib;        // 이미지 브러시를 통해 바닥의 이미지를 바꾼다.
+        public void ChangeFloorImgBrush(BitmapImage bitmap, string Receive_FloorFilePath)
+        {
+            Floorib = new ImageBrush(bitmap);
+            Floorib.TileMode = TileMode.Tile; //821 타일로 반복하게
+            Floor_imgFilePath = Receive_FloorFilePath;
+
+        }
+        public void DeleteFloorImgBrush()
+        {
+            if (Floorib != null)
+            {
+                Floorib = null;
+                Floor_imgFilePath = null;
+            }
+
+        }
+
         //마우스다운시
         private void MapCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
 
-            // e.OriginalSource가 캔버스일때는 선택되지 않은 거니깐 null로 한다.
+
+            //816
+            MakeFloor_ClickDOWN(sender, e); //바닥 생성
+
+
+
 
 
             // 선을 그리는 경우 마우스다운시
@@ -477,7 +598,58 @@ namespace Nollan.Visual_Space
                 line.Y2 = Result_StartPoint.Item2;
 
 
-                line.Stroke = Brushes.Black;
+
+
+                //815 리니어그라디언트브러시
+                //LinearGradientBrush lgb = new LinearGradientBrush();
+                //lgb.StartPoint = new Point(0, 0.5);
+                //lgb.EndPoint = new Point(1, 0.5);
+                //lgb.GradientStops.Add(new GradientStop(Colors.Yellow, 0.0));
+                //lgb.GradientStops.Add(new GradientStop(Colors.Red, 0.25));
+                //lgb.GradientStops.Add(new GradientStop(Colors.Blue, 0.75));
+                //lgb.GradientStops.Add(new GradientStop(Colors.Yellow, 1.0));
+                // line.Stroke = lgb;
+
+
+
+
+                // System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap("..\\..\\icons\tiles\\linetile1.png");
+
+                //  ImageBrush ib = new ImageBrush( new BitmapImage(new Uri("D:/winshare/mainproject/VisualSpace/Visual Space/Visual Space/icons/tiles/linetile1.png", UriKind.Absolute)  ));
+
+                //pack://application:,,,/Resources/MyImage.png
+                //AppDomain.CurrentDomain.BaseDirectory+$"../../../pictures/{_ObjectType}/convert/{_ObjectType}.png";
+
+                /*
+                      myImage3 = new Image();
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+            bi3.UriSource = new Uri($"../../pictures/{txt}.PNG", UriKind.Relative);
+            bi3.EndInit(); 
+                 */
+
+                //817
+                if (ib != null)
+                {
+                    ib.AlignmentX = AlignmentX.Center;
+                    ib.AlignmentY = AlignmentY.Center;
+                    ib.Stretch = Stretch.UniformToFill;
+                    line.Stroke = ib;
+
+                }
+                else if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
+                {
+                    line.Stroke = lineBrush;                                        
+                }
+                else
+                {
+                    line.Stroke = Brushes.Black;
+                    line.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
+                }
+
+
+                //line.Stroke = Brushes.Black;
+
                 line.StrokeThickness = 6;
                 line.Name = $"Line_{i++}";
                 mapCanvas.Children.Add(line);
@@ -486,7 +658,7 @@ namespace Nollan.Visual_Space
 
             // 선 그리기가 아닐때는 어떠한 오브젝트가 선택되었는지 확인한다.
             // 우선 Line 선택되었는지 확인한다.
-           else 
+            else
             {
 
                 //0731추가------
@@ -497,7 +669,38 @@ namespace Nollan.Visual_Space
                     {
                         // 선택해재 정보 전송
                         server.Send(PacketFactory.MakeDeselect(selectedLine.Name));
-                        selectedLine.Stroke = Brushes.Black;
+
+                        ////815
+                        //if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
+                        //{
+                        //    selectedLine.Stroke = lineBrush;
+                        //}
+                        //else
+                        //{
+                        //    selectedLine.Stroke = Brushes.Black;
+                        //}
+
+
+                        //817
+                        if (ib != null)
+                        {
+                            selectedLine.Stroke = ib;
+                        }
+                        else if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
+                        {
+                            selectedLine.Stroke = lineBrush;
+                        }
+                        else
+                        {
+                            selectedLine.Stroke = Brushes.Black;
+                            selectedLine.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
+                        }
+
+
+
+                        //  selectedLine.Stroke = Brushes.Black;
+
+
                         selectedLine = null; //선택된 선 해제.
 
                         /*
@@ -515,7 +718,7 @@ namespace Nollan.Visual_Space
                 //{
                 //    server.Send(fillObjectInfo(obj_image, ObjectInfoPacket.ObjectAction.DESELECT));
 
-                   
+
                 //    obj_image = null;
 
                 //}
@@ -532,11 +735,10 @@ namespace Nollan.Visual_Space
                     obj_image = null;
                 }
 
-                // 둘다 아니면 선을 그리는 행동이라고 본다.
-
-                if (e.OriginalSource.GetType() == typeof(Line)) //클릭했을 시 오리지널소스가 Line일 경우
-                { 
-                                                                //버블링되서 윈도우가 받게 되는 핸들을 형변환.
+                // 선 클릭                                         //817 바닥 생성이 Off일 때 조건 추가
+                if (e.OriginalSource.GetType() == typeof(Line) && !Flag_isCheckedFloor) //클릭했을 시 오리지널소스가 Line일 경우
+                {
+                    //버블링되서 윈도우가 받게 되는 핸들을 형변환.
                     line = e.OriginalSource as Line;
 
                     if (line != null)
@@ -556,7 +758,7 @@ namespace Nollan.Visual_Space
                         if (Ch_linePlusMinus.IsChecked == true)
                         {
 
-                            writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스다운-세퍼레이트라인처리 전");
+                            // writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스다운-세퍼레이트라인처리 전");
                             Result_separateLine = separateLine(line.X1, line.Y1, line.X2, line.Y2); //수평인지 수직선인지 구별하는 함수
                                                                                                     //수평 ture, 수직 false
 
@@ -576,8 +778,8 @@ namespace Nollan.Visual_Space
                         }
                     }
                 }
-                //  Object(Image)가 선택되었는지 확인한다.
-                else if (e.OriginalSource.GetType() == typeof(Image)) // 클릭했을 때 original source가 image인 경우
+                //  Object(Image)가 선택되었는지 확인한다. //817 바닥생성 on일 경우 이미지 움직이지 않음.
+                else if (e.OriginalSource.GetType() == typeof(Image) && !Flag_isCheckedFloor) // 클릭했을 때 original source가 image인 경우
                 {
                     obj_image = e.OriginalSource as Image; //현재 클릭된 이미지를 기억?
                                                            // MessageBox.Show("이미지");
@@ -588,27 +790,30 @@ namespace Nollan.Visual_Space
                     if (obj_image != null)
                     {
                         imageClick = true;
-                                           
+
+                        //818
+                        Flag_ImageOneClick = true;
+
                         txtBox.Text = obj_image.Name;
 
                         server.Send(fillObjectInfo(obj_image, ObjectInfoPacket.ObjectAction.SELECT));
 
 
-
+                        
                         // e
 
                         DrawControlBorder(obj_image); //이미지 클릭하면 보더생김.
 
-                    }                    
+                    }
 
-                    
+
 
                     //  MessageBox.Show((obj_image.Name).ToString());
 
                 }
 
             }
-           
+
 
 
 
@@ -629,7 +834,7 @@ namespace Nollan.Visual_Space
                 //좌표를 표시한다.
                 // this.tbPosition.Text = string.Format("마우스 좌표 : [{0},{1}]", currnetPosition.X, currnetPosition.Y);
                 //마우스 왼쪽 버튼이 눌려있으면
-                if (e.MouseDevice.RightButton == MouseButtonState.Pressed)
+                if (e.MouseDevice.LeftButton == MouseButtonState.Pressed)
                 {
 
                     if (currentRect != null)
@@ -637,34 +842,75 @@ namespace Nollan.Visual_Space
                         //사각형이 나타날 기준점을 설정한다. 처음 마우스오른쪽 이벤트 발생지점.
                         double left = prePosition.X;
                         double top = prePosition.Y;
+
+
                         //마우스의 위치에 따라 적절히 기준점을 변경한다.
-                        if (prePosition.X > currnetPosition.X)
-                        {
-                            left = currnetPosition.X;
-                        }
-                        if (prePosition.Y > currnetPosition.Y)
-                        {
-                            top = currnetPosition.Y;
-                        }
+                        //if (prePosition.X > currnetPosition.X && prePosition.Y > currnetPosition.Y)
+                        //{
+
+                        //    /*  프리 > 현재점 */
+
+                        //    if (prePosition.X > currnetPosition.X)
+                        //    {
+
+                        //        double distanceX = Math.Abs(left - currnetPosition.X);
+                        //        currentRect.Width = currnetPosition.X + distanceX;
+
+                        //      //  prePosition.X = currnetPosition.X;
+                               
+
+                        //    }
+                        //    if (prePosition.Y > currnetPosition.Y)
+                        //    {
+
+                        //        double distanceX = Math.Abs(left - currnetPosition.Y);
+                        //        currentRect.Height = currnetPosition.Y + distanceX;
+
+                        //      //  prePosition.Y = currnetPosition.Y;
+                            
+
+                        //    }
+
+                        //    Canvas.SetLeft(currentRect, currnetPosition.X);
+                        //    Canvas.SetTop(currentRect, currnetPosition.Y);
+                           
+                        //    return;
+                        //}
+                        
+
+
 
 
                         //사각형의 크기를 설정한다. 음수가 나올 수 없으므로 절대값을 취해준다.
-                        currentRect.Width = Math.Abs(prePosition.X - currnetPosition.X);
-                        currentRect.Height = Math.Abs(prePosition.Y - currnetPosition.Y);
+                     //   currentRect.Width = Math.Abs(prePosition.X - currnetPosition.X);
+                     //   currentRect.Height = Math.Abs(prePosition.Y - currnetPosition.Y);
+
+                        //816 바닥 최소 범위(_gridSize 이하로 내려가지 않도록)
+                        double AbsX = Math.Abs(prePosition.X - currnetPosition.X);
+                        double AbsY = Math.Abs(prePosition.Y - currnetPosition.Y);
+
+                        if (AbsX < _gridSize)
+                        {
+                            currentRect.Width = _gridSize;
+                        }
+                        else
+                        {
+                            currentRect.Width = AbsX;
+                        }
+
+                        if (AbsY < _gridSize)
+                        {
+                            currentRect.Height = _gridSize;
+                        }
+                        else
+                        {
+                            currentRect.Height = AbsY;
+                        }
+                        
 
                         Canvas.SetLeft(currentRect, prePosition.X);
                         Canvas.SetTop(currentRect, prePosition.Y);
 
-                        //   Canvas.SetLeft(currentRect, Math.Abs(prePosition.X - currnetPosition.X) );
-                        //  Canvas.SetTop(currentRect, Math.Abs(prePosition.Y - currnetPosition.Y) );
-
-
-
-                        //사각형의 위치 기준점(Margin)을 설정한다
-                        // currentRect.Margin = new Thickness(left, top, 0, 0);
-
-                        //  currentRect.Width = Math.Abs(prePosition.X - currnetPosition.X);
-                        //   currentRect.Height = Math.Abs(prePosition.Y - currnetPosition.Y);
                     }
                 }
 
@@ -672,23 +918,22 @@ namespace Nollan.Visual_Space
             //812
             else //( !Flag_isCheckedFloor ) //바닥 생성 버튼이 꺼져있다면? 이동을 의미
             {
-                if (e.MouseDevice.RightButton == MouseButtonState.Pressed && e.MouseDevice.LeftButton == MouseButtonState.Released) //왼쪽은 안눌렸고 오른쪽만 눌렸을 때
+                if (e.MouseDevice.LeftButton == MouseButtonState.Pressed
+                    && SelectedRectangle != null && !Flag_isCheckedFloor && Flag_ImageOneClick) //왼쪽 눌렸을 때 , 818 플래그 추가
                 {
                     Point Rc_CurPoint = e.GetPosition(mapCanvas);
 
-                    double Rc_distanceX = Rc_CurPoint.X - prePosition.X ;
+                    double Rc_distanceX = Rc_CurPoint.X - prePosition.X;
                     double Rc_distanceY = Rc_CurPoint.Y - prePosition.Y;
-                    
+
+                    Canvas.SetLeft(SelectedRectangle, prePosition.X + Rc_distanceX - (SelectedRectangle.ActualWidth / 2));
+                    Canvas.SetTop(SelectedRectangle, prePosition.Y + Rc_distanceY - (SelectedRectangle.ActualHeight / 2));
 
 
-                    Canvas.SetLeft(SelectedRectangle, prePosition.X + Rc_distanceX - (SelectedRectangle.ActualWidth / 2) );
-                    Canvas.SetTop(SelectedRectangle, prePosition.Y + Rc_distanceY - (SelectedRectangle.ActualHeight / 2) );
-
-                  
+                    Flag_imgMove = true; //818 여기서 트루해줘야 바닥 움직일 수 있음.
                 }
             }
-
-
+          
 
 
 
@@ -704,6 +949,29 @@ namespace Nollan.Visual_Space
                     curPoint = TranslatePointToCanvas(e, mapCanvas);
                     line.X2 = curPoint.X;
                     line.Y2 = curPoint.Y;
+
+
+                    //815
+                    //if (Math.Abs(line.X1 - line.X2) > Math.Abs(line.Y1 - line.Y2)) //x의 차이가 더 크면 수평
+                    //{
+                    //    ImageBrush ib = new ImageBrush(new BitmapImage(
+                    //        new Uri("D:/winshare/mainproject/VisualSpace/Visual Space/Visual Space/icons/tiles/linetile1_h.png", UriKind.Absolute)));
+                    //  //  ib.TileMode = TileMode.Tile;
+                    //    ib.Stretch = Stretch.None;
+                    //    line.Stroke = ib;
+
+                    //}
+                    //if (Math.Abs(line.X1 - line.X2) < Math.Abs(line.Y1 - line.Y2)) //x의 차이가 더 크면 수평
+                    //{
+                    //    ImageBrush ib = new ImageBrush(new BitmapImage(
+                    //        new Uri("D:/winshare/mainproject/VisualSpace/Visual Space/Visual Space/icons/tiles/linetile1.png", UriKind.Absolute)));
+                    //    //ib.TileMode = TileMode.Tile;
+                    //    ib.Stretch = Stretch.None;
+                    //    line.Stroke = ib;
+
+                    //}
+
+
 
                 }
                 // 선그리기 가 아닐때
@@ -752,7 +1020,7 @@ namespace Nollan.Visual_Space
                     }
 
                     // 선 이동시킬 때(마우스무브)
-                    if (line != null && !linePlusMinus_Check)
+                    if (line != null && !linePlusMinus_Check && !Flag_isCheckedFloor) //816 바닥 생성 플래그가 false일 때. 
                     {
                         // 이동할 거리
                         double movX = curPoint.X - stPoint.X;
@@ -773,42 +1041,53 @@ namespace Nollan.Visual_Space
             }
             else //imageClick = true 일 때
             {
-
-                ObjConvertImageInfo oci = (ObjConvertImageInfo)obj_image.Tag;
-                
-             
-
-
-                Canvas.SetLeft(obj_image, e.GetPosition(mapCanvas).X - obj_image.ActualWidth/2);
-                Canvas.SetTop(obj_image, e.GetPosition(mapCanvas).Y - obj_image.ActualHeight/2);
-
-
-                //811
-                if (oci.ObjectType == "doors" || oci.ObjectType == "windows")
+                //817 바닥생성 플래그가 off 상태여야 이미지 움직일 수 있음
+                if (obj_image != null && !Flag_isCheckedFloor && Flag_ImageOneClick == true) //816 이거 안하면 이미지 클릭 삭제 하다보면 오류 뜸
                 {
-                    Point windoorClickPoint = new Point(e.GetPosition(mapCanvas).X, e.GetPosition(mapCanvas).Y); //마우스현재좌표 얻어오기
-                    Point bitSize = new Point(obj_image.ActualWidth, obj_image.ActualHeight);
-                    WindowDoorPointSearching(obj_image, bitSize, windoorClickPoint);
-                }
-               
+                    ObjConvertImageInfo oci = (ObjConvertImageInfo)obj_image.Tag;
 
+                    //818
+                    Flag_imgMove = true;
+
+                    Canvas.SetLeft(obj_image, e.GetPosition(mapCanvas).X - obj_image.ActualWidth / 2);
+                    Canvas.SetTop(obj_image, e.GetPosition(mapCanvas).Y - obj_image.ActualHeight / 2);
+
+
+                    //811
+                    if (oci.ObjectType == "doors" || oci.ObjectType == "windows")
+                    {
+                        Point windoorClickPoint = new Point(e.GetPosition(mapCanvas).X, e.GetPosition(mapCanvas).Y); //마우스현재좌표 얻어오기
+                        Point bitSize = new Point(obj_image.ActualWidth, obj_image.ActualHeight);
+                        WindowDoorPointSearching(obj_image, bitSize, windoorClickPoint);
+                    }
+
+                }
 
             }
 
 
-
+            
 
 
         }
 
-
+        bool Flag_imgMove = false;
 
         private void MapCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+
+            //816
+            MakeFloor_ClickUP(sender, e); //바닥 생성 or 이동 쪽 로직
+
+
+
+
+
+
             if (!imageClick) //imageClick == false
             {
 
-#region 일반적인 선 그리기
+                #region 일반적인 선 그리기
                 //선 그리기 로직 - 일반적인 선 그리기
                 if (bMouseDown && bLine_check)
                 {
@@ -926,9 +1205,9 @@ namespace Nollan.Visual_Space
 
 
                 }
-#endregion
+                #endregion
 
-#region 선 그리기 아닐 때(이동 및 축소확대)
+                #region 선 그리기 아닐 때(이동 및 축소확대)
                 else // 선 그리기 아닐 때(이동 및 축소확대)
                 {
                     curPoint = TranslatePointToCanvas(e, mapCanvas);
@@ -1081,32 +1360,39 @@ namespace Nollan.Visual_Space
 
 
                 }
-#endregion
+                #endregion
 
             }
             else //imageClick == true
             {
                 imageClick = false;
-
-                Canvas.SetLeft(obj_image, e.GetPosition(mapCanvas).X - obj_image.ActualWidth / 2);
-                Canvas.SetTop(obj_image, e.GetPosition(mapCanvas).Y - obj_image.ActualHeight / 2);
-
-
-
-                //811
-                ObjConvertImageInfo oci = (ObjConvertImageInfo)obj_image.Tag;             
                 
-                if (oci.ObjectType == "doors" || oci.ObjectType == "windows")
+
+                if (obj_image != null && Flag_imgMove) //816 오류방지, 818 플래그 추가하여 이미지 클릭시 움직이지 않게.(무브해야 플래그 트루됨)
                 {
-                    Point windoorClickPoint = new Point(e.GetPosition(mapCanvas).X, e.GetPosition(mapCanvas).Y); //마우스현재좌표 얻어오기
-                    Point bitSize = new Point(obj_image.ActualWidth, obj_image.ActualHeight);
-                    WindowDoorPointSearching(obj_image, bitSize, windoorClickPoint);
+                    Canvas.SetLeft(obj_image, e.GetPosition(mapCanvas).X - obj_image.ActualWidth / 2);
+                    Canvas.SetTop(obj_image, e.GetPosition(mapCanvas).Y - obj_image.ActualHeight / 2);
+
+
+
+                    //811
+                    ObjConvertImageInfo oci = (ObjConvertImageInfo)obj_image.Tag;
+
+                    if (oci.ObjectType == "doors" || oci.ObjectType == "windows")
+                    {
+                        Point windoorClickPoint = new Point(e.GetPosition(mapCanvas).X, e.GetPosition(mapCanvas).Y); //마우스현재좌표 얻어오기
+                        Point bitSize = new Point(obj_image.ActualWidth, obj_image.ActualHeight);
+                        WindowDoorPointSearching(obj_image, bitSize, windoorClickPoint);
+                    }
+
+
+                    server.Send(fillObjectInfo(obj_image, ObjectInfoPacket.ObjectAction.MOVE));
+
+
+                    Flag_ImageOneClick = false; //818
+                    Flag_imgMove = false; //818
+                    //obj_image = null;
                 }
-
-
-                server.Send(fillObjectInfo(obj_image, ObjectInfoPacket.ObjectAction.MOVE));
-
-                //obj_image = null;
             }
 
         }
@@ -1116,10 +1402,10 @@ namespace Nollan.Visual_Space
         {
 
             for (int i = 0; i < 6; i++)
-            { 
-            Categori cate = new Categori();
-            var image = cate.Content as Image;
-            image.Name = "chair" + "i";
+            {
+                Categori cate = new Categori();
+                var image = cate.Content as Image;
+                image.Name = "chair" + "i";
                 // Byte[] result_ByteImage = GetBytesFromImageFile($"../../pictures/{image.Name}.png");
                 // string str = Convert.ToString(result_ByteImage);
 
@@ -1155,7 +1441,7 @@ namespace Nollan.Visual_Space
             BitmapImage bi3 = new BitmapImage();
             bi3.BeginInit();
             bi3.UriSource = new Uri($"../../pictures/{txt}.PNG", UriKind.Relative);
-            bi3.EndInit();          
+            bi3.EndInit();
 
             return bi3;
 
@@ -1195,11 +1481,11 @@ namespace Nollan.Visual_Space
             }
 
             return null;
-            
+
         }
 
 
-#region Byte로 된 이미지를 연결하는 방법
+        #region Byte로 된 이미지를 연결하는 방법
         //Byte로 된 이미지를 연결하는 방법. FileStream과 비슷한 방법으로 사용하면 됨. 대신 MemoryStream을 사용하면 됨
         public void GetCardImage(Byte[] imageBytes, object obj)
         {
@@ -1224,11 +1510,11 @@ namespace Nollan.Visual_Space
                 }
             }
 
-            ms.Close();            
+            ms.Close();
 
 
         }
-#endregion
+        #endregion
 
 
 
@@ -1252,8 +1538,8 @@ namespace Nollan.Visual_Space
                     // 계산
                     // 2d 좌표 기준으로 200 / 200 센터로 지정한다.
 
-                    float xc = (float)Canvas.GetLeft(img)- zeroPos + (float)img.ActualWidth / 2;
-                    float yc = ((float)Canvas.GetTop(img)- zeroPos + (float)img.ActualHeight / 2) * -1;
+                    float xc = (float)Canvas.GetLeft(img) - zeroPos + (float)img.ActualWidth / 2;
+                    float yc = ((float)Canvas.GetTop(img) - zeroPos + (float)img.ActualHeight / 2) * -1;
 
 
                     objectInfo.PosX = xc / 20;
@@ -1311,7 +1597,7 @@ namespace Nollan.Visual_Space
                     wallInfo.ScaleZ = h / 20;
 
                     if (wallInfo.ScaleX == 0)
-                    { 
+                    {
                         wallInfo.ScaleX = wallThickness;
                         wallInfo.ScaleZ += wallThickness;
                     }
@@ -1330,7 +1616,7 @@ namespace Nollan.Visual_Space
 
         }
 
-     
+
 
         public void moveParallelLIne(bool Result_separateLine, double _moveDistanceX2, double _moveDistanceY2)
         {
@@ -1634,7 +1920,35 @@ namespace Nollan.Visual_Space
 
                 if (selectedLine != null) //이전에 선택한 선이 있다면. else1 한 번 거치면 무조건 이쪽으로 와야함.
                 {
-                    selectedLine.Stroke = Brushes.Black;
+                    //selectedLine.Stroke = Brushes.Black;
+
+
+                    ////815
+                    //if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
+                    //{
+                    //    selectedLine.Stroke = lineBrush;
+                    //}
+                    //else
+                    //{
+                    //    selectedLine.Stroke = Brushes.Black;
+                    //}
+
+                    //817
+                    if (ib != null)
+                    {
+                        selectedLine.Stroke = ib;
+                    }
+                    else if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
+                    {
+                        selectedLine.Stroke = lineBrush;
+                    }
+                    else
+                    {
+                        selectedLine.Stroke = Brushes.Black;
+                        selectedLine.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
+                    }
+
+
                     server.Send(PacketFactory.MakeDeselect(selectedLine.Name));
 
                     line.Stroke = Brushes.Red;
@@ -1651,15 +1965,68 @@ namespace Nollan.Visual_Space
 
         }
 
-        
 
-       
+
+        public bool Flag_isCheckedFloor = false;
+        private void Toggle_Floor_Checked(object sender, RoutedEventArgs e)
+        {
+           // Flag_isCheckedFloor = true;
+           
+
+            if (Flag_isCheckedFloor == false)
+            {
+                Flag_isCheckedFloor = true;
+
+
+                //816
+                if (bLine_check) // 바닥 생성이 켜져있는데 선그리기도 켜져있으면 바닥 생성 해제
+                {
+                    Ch_line.IsChecked = false;
+                    bLine_check = false;
+
+                }
+                else if (linePlusMinus_Check)
+                {
+
+                    Ch_linePlusMinus.IsChecked = false;
+                    linePlusMinus_Check = false;                    
+
+                }
+
+
+            }
+            else //Flag_isCheckedFloor == true
+            {
+                Flag_isCheckedFloor = false;
+            }
+
+
+        }
+
+        private void Toggle_Floor_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+            Flag_isCheckedFloor = false;
+
+        }
+
 
         private void Ch_line_Checked(object sender, RoutedEventArgs e)
         {
             if (bLine_check == false)
             {
                 bLine_check = true;
+
+
+                //816
+                if (Flag_isCheckedFloor) // 바닥 생성이 켜져있는데 선그리기도 켜져있으면 바닥 생성 해제
+                {
+                    Toggle_Floor.IsChecked = false;
+                    Flag_isCheckedFloor = false;
+                    
+                }
+
+
             }
             else //bLine_check == true
             {
@@ -1679,6 +2046,9 @@ namespace Nollan.Visual_Space
             if (Ch_line.IsEnabled && Ch_linePlusMinus.IsEnabled)
             {
                 Ch_line.IsChecked = false;
+
+                //816
+                Toggle_Floor.IsChecked = false;
             }
 
             linePlusMinus_Check = true;
@@ -1696,9 +2066,9 @@ namespace Nollan.Visual_Space
         }
 
 
-      
 
 
+        //817 자믈에서 호출 지움. 
         public void mapCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
 
@@ -1706,8 +2076,8 @@ namespace Nollan.Visual_Space
             double canvasWidth = e.NewSize.Width;
             double canvasHeight = e.NewSize.Height;
 
-            mapCanvas.Width = canvas_TotalWidth;
-            mapCanvas.Height = canvas_TotalHeight;
+       //     mapCanvas.Width = canvas_FirstWidth;
+        //    mapCanvas.Height = canvas_FirstHeight;
 
             //x축 그려질 개수 구하기
             var xlineCount = Math.Round(this.ActualWidth / _gridSize);
@@ -1775,7 +2145,7 @@ namespace Nollan.Visual_Space
 
         }
 
-      
+
 
 
         private void ScViewer_canvas_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -1786,24 +2156,24 @@ namespace Nollan.Visual_Space
             scViewer_Height = e.NewSize.Height;
 
             // //리사이징 될 때 기억해놓은 액츄얼 사이즈와 변경된 e.width를 비교하여 처음 기억한 값보다 작을 때 대입해준다. 그러면 캔버스가 원래 가지고 있던 값대로 되서 스크롤바 상태가 커질 것.
-            //if (e.NewSize.Width <= canvas_TotalWidth)
+            //if (e.NewSize.Width <= canvas_FirstWidth)
             // { 
 
-            // mapCanvas.Width = canvas_TotalWidth;
-            // mapCanvas.Height = canvas_TotalHeight;
+            // mapCanvas.Width = canvas_FirstWidth;
+            // mapCanvas.Height = canvas_FirstHeight;
 
 
 
 
-            //     MessageBox.Show(string.Format("width {0}, height {1}", canvas_TotalWidth, canvas_TotalHeight));
+            //     MessageBox.Show(string.Format("width {0}, height {1}", canvas_FirstWidth, canvas_FirstHeight));
             //     return;
             // }
 
             // double canvasWidth = e.NewSize.Width; //현재 스크롤뷰어의 크기만큼 대입됨.
             // double canvasHeight = e.NewSize.Height;
 
-            // canvas_TotalWidth = canvasWidth;
-            // canvas_TotalHeight = canvasHeight;
+            // canvas_FirstWidth = canvasWidth;
+            // canvas_FirstHeight = canvasHeight;
 
 
             // mapCanvas.Width = canvasWidth;
@@ -1820,8 +2190,8 @@ namespace Nollan.Visual_Space
 
         double scViewer_Width; //스크롤뷰어 위스
         double scViewer_Height;
-        double canvas_TotalWidth = 1400; //실행시 캔버스가 처음 가지는 넓이로 초기화
-        double canvas_TotalHeight = 800; //실행시 캔버스가 처음 가지는 높이로 초기화
+      //  double canvas_FirstWidth = 1400; //실행시 캔버스가 처음 가지는 넓이로 초기화
+      //  double canvas_FirstHeight = 800; //실행시 캔버스가 처음 가지는 높이로 초기화
         int btn_clickWidthCount = 0;
         int btn_clickHeightCount = 0;
         int plusCellDistance = 80;
@@ -1829,25 +2199,25 @@ namespace Nollan.Visual_Space
         private void btn_PlusWidthHeight_Click(object sender, RoutedEventArgs e)
         {
 
-          
+
 
             ++btn_clickWidthCount;
             ++btn_clickHeightCount;
 
+            //817 맵캔버스 2배씩 증가되는 거 수정
+            mapCanvas.Width = initActualWidth + (plusCellDistance * btn_clickWidthCount);
+            mapCanvas.Height = initActualHeight + (plusCellDistance * btn_clickHeightCount);
 
-            canvas_TotalWidth = mapCanvas.Width + (plusCellDistance * btn_clickWidthCount);
-            canvas_TotalHeight = mapCanvas.Height + (plusCellDistance * btn_clickHeightCount);
 
-
-            mapCanvas.Width = canvas_TotalWidth;
-            mapCanvas.Height = canvas_TotalHeight;
+         //   mapCanvas.Width = canvas_FirstWidth;
+          //  mapCanvas.Height = canvas_FirstHeight;
 
             checkCanvasWidthCount();
 
             btn_PlusWidthHeight.IsChecked = false;
         }
 
-     
+
 
         public void checkCanvasWidthCount()
         {
@@ -1856,7 +2226,7 @@ namespace Nollan.Visual_Space
                 btn_MinusWidhtHeight.IsEnabled = false;
 
             }
-            else if(btn_clickWidthCount > 0) //0보다 클 경우
+            else if (btn_clickWidthCount > 0) //0보다 클 경우
             {
                 btn_MinusWidhtHeight.IsEnabled = true;
             }
@@ -1866,17 +2236,17 @@ namespace Nollan.Visual_Space
 
         private void btn_MinusWidhtHeight_Click(object sender, RoutedEventArgs e)
         {
-            
-            canvas_TotalWidth = mapCanvas.Width - (plusCellDistance * btn_clickWidthCount);
-            canvas_TotalHeight = mapCanvas.Height - (plusCellDistance * btn_clickHeightCount);
+
+            mapCanvas.Width = mapCanvas.Width - (plusCellDistance * 1);
+            mapCanvas.Height = mapCanvas.Height - (plusCellDistance * 1);
 
             --btn_clickWidthCount;
             --btn_clickHeightCount;
 
-          
 
-            mapCanvas.Width = canvas_TotalWidth;
-            mapCanvas.Height = canvas_TotalHeight;
+
+           // mapCanvas.Width = canvas_FirstWidth;
+           // mapCanvas.Height = canvas_FirstHeight;
 
             if (btn_clickWidthCount <= 0 && btn_clickHeightCount <= 0)
             {
@@ -1890,17 +2260,17 @@ namespace Nollan.Visual_Space
 
         }
 
-       
+
         public void control_MouseEnter(object sender, MouseEventArgs e)
         {
-           // timer1.Stop();
+            // timer1.Stop();
             Cursor = Cursors.Cross;
         }
 
         public void control_MouseLeave(object sender, EventArgs e)
         {
             Cursor = Cursors.Arrow;
-           // timer1.Start();
+            // timer1.Start();
         }
 
         private void Convertimg_MouseLeave(object sender, MouseEventArgs e)
@@ -1912,14 +2282,14 @@ namespace Nollan.Visual_Space
         {
             Cursor = Cursors.Hand;
         }
-      
+
 
 
         //마우스가 격자 캔버스 밖으로 나가도 다시 캔버스 안으로 돌아오면 마우스 이벤트 다시 연결시킴.
         public void mapCanvas_LostMouseCapture(object sender, MouseEventArgs e)
         {
-            if(sender is Line)
-            ((Line)sender).ReleaseMouseCapture();
+            if (sender is Line)
+                ((Line)sender).ReleaseMouseCapture();
         }
 
 
@@ -1974,7 +2344,7 @@ namespace Nollan.Visual_Space
             {
                 Canvas _panel = (Canvas)sender; //버블링된 sender(캔버스)를 판넬로 형변환.
                 DockingWindows.Categori _element = (DockingWindows.Categori)e.Data.GetData("Object");
-               
+
 
                 if (_panel != null && _element != null)
                 {
@@ -1990,11 +2360,11 @@ namespace Nollan.Visual_Space
                         if (e.KeyStates == DragDropKeyStates.ControlKey &&
                             e.AllowedEffects.HasFlag(DragDropEffects.Copy)) //컨트롤 눌렀을 때 무브
                         {
-                           
-                       //     Circle _circle = new Circle((Circle)_element);
-                        //    _panel.Children.Add(_circle);
+
+                            //     Circle _circle = new Circle((Circle)_element);
+                            //    _panel.Children.Add(_circle);
                             // set the value to return to the DoDragDrop call
-                        //    e.Effects = DragDropEffects.Copy;
+                            //    e.Effects = DragDropEffects.Copy;
                         }
                         else if (e.AllowedEffects.HasFlag(DragDropEffects.Move)) //컨트롤 안눌렀을 모든 경우 
                         {
@@ -2008,15 +2378,22 @@ namespace Nollan.Visual_Space
                             Image img = _element.Content as Image;
                             ObjectInfo newInfo = (ObjectInfo)img.Tag;
 
-                            
-                          //  newInfo = (ObjectInfo)img.Tag;
+
+                            //  newInfo = (ObjectInfo)img.Tag;
                             string _ObjectType = newInfo.ObjectType;
                             string _FilePath = newInfo.FilePath; //원본 이미지 경로(오른쪽 UI에 있는 이미지 경로)
                             string _VisualName = newInfo.VisualName;
                             string _assetBundleName = newInfo.AssetBundleName;
+
+                            //816
+                            int _price = newInfo.price;
+                            string _brand = newInfo.brand;
+                            string _explain = newInfo.explain;
+
+
 #if DEBUG
-                            string convertImgPath = AppDomain.CurrentDomain.BaseDirectory+$"../../../pictures/{_ObjectType}/convert/{_ObjectType}.png";
-                       
+                            string convertImgPath = AppDomain.CurrentDomain.BaseDirectory + $"../../../pictures/{_ObjectType}/convert/{_ObjectType}.png";
+
 #else
                             string convertImgPath = AppDomain.CurrentDomain.BaseDirectory + $"pictures/{_ObjectType}/convert/{_ObjectType}.png";
 #endif
@@ -2025,11 +2402,11 @@ namespace Nollan.Visual_Space
                             Image convertimg = new Image();
                             BitmapImage convertbitmap = new BitmapImage();
                             convertbitmap.BeginInit();
-                            convertbitmap.UriSource = new Uri(convertImgPath, UriKind.RelativeOrAbsolute);                         
+                            convertbitmap.UriSource = new Uri(convertImgPath, UriKind.RelativeOrAbsolute);
                             convertbitmap.EndInit();
 
-                          //  int bitpixwidth = convertbitmap.PixelWidth;
-                          //  int bitpixheight = convertbitmap.PixelHeight;
+                            //  int bitpixwidth = convertbitmap.PixelWidth;
+                            //  int bitpixheight = convertbitmap.PixelHeight;
                             double bitWidth = convertbitmap.Width;   // 드롭할 때도 가운데에 이미지가 나오게 하기 위해 비트맵변환한 크기 알아오기
                             double bitHeight = convertbitmap.Height; //
 
@@ -2047,12 +2424,19 @@ namespace Nollan.Visual_Space
                             ObjConvertimgInfo.VisualName = _VisualName; //비주얼 네임. 툴팁에 뜨는 이름.
                             ObjConvertimgInfo.AssetBundleName = _assetBundleName; // 에셋번들이름
 
+                            //816
+                            ObjConvertimgInfo.price = _price;
+                            ObjConvertimgInfo.brand = _brand;
+                            ObjConvertimgInfo.explain = _explain;
+
+
+
                             ObjConvertimgInfo.convertFilePath = convertImgPath; //변환 이미지 경로. 혹시 필요할까봐...
                             ObjConvertimgInfo.ObjectName = $"Object{innerObjName}"; //이 이름을 가지고 유니티와 연동해서 양쪽으로 지우고 움직이고 함.
                                                                                     //  ObjConvertimgInfo.rotationPoint = null;//회전값을 위한 2차원의 x,y point좌표.    
 
-                           
-                            
+
+
                             //---회전 811                      
                             rotateTransform = new RotateTransform();
                             convertimg.RenderTransform = rotateTransform;
@@ -2068,11 +2452,11 @@ namespace Nollan.Visual_Space
                             //---
 
 
-                            convertimg.Name = ObjConvertimgInfo.ObjectName ;
+                            convertimg.Name = ObjConvertimgInfo.ObjectName;
                             convertimg.Tag = ObjConvertimgInfo; //이미지의 tag에 정보를 기억.
 
 
-                         
+
 
 
 
@@ -2086,8 +2470,8 @@ namespace Nollan.Visual_Space
                                 Point windoorClickPoint = new Point(e.GetPosition(mapCanvas).X, e.GetPosition(mapCanvas).Y); //마우스현재좌표 얻어오기
                                 Point bitSize = new Point(bitWidth, bitHeight);
                                 WindowDoorPointSearching(convertimg, bitSize, windoorClickPoint);
-                                
-                               // return;
+
+                                // return;
                             }
 
 
@@ -2103,19 +2487,19 @@ namespace Nollan.Visual_Space
 
                             server.Send(fillObjectInfo(convertimg, ObjectInfoPacket.ObjectAction.CREATE));
 
-                            
+
 
                             innerObjName++;
-                            
+
 
                             //811
-                          if (obj_image != null) //선택된 이미지가 있다면 맵캔버스에 새로 추가되니 선택된 이미지 취소하자.
-                          {
+                            if (obj_image != null) //선택된 이미지가 있다면 맵캔버스에 새로 추가되니 선택된 이미지 취소하자.
+                            {
 
                                 DeleteControlBorder(obj_image);
                                 obj_image = null;
 
-                          }                          
+                            }
 
                         }
                     }
@@ -2147,7 +2531,7 @@ namespace Nollan.Visual_Space
         //    if (OnChildTextInputEvent != null)
         //        OnChildTextInputEvent(textBox1.Text);
         //}
-        
+
 
 
 
@@ -2159,12 +2543,12 @@ namespace Nollan.Visual_Space
 
 
         //왼쪽 트리뷰에 추가할 거.
-        public void addTreeViewNodes(string _ObjectType ,string _VisualName)
+        public void addTreeViewNodes(string _ObjectType, string _VisualName)
         {
 
 
         }
-       
+
 
         object ICloneable.Clone()
         {
@@ -2176,9 +2560,9 @@ namespace Nollan.Visual_Space
         public UIElement DeepCopy(UIElement element)
 
         {
-          //  string oriName
+            //  string oriName
             string shapestring = XamlWriter.Save(element);
-          //  ((FrameworkElement)element).Name = oriName;
+            //  ((FrameworkElement)element).Name = oriName;
             StringReader stringReader = new StringReader(shapestring);
             XmlTextReader xmlTextReader = new XmlTextReader(stringReader);
             UIElement DeepCopyobject = (UIElement)XamlReader.Load(xmlTextReader);
@@ -2199,7 +2583,7 @@ namespace Nollan.Visual_Space
 
         private void ScViewer_canvas_KeyDown(object sender, KeyEventArgs e)
         {
-          //  MessageBox.Show("들어옴");
+            //  MessageBox.Show("들어옴");
 
             if (e.Key == Key.Delete)
             {
@@ -2232,20 +2616,24 @@ namespace Nollan.Visual_Space
         }
 
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
 
-            if(obj_image != null)
+            if (obj_image != null)
             {
-                DeleteObject();
+                
                 WpfUnityPacketHeader header = fillObjectInfo(obj_image, ObjectInfoPacket.ObjectAction.REMOVE);
                 server.Send(header);
+
+                DeleteObject();
             }
-            else if(selectedLine != null)
+            else if (selectedLine != null)
             {
-                DeleteLine();
+               
                 WpfUnityPacketHeader header = fillWallInfo(selectedLine, WallInfo.WallInfoAction.REMOVE);
                 server.Send(header);
+
+                DeleteLine();
             }
         }
 
@@ -2256,9 +2644,9 @@ namespace Nollan.Visual_Space
             ObjConvertImageInfo oct = (ObjConvertImageInfo)obj_image.Tag;
             listWindow.DeleteList(oct);
 
-          //811
-          //  aLayer.Remove(aLayer.GetAdorners(obj_image)[0]);
-          
+            //811
+            //  aLayer.Remove(aLayer.GetAdorners(obj_image)[0]);
+
 
             mapCanvas.Children.Remove(obj_image as UIElement);
             obj_image = null;
@@ -2269,13 +2657,16 @@ namespace Nollan.Visual_Space
 
         public void DeleteLine()
         {
-                mapCanvas.Children.Remove(selectedLine as UIElement);
+            mapCanvas.Children.Remove(selectedLine as UIElement);
         }
 
         public void DeleteRectangle()
         {
 
             mapCanvas.Children.Remove(SelectedRectangle as UIElement);
+
+
+            SelectedRectangle = null;
 
         }
 
@@ -2293,10 +2684,10 @@ namespace Nollan.Visual_Space
                         ObjConvertImageInfo oci = (ObjConvertImageInfo)img.Tag;
 
                         //트리뷰에서 건내받은 _objName이 맵캔버스에 있는 이미지의 오브젝트 네임과 같다면 그걸 저장하고
-                       
+
 
                         if (oci.ObjectName == _objName)
-                        { 
+                        {
 
                             delimg = img;
                             break;
@@ -2334,11 +2725,11 @@ namespace Nollan.Visual_Space
 
 
                 ObjConvertImageInfo oci = (ObjConvertImageInfo)obj_image.Tag;
-                        oci.rotationAngle = ((RotateTransform)obj_image.RenderTransform).Angle;
-                        obj_image.Tag = oci; //변한 회전값 입력해줌.        
+                oci.rotationAngle = ((RotateTransform)obj_image.RenderTransform).Angle;
+                obj_image.Tag = oci; //변한 회전값 입력해줌.        
 
-               // MessageBox.Show(rotateTransform.Angle.ToString());
-              //  MessageBox.Show(((RotateTransform)obj_image.RenderTransform).Angle.ToString());
+                // MessageBox.Show(rotateTransform.Angle.ToString());
+                //  MessageBox.Show(((RotateTransform)obj_image.RenderTransform).Angle.ToString());
 
             }
         }
@@ -2357,7 +2748,7 @@ namespace Nollan.Visual_Space
 
                 ((RotateTransform)obj_image.RenderTransform).Angle -= rotateAngle;
 
-            
+
 
                 ObjConvertImageInfo oci = (ObjConvertImageInfo)obj_image.Tag;
                 oci.rotationAngle = ((RotateTransform)obj_image.RenderTransform).Angle;
@@ -2376,7 +2767,7 @@ namespace Nollan.Visual_Space
         //보더 그리기
         public void DrawControlBorder(Image border)
         {
-            
+
             Image img = border as Image;
             aLayer = AdornerLayer.GetAdornerLayer(img);
             aLayer.Add(new ResizingAdorner(img));
@@ -2386,16 +2777,44 @@ namespace Nollan.Visual_Space
             // new Point(img.)
         }
 
+
         public void DeleteControlBorder(Image border)
         {
             if (border != null)
             {
                 //Image img = border as Image;
                 // Remove the adorner from the selected element
-                if(border is Image img)
-                 aLayer.Remove(aLayer.GetAdorners(img)[0]);
+                if (border is Image img)
+                    aLayer.Remove(aLayer.GetAdorners(img)[0]);
 
-               
+
+            }
+        }
+
+
+        //사각형 보더 그리기
+        public void DrawControlRectangleBorder(Rectangle border)
+        {
+
+            Rectangle rc = border as Rectangle;
+            aLayer = AdornerLayer.GetAdornerLayer(rc);
+            aLayer.Add(new ResizingAdorner(rc));
+
+            // img.
+
+            // new Point(img.)
+        }
+        //사각형 보더 지우기
+        public void DeleteControlRectangleBorder(Rectangle border)
+        {
+            if (border != null)
+            {
+                //Image img = border as Image;
+                // Remove the adorner from the selected element
+                if (border is Rectangle rc)
+                    aLayer.Remove(aLayer.GetAdorners(rc)[0]);
+
+
             }
         }
 
@@ -2410,11 +2829,73 @@ namespace Nollan.Visual_Space
         Rectangle currentRect;
         Rectangle SelectedRectangle;
         //812
-        private void mapCanvas_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void MakeFloor_ClickDOWN(object sender, MouseButtonEventArgs e)
         {
 
-            if (Flag_isCheckedFloor) //바닥생성 토글 버튼이 체크되어 있을 때만 오른쪽 클릭으로 발생.
+            if (e.OriginalSource.GetType() == typeof(MapCanvas) || e.OriginalSource.GetType() == typeof(Image) || e.OriginalSource.GetType() == typeof(Line))
             {
+                if (SelectedRectangle != null) //맵캔버스, 이미지, 라인 등을 오른쪽 클릭했을 시
+                {
+
+
+                    //814
+                    DeleteControlRectangleBorder(SelectedRectangle);
+
+                    SelectedRectangle = null;
+
+
+
+
+                    //814 바닥 선택했을 때 선이랑 이미지 선택 해제
+                    if (obj_image != null)
+                    {
+                        DeleteControlBorder(obj_image);
+                        obj_image = null;
+                    }
+                    else if (selectedLine != null)
+                    {
+
+                        ////815
+                        //if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
+                        //{
+                        //    selectedLine.Stroke = lineBrush;
+                        //}
+                        //else
+                        //{
+                        //    selectedLine.Stroke = Brushes.Black;
+                        //}
+
+
+                        //817
+                        if (ib != null)
+                        {
+                            selectedLine.Stroke = ib;
+                        }
+                        else if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
+                        {
+                            selectedLine.Stroke = lineBrush;
+                        }
+                        else
+                        {
+                            selectedLine.Stroke = Brushes.Black;
+                            selectedLine.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
+                        }
+
+                        // selectedLine.Stroke = Brushes.Black;
+                        selectedLine = null;
+                    }
+
+
+                }
+
+
+            }
+
+
+            if (Flag_isCheckedFloor && !bLine_check) //선그리기 해제 && 바닥생성 토글 버튼이 체크되어 있을 때만 오른쪽 클릭으로 발생.
+            {
+
+
                 //마우스의 좌표를 저장한다.
                 prePosition = e.GetPosition(mapCanvas);
 
@@ -2426,37 +2907,87 @@ namespace Nollan.Visual_Space
                 this.mapCanvas.CaptureMouse();
                 if (currentRect == null)
                 {
+                    isFloorClicked = true;
                     //사각형을 생성한다.
                     CreteRectangle();
-
+                    
                 }
             }
 
-            if (Flag_isCheckedFloor == false)
+            if (Flag_isCheckedFloor == false) //이동전에 마우스클릭했을 때?
             {
-                if (e.OriginalSource.GetType() == typeof(Rectangle))
+                if (e.OriginalSource.GetType() == typeof(Rectangle) && !bLine_check) //817 선그리기 체그해제일 때
                 {
+                    //814
+                    if (SelectedRectangle != null)
+                    {
+                        DeleteControlRectangleBorder(SelectedRectangle);
+                        SelectedRectangle = null;
+                    }
+
                     SelectedRectangle = e.OriginalSource as Rectangle;
-                   Point prePosition = e.GetPosition(mapCanvas); //오른쪽 클릭 시작점
-                   
-                   
+                    Point prePosition = e.GetPosition(mapCanvas); //오른쪽 클릭 시작점
+
+
+                    //814 바닥 보더 생성
+                    DrawControlRectangleBorder(SelectedRectangle);
+
+                    Flag_ImageOneClick = true; //818 여기서 true해줘야 무브에서 움직일 때 통과함
+                     
 
 
 
+                    //814 바닥 선택했을 때 선이랑 이미지 선택 해제
+                    if (obj_image != null)
+                    {
+                        DeleteControlBorder(obj_image);
+                        obj_image = null;
+                    }
+                    else if (selectedLine != null)
+                    {
+
+                        ////815
+                        //if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
+                        //{
+                        //    selectedLine.Stroke = lineBrush;
+                        //}
+                        //else
+                        //{
+                        //    selectedLine.Stroke = Brushes.Black;
+                        //}
+
+                        //817
+                        if (ib != null)
+                        {
+                            selectedLine.Stroke = ib;
+                        }
+                        else if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
+                        {
+                            selectedLine.Stroke = lineBrush;
+                        }
+                        else
+                        {
+                            selectedLine.Stroke = Brushes.Black;
+                            selectedLine.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
+                        }
+
+                        // selectedLine.Stroke = Brushes.Black;
+                        selectedLine = null;
+                    }
 
 
                 }
-
-
             }
-
-
-
         }
 
-        private void mapCanvas_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        bool isFloorClicked; //바닥을 생성하기 위해서 클릭을 했냐?
+
+        private void MakeFloor_ClickUP(object sender, MouseButtonEventArgs e)
         {
-            if (Flag_isCheckedFloor)
+
+
+
+            if (Flag_isCheckedFloor && isFloorClicked)
             {
                 //마우스 캡춰를 제거한다.
                 mapCanvas.ReleaseMouseCapture();
@@ -2473,7 +3004,7 @@ namespace Nollan.Visual_Space
 
 
                 currentRect = null;
-
+                isFloorClicked = false;
 
 
                 ////사각형의 크기를 설정한다. 음수가 나올 수 없으므로 절대값을 취해준다.
@@ -2487,31 +3018,48 @@ namespace Nollan.Visual_Space
             }
             else //바닥 이동 끝 이벤트
             {
-                //812
-                if (SelectedRectangle != null) 
+
+                if (e.OriginalSource.GetType() == typeof(Rectangle) && Flag_imgMove) //호출한 e가 바닥(랙탱글)일 때
                 {
-                   Point upPoint = e.GetPosition(mapCanvas);
-                   double Rc_LeftPoint = upPoint.X - (SelectedRectangle.ActualWidth / 2); //선택된 사각형의 왼쪽 모서리 점
-                   double Rc_TopPoint = upPoint.Y - (SelectedRectangle.ActualHeight / 2);
+                    //812
+                    if (SelectedRectangle != null)
+                    {
+                        Point upPoint = e.GetPosition(mapCanvas);
+                        double Rc_LeftPoint = upPoint.X - (SelectedRectangle.ActualWidth / 2); //선택된 사각형의 왼쪽 모서리 점
+                        double Rc_TopPoint = upPoint.Y - (SelectedRectangle.ActualHeight / 2);
 
-                   remainderToFindVertex(Rc_LeftPoint, Rc_TopPoint);
-                    Canvas.SetLeft(SelectedRectangle, Result_StartPoint.Item1);
-                    Canvas.SetTop(SelectedRectangle, Result_StartPoint.Item2);
+                        remainderToFindVertex(Rc_LeftPoint, Rc_TopPoint);
+                        Canvas.SetLeft(SelectedRectangle, Result_StartPoint.Item1);
+                        Canvas.SetTop(SelectedRectangle, Result_StartPoint.Item2);
 
-                  //  SelectedRectangle = null;           
+                        //  SelectedRectangle = null;           
 
+                        Flag_ImageOneClick = false; //818
+                        Flag_imgMove = false; //818    
 
+                    }
                 }
             }
+
         }
 
         private void SetRectangleProperty()
         {
             //사각형의 투명도를 100% 로 설정
-            currentRect.Opacity = 0.3;
+            currentRect.Opacity = 0.6;
             //사각형의 색상을 지정
-            currentRect.Fill = new SolidColorBrush(Colors.LightYellow);
-            //사각형의 테두리를 선으로 지정
+
+            //820
+            if (Floorib != null)
+            {
+                currentRect.Fill = Floorib; //사용자가 선택한 바닥 이미지브러시 적용   
+               
+            }
+            else
+            {
+                currentRect.Fill = new SolidColorBrush(Colors.LightYellow); //사용자가 바닥을 따로 선택하지 않았을 땐 기본 바닥 적용.
+            }
+                //사각형의 테두리를 선으로 지정
             currentRect.StrokeDashArray = new DoubleCollection();
         }
 
@@ -2521,10 +3069,10 @@ namespace Nollan.Visual_Space
             currentRect = new Rectangle();
             currentRect.Stroke = new SolidColorBrush(Colors.DarkGreen);
             currentRect.StrokeThickness = 2;
-            currentRect.Opacity = 0.7;
+            currentRect.Opacity = 0.7;            
             Canvas.SetZIndex(currentRect, 0);
-            
-                //사각형을 그리는 동안은 테두리를 Dash 스타일로 설정한다.
+
+            //사각형을 그리는 동안은 테두리를 Dash 스타일로 설정한다.
             DoubleCollection dashSize = new DoubleCollection();
             dashSize.Add(1);
             dashSize.Add(1);
@@ -2536,30 +3084,147 @@ namespace Nollan.Visual_Space
             mapCanvas.Children.Add(currentRect);
         }
 
-        public bool Flag_isCheckedFloor = false;
-        private void Toggle_Floor_Checked(object sender, RoutedEventArgs e)
-        {
-            Flag_isCheckedFloor = true;
-
-        }
-
-        private void Toggle_Floor_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-            Flag_isCheckedFloor = false;
-
-        }
+    
 
         private void btn_CreateListWindow_Click(object sender, RoutedEventArgs e)
         {
 
-            listWindow.Show(Dock.Top);
+            
+
+            if (listWindow == null)
+            {
+
+                
+                listWindow = new DockingWindows.ListWindow();
+                listWindow.call_mainwindow = this; // 자식폼에서 부모폼을 등록??? 자식에서 부모에게 갑 전달 실험용.
+                listWindow.DockManager = ExpenderDockManager;// ListDockManager;            
+                                                             // listWindow.Show(Dock.Top);
+                listWindow.ShowAsDocument();
+            }
+
+            listWindow.ShowAsDocument();
+
+           
 
         }
 
         private void btn_CreateObjectWindow_Click(object sender, RoutedEventArgs e)
         {
-            objWindowDocking.Show(Dock.Top);
+           
+
+
+            if (listWindow == null)
+            {
+
+                objWindowDocking = new DockingWindows.ObjectWindow();
+                objWindowDocking.DockManager = ExpenderDockManager;
+                objWindowDocking.ShowAsDocument();
+            }
+
+            objWindowDocking.ShowAsDocument();
+          
+
+
+        }
+
+
+        public void ChangeLineColor(Color SendColor)
+        {
+
+            //815
+
+            //string a = "FF";
+            //string r = "00";
+
+            //Color cr = new Color();
+            //cr.A = Convert.ToByte(a);
+            //cr.R = Convert.ToByte(r); 
+            //cr.G = Convert.ToByte(a); 
+            //cr.B = Convert.ToByte(a);
+
+            lineBrush = new SolidColorBrush(SendColor);
+
+
+
+
+        }
+
+        public void ResetBrush()
+        {
+            if (lineBrush != null)
+            {
+
+                lineBrush = null;
+
+            }
+
+
+
+        }
+
+
+        //818
+        private void btn_New_Click(object sender, RoutedEventArgs e)
+        {
+
+
+            mapCanvas.Children.Clear();
+
+      
+            
+
+            bLine_check = false;
+            linePlusMinus_Check = false;
+            Flag_isCheckedFloor = false;
+            Ch_line.IsChecked = false;
+            Ch_linePlusMinus.IsChecked = false;
+            Toggle_Floor.IsChecked = false;
+
+            obj_image = null;
+            line = null;
+            selectedLine = null;
+            ib = null;
+            lineBrush = null;
+            SelectedRectangle = null;
+
+            imageClick = false;
+            bMouseDown = false;
+           
+            stPoint = new Point(0,0);
+            curPoint = new Point(0, 0);
+            Result_StartPoint = null;
+            txtBox.Text = null;
+           
+            prePosition = new Point(0, 0);
+            currentRect = null;
+
+          
+            btn_clickWidthCount = 0;
+            btn_clickHeightCount = 0;
+            checkCanvasWidthCount();
+            btn_PlusWidthHeight.IsChecked = false;
+         
+            mapCanvas.Width = initActualWidth; //맥시마이즈 시작 초기값을 넣어준다.
+            mapCanvas.Height = initActualHeight;
+
+
+
+            listWindow.DeleteAllClear(); //트리뷰의 모든 내용을 삭제 및 초기화
+
+            colorWindow.WallpaperThumnailClear();
+           // colorWindow.ColorSelectTextClear();
+            colorWindow.HistroyWallpaperThumClear();
+            Wallpaper_imgFilePath = null;
+
+            colorWindow.FloorThumnailClear();           
+            colorWindow.HistroyFloorThumClear();
+            Floor_imgFilePath = null;
+            //innerObjName 
+
+
+
+
+            drawCircle(); //맵 캔버스에 다시 중심점 그려준다.
         }
 
 
@@ -2567,10 +3232,37 @@ namespace Nollan.Visual_Space
 
 
 
-        //-----------------------------
+
+        //818
+        public void drawCircle()
+        {
+
+            Ellipse circle = new Ellipse() { Width = 8, Height = 8, Fill = Brushes.Blue };
+
+            mapCanvas.Children.Add(circle);
+            circle.ToolTip = "3D뷰어 중심점";
+
+            Canvas.SetLeft(circle, 396);
+            Canvas.SetTop(circle, 396);
 
 
-        enum Direction
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+    //-----------------------------
+
+
+    enum Direction
         {
             NW,
             N,
@@ -2583,7 +3275,7 @@ namespace Nollan.Visual_Space
             None
         }
 
-     
+
         /*
             MouseButtonEventArgs e 마우스버튼다운
         MouseEventArgs e 마우스무브
@@ -2591,9 +3283,9 @@ namespace Nollan.Visual_Space
              */
 
 
-    
 
-      
+
+
         // private void control_MouseDown(object sender, MouseButtonEventArgs e)
         // {
         //     if (e.LeftButton == Mouse.LeftButton)

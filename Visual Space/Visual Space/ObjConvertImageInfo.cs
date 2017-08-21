@@ -20,5 +20,11 @@ namespace Nollan.Visual_Space
         public Point canvasPoint; //캔버스 좌표
         public double rotationAngle; //시계방향으로 회전하기 위한 2차원 x,y 정보 좌표계.   
 
+
+        
+        public int price; //가격
+        public string brand; //이케아, 삼성, lg 등 가구 브랜드
+        public string explain; //가구 간단한 설명
+
     }
 }

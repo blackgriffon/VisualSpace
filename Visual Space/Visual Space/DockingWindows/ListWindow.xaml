@@ -5,15 +5,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Nollan.Visual_Space.DockingWindows"
              xmlns:docking="clr-namespace:DockingLibrary;assembly=DockingLibrary" 
+             xmlns:metroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"             
              mc:Ignorable="d" 
              Title="ListWindow" Height="600" Width="Auto"  >
 
+    <Grid Background="Transparent">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.7*"/>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-    <WrapPanel Name="WrapPanel_List"  Background="White" Height="Auto" Width="Auto"  >
+        <Border BorderBrush="Black" BorderThickness="2" Grid.Column="0"/>
+        <Border BorderBrush="Black" BorderThickness="2" Grid.Column="1"/>
 
+        <WrapPanel Name="WrapPanel_List"  Background="LightCyan" Height="Auto" Width="Auto"  >
         
-        <TreeView Margin = "0,0,0,0" Name = "MyTreeView" HorizontalAlignment = "Left" Background="Transparent"
-                VerticalAlignment = "Top" Width ="600" Height = "Auto" Grid.Column="0"  >
+        <TreeView Margin ="0,0,0,0" Name="MyTreeView" HorizontalAlignment="Left" Background="Transparent"                   
+                VerticalAlignment="Top" Width="600" Height="Auto" Grid.Column="0"  >
 
             <!--<TreeViewItem Name="desk" Header = "책상상">
 
@@ -23,12 +31,6 @@
 
             </TreeViewItem >-->
         </TreeView >
-
-    
-
-
-      
-
 
         <!--<TreeView Margin = "0,0,0,0" Name = "TREEVIEW_CHAIRS" HorizontalAlignment = "Left" Background="Transparent"
                 VerticalAlignment = "Top" Width ="600" Height = "Auto" Grid.Column="0"  >
@@ -43,4 +45,43 @@
         </TreeView >-->        
        
     </WrapPanel>
+
+        <VirtualizingStackPanel Grid.Column="1">
+            <Grid>
+                <Label Content="총 금액"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,15,0,0"/>
+                <TextBlock Name="tbk_TotalCash" Text="" Background="LightSteelBlue"
+            VerticalAlignment="Top" HorizontalAlignment="Left" Margin="80,20,0,0" Width="119" />
+
+            </Grid>
+
+            <Grid>
+                <Label Content="소품가격"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,15,0,0"/>
+                <TextBlock Name="tbk_SelectedCash" Text="" Background="LightSteelBlue"
+            VerticalAlignment="Top" HorizontalAlignment="Left" Margin="80,20,0,0" Width="119" />
+
+            </Grid>
+
+            <Grid>
+                <Label Content="브랜드"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,15,0,0" />
+                <TextBlock Name="tbk_brand" Text="" Background="LightSteelBlue"
+            VerticalAlignment="Top" HorizontalAlignment="Left" Margin="80,20,0,0" Width="119" />
+
+            </Grid>
+
+            <Grid Height="300">
+                <Label Content="설명"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,15,0,0"/>
+                <TextBlock Name="tbk_explain" Text="" Width="200" Height="200" TextWrapping="Wrap" Background="LightSteelBlue"
+            VerticalAlignment="Top" HorizontalAlignment="Left" Margin="80,20,0,0"  />
+            </Grid>
+
+            <metroControls:Tile Title="Hello!" TiltFactor="2" Width="100" Height="100" Count="타일"  >
+                
+            </metroControls:Tile>
+            
+        </VirtualizingStackPanel>
+      
+
+        
+
+    </Grid>
 </docking:DockableContent>

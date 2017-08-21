@@ -24,11 +24,37 @@ namespace Nollan.Visual_Space.DockingWindows
         public ListWindow()
         {
             InitializeComponent();
+
+        
+
             //    this.MouseWheel += new MouseWheelEventHandler(MainWindow_MouseWheel);
-         //   this.AddHandler(UIElement.MouseWheelEvent, new MouseWheelEventHandler(OnMouseWheel), true);
-            
+            //   this.AddHandler(UIElement.MouseWheelEvent, new MouseWheelEventHandler(OnMouseWheel), true);
+
 
         }
+
+        //816
+        public int _TotalCash = 0;
+        public void CalcPlusCash(int _cash)
+        {
+            if (MyTreeView.HasItems == true)
+            {
+           
+                    _TotalCash += _cash;                
+
+            }
+
+        }
+
+        public void CalcMinusCash(int _cash)
+        {
+
+            _TotalCash -= _cash;
+
+
+        }
+
+
 
         public MainWindow call_mainwindow;
   
@@ -71,13 +97,28 @@ namespace Nollan.Visual_Space.DockingWindows
                 tvItem.Selected += TvItem_Selected;
                 tvItem.KeyDown += TvItem_KeyDown;
 
+
+
                 MyTreeView.Items.Add(tvItem);
 
-                tvItem = null;
+                //816
+                CalcPlusCash(ObjConvertimgInfo.price);
+                tbk_TotalCash.Text = (_TotalCash).ToString();
+
+
+            tvItem = null;
              
 
         }
 
+        public void DeleteExplain()
+        {
+            tbk_SelectedCash.Text = "";
+            tbk_brand.Text = "";
+            tbk_explain.Text = "";
+
+
+        }
 
 
         //메인윈도우에서 이미지 델리트키로 지우면 여기 리스트윈도우창의 트리뷰 안의 내용도 지워짐.
@@ -95,13 +136,31 @@ namespace Nollan.Visual_Space.DockingWindows
                 if (mainObjimg == oci.ObjectName)
                 {
 
+                    //816
+                    CalcMinusCash(oci.price);
+                    tbk_TotalCash.Text = (_TotalCash).ToString();
+                    DeleteExplain();
+
                     MyTreeView.Items.Remove(tvi);
+
+                    MyTreeView.Focus();
 
                 }
             }                            
         }
 
+        //818
+        public void DeleteAllClear()
+        {
+            MyTreeView.Items.Clear(); //트리뷰 내용 및 설명 내용 전체 삭제
 
+            tbk_TotalCash.Text = null;
+            tbk_SelectedCash.Text = null;
+            tbk_brand.Text = null;
+            tbk_explain.Text = null;
+
+
+        }
 
 
 
@@ -121,12 +180,17 @@ namespace Nollan.Visual_Space.DockingWindows
                     call_mainwindow.treeviewTomainwindow_ReceiveDelimg(oci.ObjectName); //메인윈도우로 문자열값 전달하여 메인윈도우에서 전달받은 해당 문자열과 매칭되는 이미지를 찾아서 지움.
 
 
+                    //816
+                    CalcMinusCash(oci.price);
+                    tbk_TotalCash.Text = (_TotalCash).ToString();
+                    DeleteExplain();
 
                     MyTreeView.Items.Remove(sender);
 
 
-                   // Selected_ObjItemName = null;
-                   // Selected_ObjType = null;
+                    MyTreeView.Focus();
+                    // Selected_ObjItemName = null;
+                    // Selected_ObjType = null;
 
 
 
@@ -136,7 +200,8 @@ namespace Nollan.Visual_Space.DockingWindows
             }
         }
 
-
+        
+    
 
         string Selected_ObjItemName; //선택된 오브젝트의 내부이름
         string Selected_ObjType; //선택된 오브젝트의 타입
@@ -152,6 +217,14 @@ namespace Nollan.Visual_Space.DockingWindows
             Selected_ObjItemName = objconvertimginfo.ObjectName;
             Selected_ObjType = objconvertimginfo.ObjectType;
 
+
+            //816
+            tbk_SelectedCash.Text = (objconvertimginfo.price).ToString(); //트리뷰 항목을 선택할 때 마다 텍스트블록의 내용의 바뀜
+            tbk_brand.Text = objconvertimginfo.brand;
+            tbk_explain.Text = objconvertimginfo.explain;
+  
+
+
             //if (tvi != null)
             //{
             //    MessageBox.Show( string.Format("{0} : tvi헤더", tvi.Header.ToString())   ); //비주얼네임
@@ -160,7 +233,33 @@ namespace Nollan.Visual_Space.DockingWindows
 
         }
 
-       
+        private void MyTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+           
+
+
+            TreeViewItem tvi = MyTreeView.SelectedItem as TreeViewItem;
+
+            ObjConvertImageInfo objconvertimginfo;
+            objconvertimginfo = (ObjConvertImageInfo)tvi.Tag;
+
+
+            Selected_ObjItemName = objconvertimginfo.ObjectName;
+            Selected_ObjType = objconvertimginfo.ObjectType;
+
+
+            //816
+            tbk_SelectedCash.Text = (objconvertimginfo.price).ToString(); //트리뷰 항목을 선택할 때 마다 텍스트블록의 내용의 바뀜
+            tbk_brand.Text = objconvertimginfo.brand;
+            tbk_explain.Text = objconvertimginfo.explain;
+
+
+
+        }
+
+
+
+
 
 
 

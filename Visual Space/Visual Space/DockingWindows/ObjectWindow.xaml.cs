@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DockingLibrary;
 using SampleExpander;
+using MahApps.Metro;
 
 
 namespace Nollan.Visual_Space.DockingWindows
@@ -59,6 +60,12 @@ namespace Nollan.Visual_Space.DockingWindows
                 objInfo.VisualName = $"이케아의자{i}";
                 objInfo.AssetBundleName = $"chair_{i + 1}";
 
+                //816
+                objInfo.price = 1500;
+                objInfo.brand = $"이케아";
+                objInfo.explain = $"설명 : 작고 가벼운 이케아 의자{i}";
+
+
 #if DEBUG
                 objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\chairs\chair{i + 1}.png";
 #else
@@ -76,8 +83,14 @@ namespace Nollan.Visual_Space.DockingWindows
             {
                 ObjectInfo objInfo = new ObjectInfo();
                 objInfo.ObjectType = "beds"; 
-                objInfo.VisualName = $"이케아침대{i}";
+                objInfo.VisualName = $"에이스침대{i}";
                 objInfo.AssetBundleName = $"bed_{i+1}";
+
+                //816
+                objInfo.price = 8500;
+                objInfo.brand = $"에이스";
+                objInfo.explain = $"설명 : 침대는 과학이다{i}";
+
 #if DEBUG
                 objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\beds\bed{i + 1}.png";
 #else
@@ -94,8 +107,15 @@ namespace Nollan.Visual_Space.DockingWindows
             {
                 ObjectInfo objInfo = new ObjectInfo();
                 objInfo.ObjectType = "tables";
-                objInfo.VisualName = $"이케아테이블{i}";
+                objInfo.VisualName = $"LG 테이블{i}";
                 objInfo.AssetBundleName = $"table_{i + 1}";
+
+                //816
+                objInfo.price = 1200;
+                objInfo.brand = $"LG";
+                objInfo.explain = $"설명 : LG테이블은 유럽의 노천카페 스타일로 일상에 지친 우리에게 여유로움과 자유를 선물합니다{i}";
+
+
 #if DEBUG
                 objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\tables\table{i + 1}.png";
 #else
@@ -112,8 +132,15 @@ namespace Nollan.Visual_Space.DockingWindows
             {
                 ObjectInfo objInfo = new ObjectInfo();
                 objInfo.ObjectType = "doors";
-                objInfo.VisualName = $"이케아문{i}";
+                objInfo.VisualName = $"원목도어{i}";
                 objInfo.AssetBundleName = $"door_{i + 1}";
+
+                //816
+                objInfo.price = 3000;
+                objInfo.brand = $"동양우드";
+                objInfo.explain = $"설명 : 다품종의 원목을 보유하여 주문자 구격 및 디자인으로 제작되고 있습니다. *문과 창문은 시공사와 연락을하여 가격 협상이 필요합니다. 전화:031-989-0031";
+
+
 #if DEBUG
                 objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\doors\door{i + 1}.png";
 #else
@@ -130,8 +157,17 @@ namespace Nollan.Visual_Space.DockingWindows
             {
                 ObjectInfo objInfo = new ObjectInfo();
                 objInfo.ObjectType = "windows";
-                objInfo.VisualName = $"이케아창문{i}";
+                objInfo.VisualName = $"KCC창문{i}";
                 objInfo.AssetBundleName = $"window_{i + 1}";
+
+
+                //816
+                objInfo.price = 100000;
+                objInfo.brand = $"KCC창호";
+                objInfo.explain = $"설명 : 놀라운 우리집 샷시의 변신 *문과 창문은 시공사와 연락을하여 가격 협상이 필요합니다. 전화:1600-0325";
+
+
+
 #if DEBUG
                 objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\windows\window{i + 1}.png";
 #else
