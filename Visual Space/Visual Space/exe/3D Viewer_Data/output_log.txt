@@ -2,61 +2,38 @@ Initialize engine version: 2017.1.0f3 (472613c02cf7)
 GfxDevice: creating device client; threaded=1
 Direct3D:
     Version:  Direct3D 11.0 [level 11.1]
-    Renderer: Intel(R) HD Graphics 4600 (ID=0x412)
-    Vendor:   Intel
-    VRAM:     1136 MB
-    Driver:   10.18.15.4279
+    Renderer: NVIDIA GeForce GTX 1050 (ID=0x1c8d)
+    Vendor:   NVIDIA
+    VRAM:     3072 MB
+    Driver:   22.21.13.8233
 Begin MonoManager ReloadAssembly
-Platform assembly: D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-Platform assembly: D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Timeline.dll (this message is harmless)
-Loading D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Timeline.dll into Unity Child Domain
-Platform assembly: D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
-Loading D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-Platform assembly: D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\protobuf-net.dll (this message is harmless)
-Loading D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\protobuf-net.dll into Unity Child Domain
-Platform assembly: D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\System.dll (this message is harmless)
-Platform assembly: D:\winshare\mainproject\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\System.Core.dll (this message is harmless)
-- Completed reload, in  0.020 seconds
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Timeline.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Timeline.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\protobuf-net.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\protobuf-net.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\System.dll (this message is harmless)
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\System.Core.dll (this message is harmless)
+- Completed reload, in  0.036 seconds
 <RI> Initializing input.
-XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.150778 ms
+UnloadTime: 1.448841 ms
 connected...
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-Setting up 2 worker threads for Enlighten.
-  Thread -> id: 39c8 -> priority: 1 
-  Thread -> id: 4600 -> priority: 1 
-Internal: JobTempAlloc has allocations that are more than 4 frames old - this is not allowed and likely a leak
- 
-(Filename:  Line: 371)
-
-Internal: JobTempAlloc has allocations that are more than 4 frames old - this is not allowed and likely a leak
- 
-(Filename:  Line: 371)
-
-Internal: JobTempAlloc has allocations that are more than 4 frames old - this is not allowed and likely a leak
- 
-(Filename:  Line: 371)
-
-Internal: JobTempAlloc has allocations that are more than 4 frames old - this is not allowed and likely a leak
- 
-(Filename:  Line: 371)
-
-Internal: JobTempAlloc has allocations that are more than 4 frames old - this is not allowed and likely a leak
- 
-(Filename:  Line: 371)
-
-Internal: JobTempAlloc has allocations that are more than 4 frames old - this is not allowed and likely a leak
- 
-(Filename:  Line: 371)
-
+Setting up 4 worker threads for Enlighten.
+  Thread -> id: 3320 -> priority: 1 
+  Thread -> id: 2598 -> priority: 1 
+  Thread -> id: 54e4 -> priority: 1 
+  Thread -> id: 4f7c -> priority: 1 

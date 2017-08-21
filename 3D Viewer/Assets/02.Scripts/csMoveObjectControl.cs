@@ -133,6 +133,10 @@ public class csMoveObjectControl : MonoBehaviour
                             case "Object":
                                 networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.ObjectInfoPacket));
                                 break;
+
+                            case "Floor":
+                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.FloorInfoPacket));
+                                break;
                         }
 
                     }
@@ -150,6 +154,10 @@ public class csMoveObjectControl : MonoBehaviour
                         case "Object":
                             networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, PacketType.ObjectInfoPacket));
                             break;
+
+                        case "Floor":
+                            networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, PacketType.FloorInfoPacket));
+                            break;
                     }
                 }
 
@@ -166,6 +174,10 @@ public class csMoveObjectControl : MonoBehaviour
 
                             case "Object":
                                 networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.ObjectInfoPacket));
+                                break;
+
+                            case "Floor":
+                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.FloorInfoPacket));
                                 break;
                         }
 
@@ -264,36 +276,57 @@ public class csMoveObjectControl : MonoBehaviour
     {
         SelecetdObject.transform.position += moveValue;
         //SelecetdObject.transform.Translate(Vector3.left * moveStep);
+        Packet.Header header = new Packet.Header();
 
-        if (SelecetdObject.tag == "Wall")
+        switch (SelecetdObject.tag)
         {
-            Packet.Header header = new Packet.Header();
-            header.ObjectType = Packet.PacketType.WallInfo;
-            WallInfo wallInfo = new WallInfo();
-            wallInfo.Action = WallInfoAction.MOVE3D;
-            wallInfo.Name = SelecetdObject.name;
-            wallInfo.PosX = SelecetdObject.transform.position.x;
-            wallInfo.PosY = SelecetdObject.transform.position.y;
-            wallInfo.PosZ = SelecetdObject.transform.position.z;
+            case "Wall":
+                
+                header.ObjectType = Packet.PacketType.WallInfo;
+                WallInfo wallInfo = new WallInfo();
+                wallInfo.Action = WallInfoAction.MOVE3D;
+                wallInfo.Name = SelecetdObject.name;
+                wallInfo.PosX = SelecetdObject.transform.position.x;
+                wallInfo.PosY = SelecetdObject.transform.position.y;
+                wallInfo.PosZ = SelecetdObject.transform.position.z;
 
-            wallInfo.ScaleX = SelecetdObject.transform.localScale.x;
-            wallInfo.ScaleY = SelecetdObject.transform.localScale.y;
-            wallInfo.ScaleZ = SelecetdObject.transform.localScale.z;
-            header.Data = wallInfo;
-            networkManager.Send(header);
-        }
-        else if (SelecetdObject.tag == "Object")
-        {
-            Packet.Header header = new Packet.Header();
-            header.ObjectType = Packet.PacketType.ObjectInfoPacket;
-            ObjectInfoPacket objectInfo = new ObjectInfoPacket();
-            objectInfo.Action = ObjectAction.MOVE3D;
-            objectInfo.Name = SelecetdObject.name;
-            objectInfo.PosX = SelecetdObject.transform.position.x;
-            objectInfo.PosY = SelecetdObject.transform.position.y;
-            objectInfo.PosZ = SelecetdObject.transform.position.z;
-            header.Data = objectInfo;
-            networkManager.Send(header);
+                wallInfo.ScaleX = SelecetdObject.transform.localScale.x;
+                wallInfo.ScaleY = SelecetdObject.transform.localScale.y;
+                wallInfo.ScaleZ = SelecetdObject.transform.localScale.z;
+                header.Data = wallInfo;
+                networkManager.Send(header);
+                break;
+
+            case "Object":
+                header.ObjectType = Packet.PacketType.ObjectInfoPacket;
+                ObjectInfoPacket objectInfo = new ObjectInfoPacket();
+                objectInfo.Action = ObjectAction.MOVE3D;
+                objectInfo.Name = SelecetdObject.name;
+                objectInfo.PosX = SelecetdObject.transform.position.x;
+                objectInfo.PosY = SelecetdObject.transform.position.y;
+                objectInfo.PosZ = SelecetdObject.transform.position.z;
+                header.Data = objectInfo;
+                networkManager.Send(header);
+                break;
+
+
+            case "Floor":
+                header.ObjectType = Packet.PacketType.FloorInfoPacket;
+                FloorInfoPacket floorInfo = new FloorInfoPacket();
+                floorInfo.Action = FloorInfoAction.MOVE3D;
+                floorInfo.Name = SelecetdObject.name;
+                floorInfo.PosX = SelecetdObject.transform.position.x;
+                floorInfo.PosY = SelecetdObject.transform.position.y;
+                floorInfo.PosZ = SelecetdObject.transform.position.z;
+
+                floorInfo.ScaleX = SelecetdObject.transform.localScale.x;
+                floorInfo.ScaleY = SelecetdObject.transform.localScale.y;
+                floorInfo.ScaleZ = SelecetdObject.transform.localScale.z;
+                header.Data = floorInfo;
+                networkManager.Send(header);
+                break;
+
+
         }
     }
 
@@ -342,6 +375,14 @@ public class csMoveObjectControl : MonoBehaviour
                 objectInfo.Action = ObjectAction.REMOVE3D;
                 objectInfo.Name = SelecetdObject.gameObject.name;
                 header.Data = objectInfo;
+                break;
+
+            case "Floor":
+                header.ObjectType = Packet.PacketType.FloorInfoPacket;
+                FloorInfoPacket floorInfo = new FloorInfoPacket();
+                floorInfo.Action = FloorInfoAction.REMOVE3D;
+                floorInfo.Name = SelecetdObject.gameObject.name;
+                header.Data = floorInfo;
                 break;
         }
 

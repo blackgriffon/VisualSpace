@@ -84,6 +84,11 @@ namespace Nollan.Visual_Space.Network
                             ObjectInfoPacket objInfoPk = ProtoBuf.Serializer.DeserializeWithLengthPrefix<ObjectInfoPacket>(_NetworkStream, ProtoBuf.PrefixStyle.Fixed32);
                             header.Data = objInfoPk;
                             break;
+
+                        case WpfUnityPacketType.FloorInfoPacket:
+                            FloorInfoPacket floorInfoPk = ProtoBuf.Serializer.DeserializeWithLengthPrefix<FloorInfoPacket>(_NetworkStream, ProtoBuf.PrefixStyle.Fixed32);
+                            header.Data = floorInfoPk;
+                            break;
                     }
 
                     if (OnReceviedCompleted != null)
@@ -119,6 +124,10 @@ namespace Nollan.Visual_Space.Network
 
                         case WpfUnityPacketType.ObjectInfoPacket:
                             ProtoBuf.Serializer.SerializeWithLengthPrefix<ObjectInfoPacket>(_NetworkStream, (ObjectInfoPacket)header.Data, ProtoBuf.PrefixStyle.Fixed32);
+                            break;
+
+                        case WpfUnityPacketType.FloorInfoPacket:
+                            ProtoBuf.Serializer.SerializeWithLengthPrefix<FloorInfoPacket>(_NetworkStream, (FloorInfoPacket)header.Data, ProtoBuf.PrefixStyle.Fixed32);
                             break;
                     }
                 }

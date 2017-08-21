@@ -15,6 +15,7 @@ public class csTCPClientManager : MonoBehaviour
 
     public GameObject WallObject = null;
     public GameObject ParentObject = null;
+    public GameObject FloorObject = null;
 
 
 
@@ -22,7 +23,7 @@ public class csTCPClientManager : MonoBehaviour
     {
         Application.runInBackground = true;
         client = TCPClientProtoBuf.Instance;
-        client.Connect("127.0.0.1", 9000);
+        client.Connect("127.0.0.1", 9010);
         header = new Header();
         Debug.Log("connected...");
         moveObjectControl = GameObject.Find("MoveObjectManager").GetComponent<csMoveObjectControl>();
@@ -93,7 +94,7 @@ public class csTCPClientManager : MonoBehaviour
                 {
                     ObjectInfoPacket objectInfo = (ObjectInfoPacket)header.Data;
 
-                    switch(objectInfo.Action)
+                    switch (objectInfo.Action)
                     {
                         case ObjectAction.CREATE:
                             assertBundle.LoadGameObject(objectInfo);
@@ -118,6 +119,54 @@ public class csTCPClientManager : MonoBehaviour
                         case ObjectAction.DESELECT:
                             moveObjectControl.SelecetdObject = null;
                             break;
+
+                        case ObjectAction.ROTATION:
+                            float x = moveObjectControl.SelecetdObject.transform.eulerAngles.x;
+                            //float y = moveObjectControl.SelecetdObject.transform.eulerAngles.y;
+                            float z = moveObjectControl.SelecetdObject.transform.eulerAngles.z;
+                            moveObjectControl.SelecetdObject.transform.rotation = Quaternion.Euler(x, (float)objectInfo.Angle, z);
+                            break;
+
+                    }
+                }
+                break;
+
+            case PacketType.FloorInfoPacket:
+                {
+                    FloorInfoPacket floorInfo = (FloorInfoPacket)header.Data;
+
+                    switch (floorInfo.Action)
+                    {
+                        case FloorInfoAction.CREATE:
+                            gameObj = Instantiate(FloorObject);
+                            gameObj.GetComponent<MeshRenderer>().enabled = true;
+                            gameObj.name = floorInfo.Name;
+                            gameObj.transform.position = new Vector3(floorInfo.PosX, floorInfo.PosY, floorInfo.PosZ);
+                            gameObj.transform.localScale = new Vector3(floorInfo.ScaleX, floorInfo.ScaleY, floorInfo.ScaleZ);
+                            gameObj.transform.parent = ParentObject.transform;
+                            gameObj.tag = "Floor";
+                            break;
+
+                        case FloorInfoAction.MOVE:
+                            moveObjectControl.SelecetdObject.transform.position = 
+                                new Vector3(floorInfo.PosX, floorInfo.PosY, floorInfo.PosZ);
+                            break;
+
+                        case FloorInfoAction.SELECT:
+                            moveObjectControl.SelecetdObject =  GameObject.Find(floorInfo.Name); 
+                            break;
+
+
+                        case FloorInfoAction.DESELECT:
+                            moveObjectControl.SelecetdObject = null;
+                            break;
+
+
+                        case FloorInfoAction.REMOVE:
+                            gameObj = GameObject.Find(floorInfo.Name);
+                            Destroy(gameObj);
+                            break;
+
 
                     }
                 }

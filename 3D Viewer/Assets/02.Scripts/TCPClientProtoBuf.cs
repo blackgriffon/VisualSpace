@@ -101,6 +101,11 @@ namespace TransportTCP
                             header.Data = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Packet.ObjectInfoPacket>(_NetworkStream, ProtoBuf.PrefixStyle.Fixed32);
                             break;
 
+                        case PacketType.FloorInfoPacket:
+                            header.Data = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Packet.FloorInfoPacket>(_NetworkStream, ProtoBuf.PrefixStyle.Fixed32);
+                            break;
+
+
                     }
 
                     // 받은 데이터를 큐에 넣는다.
@@ -143,6 +148,11 @@ namespace TransportTCP
                         case Packet.PacketType.ObjectInfoPacket:
                             ProtoBuf.Serializer.SerializeWithLengthPrefix<Packet.ObjectInfoPacket>(_NetworkStream, (Packet.ObjectInfoPacket)header.Data, ProtoBuf.PrefixStyle.Fixed32);
                             break;
+
+                        case Packet.PacketType.FloorInfoPacket:
+                            ProtoBuf.Serializer.SerializeWithLengthPrefix<Packet.FloorInfoPacket>(_NetworkStream, (Packet.FloorInfoPacket)header.Data, ProtoBuf.PrefixStyle.Fixed32);
+                            break;
+
                     }
                 }
                 catch (System.IO.IOException)
