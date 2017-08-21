@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4245674853
+CRC: 4004133532
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c4476165c2fe2f49141c87f688d71b81
+    Hash: 9abe9d359a0da002c230bb344ee29a54
   TypeTreeHash:
     serializedVersion: 2
     Hash: f451c2fa900e9178a57db1d033fd31a7
@@ -46,6 +46,7 @@ Assets:
 - Assets/bundle/cabinet_3.prefab
 - Assets/bundle/table_2.prefab
 - Assets/bundle/modular_kitchen_table_1.prefab
+- Assets/bundle/door_1.prefab
 - Assets/bundle/chair_4.prefab
 - Assets/bundle/bed_1.prefab
 Dependencies: []

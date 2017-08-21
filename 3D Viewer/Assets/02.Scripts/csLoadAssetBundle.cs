@@ -18,17 +18,20 @@ public class csLoadAssetBundle : MonoBehaviour
         StartCoroutine(LoadAssetBundle("bundle.unity3d"));
         
     }
-#if UNITY_EDITOR
+    //#if UNITY_EDITOR
+    //string assetBundleDirectory = "C:\\Users\\TAEWOO\\Desktop\\VisualSpace\\3D Viewer\\Assets\\AssetBundles\\";
+    //#else
+    //    string assetBundleDirectory = System.Environment.CurrentDirectory+ "\\AssetBundles\\";
+    //#endif
 
-    string assetBundleDirectory = "C:\\Users\\TAEWOO\\Desktop\\VisualSpace\\3D Viewer\\Assets\\AssetBundles\\";
-#else
-    string assetBundleDirectory = System.Environment.CurrentDirectory+ "\\AssetBundles\\";
-#endif
+    string assetBundleDirectory = "http://web.visualspace.uy.to/assetBundle/";
+
 
     public IEnumerator LoadAssetBundle(string assertbundleName)
     {
-        using (WWW www = new WWW("file:///" + assetBundleDirectory + assertbundleName))
-        { 
+        //using (WWW www = new WWW("file:///" + assetBundleDirectory + assertbundleName))
+        using (WWW www = new WWW(assetBundleDirectory + assertbundleName))
+        {
             yield return www;
             assetBundle = www.assetBundle;
         }

@@ -64,10 +64,8 @@
      <Compile Include="Assets\07.Assets\OutlineEffect\LinkedSet.cs" />
      <Compile Include="Assets\07.Assets\OutlineEffect\Outline.cs" />
      <Compile Include="Assets\07.Assets\OutlineEffect\OutlineEffect.cs" />
-     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\07.Assets\OutlineEffect\Resources\OutlineShader.shader" />
      <None Include="Assets\07.Assets\OutlineEffect\Resources\OutlineBufferShader.shader" />
-     <None Include="Assets\StreamingAssets\Vuforia\ITTtest.xml" />
      <None Include="Assets\07.Assets\OutlineEffect\Resources\OutlineBufferCullOffShader.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

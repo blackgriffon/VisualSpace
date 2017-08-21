@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Nollan.Visual_Space.Network
 {
 
-    public enum WpfUnityPacketType : byte { eError = 0, WallInfo, ObjectInfoPacket };
+    public enum WpfUnityPacketType : byte { eError = 0, WallInfo, ObjectInfoPacket, FloorInfoPacket };
 
     [ProtoContract]
     public class WpfUnityPacketHeader
@@ -48,6 +48,8 @@ namespace Nollan.Visual_Space.Network
             REMOVE3D,
             SELECT3D,
             DESELECT3D,
+
+
         }
 
 
@@ -63,6 +65,8 @@ namespace Nollan.Visual_Space.Network
         [ProtoMember(6)] public float ScaleX;
         [ProtoMember(7)] public float ScaleY;
         [ProtoMember(8)] public float ScaleZ;
+
+
 
     }
 
@@ -107,10 +111,12 @@ namespace Nollan.Visual_Space.Network
             REMOVE,
             SELECT,
             DESELECT,
+            ROTATION,
             MOVE3D,
             REMOVE3D,
             SELECT3D,
             DESELECT3D,
+            ROTATION3D,
         }
 
         [ProtoMember(1)] public ObjectAction Action;
@@ -119,6 +125,38 @@ namespace Nollan.Visual_Space.Network
         [ProtoMember(4)] public float PosX;
         [ProtoMember(5)] public float PosY;
         [ProtoMember(6)] public float PosZ;
+        [ProtoMember(7)] public float Rotation;
     }
 
+
+
+
+    [ProtoContract]
+    public class FloorInfoPacket
+    {
+
+        public enum FloorInfoAction
+        {
+            CREATE = 0,
+            MOVE,
+            REMOVE,
+            SELECT,
+            DESELECT,
+            MOVE3D,
+            REMOVE3D,
+            SELECT3D,
+            DESELECT3D,
+        }
+
+
+        [ProtoMember(1)] public FloorInfoAction Action;
+        [ProtoMember(2)] public string Name;
+        [ProtoMember(3)] public float PosX;
+        [ProtoMember(4)] public float PosY;
+        [ProtoMember(5)] public float PosZ;
+        [ProtoMember(6)] public float ScaleX;
+        [ProtoMember(7)] public float ScaleY;
+        [ProtoMember(8)] public float ScaleZ;
+
+    }
 }
