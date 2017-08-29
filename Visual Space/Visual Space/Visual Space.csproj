@@ -61,6 +61,9 @@
     <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="protobuf-net">
       <HintPath>dll\protobuf-net.dll</HintPath>
     </Reference>
@@ -88,6 +91,24 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -95,14 +116,18 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="classes\colorTag.cs" />
+    <Compile Include="classes\ObjSizeInfo.cs" />
+    <Compile Include="classes\Utils.cs" />
+    <Compile Include="FloorConvertInfo.cs" />
+    <Compile Include="WallConvertInfo.cs" />
     <Compile Include="DockingWindows\Categori.xaml.cs">
       <DependentUpon>Categori.xaml</DependentUpon>
     </Compile>
     <Compile Include="DockingWindows\ColorWindow.xaml.cs">
       <DependentUpon>ColorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DockingWindows\DrawingWindow.xaml.cs">
-      <DependentUpon>DrawingWindow.xaml</DependentUpon>
+    <Compile Include="DockingWindows\CustomWallpaper.xaml.cs">
+      <DependentUpon>CustomWallpaper.xaml</DependentUpon>
     </Compile>
     <Compile Include="DockingWindows\ListWindow.xaml.cs">
       <DependentUpon>ListWindow.xaml</DependentUpon>
@@ -139,9 +164,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DockingWindows\DrawingWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="DockingWindows\CustomWallpaper.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DockingWindows\ListWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -177,6 +202,38 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\IconsNonShared.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="theme\BureauBlack.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="theme\BureauBlue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="theme\ExpressionDark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="theme\ExpressionLight.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="theme\ShinyBlue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="theme\ShinyRed.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="theme\Styles12.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="theme\WhistlerBlue.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -219,20 +276,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ColorReflectionwithWPF\ColorReflectionwithWPF.csproj">
-      <Project>{c8d2fd8e-47a8-4aa3-9ccf-cea852f89251}</Project>
-      <Name>ColorReflectionwithWPF</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="exe\3D Viewer.exe" />
+    <Resource Include="icons\Toolbar\arrow11.png" />
+    <Resource Include="icons\Toolbar\arrow12.png" />
     <Resource Include="icons\Toolbar\mapminus.png" />
     <Resource Include="icons\Toolbar\mapplus.png" />
     <Resource Include="icons\Toolbar\eraser.png" />
     <Resource Include="icons\Toolbar\ObjLeft.png" />
     <Resource Include="icons\Toolbar\ObjRight.png" />
-    <Resource Include="icons\tiles\linetile1_h.png" />
-    <Resource Include="icons\tiles\linetile1.PNG" />
     <Resource Include="icons\Toolbar\ViewLeft.png" />
     <Resource Include="icons\Toolbar\ViewRight.png" />
     <Resource Include="icons\windowicons\houseclipart.jpg" />

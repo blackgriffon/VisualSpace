@@ -29,15 +29,16 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
 
 
-
+                <!--<ResourceDictionary Source="theme/ShinyBlue.xaml" />-->
+                <!--<ResourceDictionary Source="theme/ExpressionLight.xaml" />-->                
+                <!--//822-->
+                <ResourceDictionary Source="theme/WhistlerBlue.xaml" /> 
+                <!--<ResourceDictionary Source="theme/BureauBlue.xaml" />-->
                 
-
-
-
 
                
 
-                            
+
 
             </ResourceDictionary.MergedDictionaries>
 

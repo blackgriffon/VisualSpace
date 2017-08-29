@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using static Nollan.Visual_Space.classes.ObjSizeInfo;
 
 namespace Nollan.Visual_Space
 {
@@ -25,6 +26,10 @@ namespace Nollan.Visual_Space
         public int price; //가격
         public string brand; //이케아, 삼성, lg 등 가구 브랜드
         public string explain; //가구 간단한 설명
+
+        public ObjSize obj_ConvertSize;
+
+
 
     }
 }

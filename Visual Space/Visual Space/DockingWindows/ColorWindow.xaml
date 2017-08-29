@@ -7,6 +7,13 @@
         xmlns:docking="clr-namespace:DockingLibrary;assembly=DockingLibrary" 
                          
         xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+     
+                         xmlns:themes="http://schemas.xceed.com/wpf/xaml/themes"     
+       xmlns:exp="http://schemas.xceed.com/wpf/xaml/toolkit"
+                         xmlns:avalron="http://schemas.xceed.com/wpf/xaml/avalondock"
+                         xmlns:avaltheme="clr-namespace:Xceed.Wpf.AvalonDock.Themes.Controls;assembly=Xceed.Wpf.AvalonDock.Themes.Aero"
+      
+                         
         mc:Ignorable="d"
         Title="ColorWindow" Height="900" Width="500" >
 
@@ -30,30 +37,30 @@
 
         <Grid Name="grid_Floor" Grid.Row="1" >
 
-            <Label Content="이전 선택" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,211.206,0,0"/>
-            <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="109.591" Width="364.739" Margin="106.89,216.325,0,0" >
+            <Label Content="이전 선택" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,198.476,0,0"/>
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="109.591" Width="364.739" Margin="106.89,198.51,0,0" >
                 <Rectangle Name="Floor_border" Stroke="Cyan" StrokeThickness="2" Width="364.739" Height="100" Fill="Transparent" 
                        Margin="0"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <StackPanel Orientation="Horizontal"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2.528,5.084,0,0" Height="94.507" Width="347.472">
                     <Button Name="btn_FloorViewBox1" Width="60" Height="60"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="38,18,0,0"  
-                        Click="btn_FloorViewBox1_Click" Style="{DynamicResource SquareButtonStyle}" >
+                        Click="btn_FloorViewBox1_Click"  >
                         <Image Name="img_FloorViewBox1" Width="Auto" Height="Auto" Stretch="Fill" Grid.Row="0" />
                     </Button>
                     <Button Name="btn_FloorViewBox2" Width="60" Height="60"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,18,0,0"  
-                        Click="btn_FloorViewBox2_Click"  Style="{DynamicResource SquareButtonStyle}">
+                        Click="btn_FloorViewBox2_Click"  >
                         <Image Name="img_FloorViewBox2" Width="Auto" Height="Auto" Stretch="Fill" Grid.Row="0" />
                     </Button>
                     <Button Name="btn_FloorViewBox3" Width="60" Height="60"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,18,0,0"  
-                        Click="btn_FloorViewBox3_Click" Style="{DynamicResource SquareButtonStyle}">
+                        Click="btn_FloorViewBox3_Click"  >
                         <Image Name="img_FloorViewBox3" Width="Auto" Height="Auto" Stretch="Fill" Grid.Row="0" />
                     </Button>
                 </StackPanel>
             </Grid>
 
             <Label Content="바닥 선택" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
-                   Margin="10.206,0,0,366.461" FontSize="15" FontWeight="Bold"/>
+                   Margin="10.206,0,0,389.362" FontSize="15" FontWeight="Bold"/>
 
-            <Grid Name="Floor_SelectedGrid" Width="365" Height="128.909" Margin="106.629,0,0,264.837" 
+            <Grid Name="Floor_SelectedGrid" Width="365" Height="128.909" Margin="106.629,0,0,280.107" 
                   HorizontalAlignment="Left" VerticalAlignment="Bottom" >
                 <Border BorderBrush="Cyan" BorderThickness="3" Margin="0">
                     <Rectangle Name="Floor_Selectedborder" Stroke="Transparent" StrokeThickness="2" Width="365" Height="128.909" Fill="Transparent" 
@@ -65,17 +72,17 @@
                                     Width="237.654" Height="40.726" Margin="109.435,50.9,0,0">
 
                         <Button x:Name="btn_FloorFileDialog"  Content="바닥 선택" Click="btn_FloorFileDialog_Click"
-                        HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Style="{DynamicResource SquareButtonStyle}"
+                        HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" 
                     Margin="3, 0, 0, 0" Width="110"/>
 
                         <Button x:Name="btn_FloorFileDialogClear" Content="바닥 삭제" HorizontalAlignment="Left"  Click="btn_FloorFileDialogClear_Click"
-                    VerticalAlignment="Bottom" Style="{DynamicResource SquareButtonStyle}"
+                    VerticalAlignment="Bottom" 
                 Height="30" Margin="3, 0, 0, 0 "  Width="110" />
 
                     </StackPanel>
 
 
-                    <Button  Width="80" Height="80" Style="{DynamicResource SquareButtonStyle}" Click="btn_FloorFileDialog_Click"
+                    <Button  Width="80" Height="80"  Click="btn_FloorFileDialog_Click"
                 Margin="10,10,0,0" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Image Name="img_UserSelectedFloorFile" Width="Auto" Height="Auto" Stretch="Fill" Grid.Row="0" />
                     </Button>
@@ -87,9 +94,34 @@
                         </Border>
                     </Grid>
                 </Grid>
-
-
             </Grid>
+
+
+
+
+
+            <Label Content="바닥커스텀" FontSize="15" FontWeight="Bold" Margin="10,325.738,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Grid Margin="106.629,318.192,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="83.816" Width="362.194">
+                <Border BorderThickness="2" BorderBrush="Cyan">
+                    <StackPanel Orientation="Horizontal" >
+
+
+                        <Button x:Name="btn_MakeCustomFloor" Content="커스텀" Click="btn_CustomWallpaper_Click"
+                    HorizontalAlignment="Left" Height="60" Margin="35,11,0,0" VerticalAlignment="Top" Width="60"/>
+                        <Button x:Name="c2" Width="60" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,13,0,0"  
+                        Click="btn_CustomFloorViewBox1_Click"   >
+                            <Image x:Name="img_SelectedCustomFloor" Width="Auto" Height="Auto" Stretch="Fill" Grid.Row="0" />
+                        </Button>
+
+                        <Button x:Name="btn_ClearCustomFloor" Content="선택해제" Click="btn_ClearCustomFloor_Click"
+                    HorizontalAlignment="Left" Height="60" Margin="50,13,0,0" VerticalAlignment="Top" Width="60"/>
+
+
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+
         </Grid>
 
 
@@ -102,34 +134,35 @@
                        Margin="0"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0">
                 <Button Name="btn_ViewBox1" Width="60" Height="60"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,20,0,0"  
-                        Click="btn_ViewBox1_Click" Style="{DynamicResource SquareButtonStyle}" >
+                        Click="btn_ViewBox1_Click"  >
                     <Image Name="img_ViewBox1" Width="Auto" Height="Auto" Stretch="Fill" Grid.Row="0" />
                 </Button>
                 <Button Name="btn_ViewBox2" Width="60" Height="60"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="55, 20, 0,0"  
-                        Click="btn_ViewBox2_Click"  Style="{DynamicResource SquareButtonStyle}">
+                        Click="btn_ViewBox2_Click"   >
                     <Image Name="img_ViewBox2" Width="Auto" Height="Auto" Stretch="Fill" Grid.Row="0" />
                 </Button>
                 <Button Name="btn_ViewBox3" Width="60" Height="60"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="55, 20, 0,0"  
-                        Click="btn_ViewBox3_Click" Style="{DynamicResource SquareButtonStyle}">
+                        Click="btn_ViewBox3_Click"  >
                     <Image Name="img_ViewBox3" Width="Auto" Height="Auto" Stretch="Fill" Grid.Row="0" />
                 </Button>
             </StackPanel>
 
         </Grid>
 
-        <Label Content="벽지 선택" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,35.624,0,0"/>
+        <Label Content="벽지 선택" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,40.711,0,0"/>
         <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="150.909" Width="365" Margin="104.345,43.265,0,0">
             <Rectangle Stroke="Black" StrokeThickness="2" Width="365" Height="145.818" Fill="Transparent"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Left" VerticalAlignment="Top"  
                                     Width="270.561" Height="38" Margin="139.975,73.805,-32.536,0" >
-                <Button Name="btn_FileDialog" Content="벽지 선택" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btn_FileDialog_Click" Style="{DynamicResource SquareButtonStyle}"
+                <Button Name="btn_FileDialog" Content="벽지 선택" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                        Click="btn_FileDialog_Click"
                 Height="30" Margin="0"  Width="100"/>
-                <Button Name="btn_FileDialogClear" Click="btn_FileDialogClear_Click" Content="벽지 삭제" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Style="{DynamicResource SquareButtonStyle}"
-                    Margin="10,0,0,0" Width="100"/>
+                <Button Name="btn_FileDialogClear" Click="btn_FileDialogClear_Click" Content="벽지 삭제" HorizontalAlignment="Left" 
+                        VerticalAlignment="Bottom" Height="30"  Margin="10,0,0,0" Width="100"/>
             </StackPanel>
 
 
-            <Button  Width="100" Height="100" Style="{DynamicResource SquareButtonStyle}" Click="btn_FileDialog_Click"
+            <Button  Width="100" Height="100"  Click="btn_FileDialog_Click"
                 Margin="20.36,0,0,30.54" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                 <Image Name="img_UserSelectedFile" Width="Auto" Height="Auto" Stretch="Fill" Grid.Row="0" />
             </Button>
@@ -141,25 +174,61 @@
                 </Border>
             </Grid>
 
-         
+
 
         </Grid>
 
         <Label Content="벽지커스텀" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,335.94,0,0"
                    FontSize="14" FontWeight="Bold"/>
 
-        <Border BorderBrush="Black" BorderThickness="2" Grid.Row="0" />
+        <Grid  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="104.345,335.94,0,0" Height="84.502" Width="365">
+            <Border BorderBrush="Black" BorderThickness="2" Grid.Row="0" Width="364.545" Height="84.502" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="365" Height="84.502" >
 
 
+                <Button x:Name="btn_MakeCustomWallpaper" Content="커스텀" Click="btn_CustomWallpaper_Click"
+                    HorizontalAlignment="Left" Height="60" Margin="35,13,0,0" VerticalAlignment="Top" Width="60"/>
 
+                <Button x:Name="btn_CustomViewBox1" Width="60" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="55,13,0,0"  
+                        Click="btn_CustomViewBox1_Click"   >
+                    <Image x:Name="img_SelectedCustom" Width="Auto" Height="Auto" Stretch="Fill" Grid.Row="0" />
+                </Button>
+
+                <!--<Button x:Name="btn_ViewCustomFloor" Click="btn_MakeCustomFloor_Click"
+                    HorizontalAlignment="Left" Height="60" Margin="25,17.545,0,0" VerticalAlignment="Top" Width="60">
+                    <Image x:Name="img_SelectedCustomFloor" Width="Auto" Height="Auto" Stretch="Fill" Grid.Row="0" />
+                </Button>-->
+
+                <Button x:Name="btn_ClearCustom" Content="선택해제" Click="btn_ClearCustom_Click"
+                    HorizontalAlignment="Left" Height="60" Margin="55,13,0,0" VerticalAlignment="Top" Width="60"/>
+
+
+            </StackPanel>
+        </Grid>
+
+        <Border BorderBrush="Black" BorderThickness="2" Grid.Row="0"  />
         <Border BorderBrush="Black" BorderThickness="2" Grid.Row="1"  />
 
 
-
-
-
-
     </Grid>
+
+    <!--
+        <exp:ExpressionDarkTheme>
+            <StackPanel Grid.Column="0" Orientation="Vertical">
+                <Button Content="Button" />
+                <ToggleButton Content="ToggleButton" />
+                <TextBox Text="Textbox" />
+                <RadioButton Content="RadioButton 1" />
+                <CheckBox Content="CheckBox 1" />
+                <ProgressBar Value="50" Maximum="100" Height="14" />
+            </StackPanel>          
+        </exp:ExpressionDarkTheme>
+        
+          <shinyBlue:ShinyBlueTheme>
+            <Slider Grid.Column="1"/>
+        </shinyBlue:ShinyBlueTheme>
+        
+        -->
 
     <!-- 
       <ListView Name="_colorListView" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" 

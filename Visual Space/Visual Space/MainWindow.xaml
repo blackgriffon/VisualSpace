@@ -77,7 +77,7 @@
 
 
         <ToolBarTray VerticalAlignment="Top" Margin="0,-2,0,0" Height="70" DockPanel.Dock="Top" >
-            <ToolBar  Name="BasicToolBar" HorizontalAlignment="Left" Height="auto" Background="Transparent" Width="116" MinWidth="116"
+            <ToolBar  Name="BasicToolBar" HorizontalAlignment="Left" Height="auto" Background="Transparent" Width="180" MinWidth="180" MaxWidth="180"
             DockPanel.Dock="Top">
 
                 <Button Name="btn_New" Height="28" Click="btn_New_Click"  >
@@ -100,10 +100,9 @@
                 </Button>
             </ToolBar>
 
-            <ToolBar Name="Toolbar_ContentsControl" Padding="2,0,2,0" Background="White" 
+            <ToolBar Name="Toolbar_ContentsControl" Padding="2,0,2,0" Background="White" Width="330" MinWidth="330" MaxHeight="330"
                      HorizontalAlignment="Left" VerticalAlignment="Top" Height="auto">
-
-
+                
                 <metro:ToggleSwitch Header="  벽 그리기" Name="Ch_line" OffSwitchBrush="Silver"
                                     VerticalContentAlignment="Center"
                                     FontSize="14" Foreground="Blue"  FontWeight="Bold" 
@@ -131,8 +130,8 @@
 
             </ToolBar>
 
-            <ToolBar Name="Toolbar_CanvasControl" >
-                
+            <ToolBar Name="Toolbar_CanvasControl" Width="280" MinWidth="280" MaxWidth="280">
+               
                 <ToggleButton Name="btn_PlusWidthHeight" FontSize="15" Height="30"  Margin="2,6,0,0"  FontWeight="Bold" 
                             Click="btn_PlusWidthHeight_Click"  
                               >
@@ -175,12 +174,11 @@
                         오른쪽 회전 : 소품을 클릭한 후 이 버튼을 누르게 되면 오른쪽으로 45도 회전하게 됩니다.
                     </Button.ToolTip>
                 </Button>
-
             </ToolBar>
 
            
 
-            <ToolBar Name="Toolbar_HelpControl">
+            <ToolBar Name="Toolbar_HelpControl" Width="300" MinWidth="300" MaxWidth="300">
                 <Button Name="btn_CreateListWindow" Content="리스트창" FontSize="15" Height="36.5"  Margin="0,13.5,0,5"  FontWeight="Bold"
                         Click="btn_CreateListWindow_Click"
                         Style="{DynamicResource SquareButtonStyle}"
@@ -190,7 +188,7 @@
                          Style="{StaticResource AccentedSquareButtonStyle}"
                         />
                 <Button Content="도움말" FontSize="15" Height="28"  Margin="0,3"  FontWeight="Bold" Width="52"/>
-                <Button Content="튜토리얼" FontSize="15" Height="28"  Margin="3"  FontWeight="Bold"/>
+               
                 <TextBox x:Name="txtBox" Background="RosyBrown" Width="10" Visibility="Hidden"/>
             </ToolBar>
 

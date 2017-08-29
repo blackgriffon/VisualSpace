@@ -1,5 +1,5 @@
-﻿#define RUN_3DVIWER_IN_UNITY_EDITER
-#define RUN_3DVIWER
+﻿// #define RUN_3DVIWER_IN_UNITY_EDITER
+// #define RUN_3DVIWER
 
 
 using Nollan.Visual_Space.DockingWindows;
@@ -482,7 +482,7 @@ namespace Nollan.Visual_Space
             //818
             initActualWidth = mapCanvas.ActualWidth; // 맥시마이즈 시작시 맵캔버스의 렌더링 사이즈 초기값 저장
             initActualHeight = mapCanvas.ActualHeight;
-            drawCircle(); //유니티 뷰어 중심점 표시
+        //    drawCircle(); //유니티 뷰어 중심점 표시
 
 
             checkCanvasWidthCount();
@@ -622,11 +622,19 @@ namespace Nollan.Visual_Space
         public Brush lineBrush;
         public ImageBrush ib;
         public string Wallpaper_imgFilePath; //컬러창에서 받은 이미지 경로. 이걸로 유니티에서 월페이어 정보를 얻을 수 있다.
+        public string Wallpaer_imgFileName; //선택된 파일이름 저장 변수
+        //824
+        public bool Flag_isCustomWall; //커스텀 벽지 쪽을 눌러서 호출됬는가의 여부
+
         //817
-        public void ChangeImgBrush(BitmapImage bitmap, string Receive_WallpaperPath)
+        public void ChangeImgBrush(BitmapImage bitmap, string Receive_WallpaperPath, string Receive_WallpaperName, bool Receive_FlagisCustomWall)
         {
             ib = new ImageBrush(bitmap);
             Wallpaper_imgFilePath = Receive_WallpaperPath;
+            Wallpaer_imgFileName = Receive_WallpaperName;
+
+            Flag_isCustomWall = Receive_FlagisCustomWall;
+            //824  벽지 에셋번들 네임 기억해야됨 
 
         }
         public void DeleteImgBrush()
@@ -642,12 +650,22 @@ namespace Nollan.Visual_Space
 
         //820
         public string Floor_imgFilePath; //유니티로 보낼 바닥 파일 경로
+        public string Floor_imgFileName; //선택된 파일이름 저장 변수
         public ImageBrush Floorib;        // 이미지 브러시를 통해 바닥의 이미지를 바꾼다.
-        public void ChangeFloorImgBrush(BitmapImage bitmap, string Receive_FloorFilePath)
+        //824
+        public bool Flag_isCustomFloor; //커스텀 바닥 쪽을 눌러서 호출됬는가 아닌가의 여부
+
+        public void ChangeFloorImgBrush(BitmapImage bitmap, string Receive_FloorFilePath, string Receive_FloorFileName, bool Receive_FlagisCustomFloor)
         {
+            
             Floorib = new ImageBrush(bitmap);
             Floorib.TileMode = TileMode.Tile; //821 타일로 반복하게
             Floor_imgFilePath = Receive_FloorFilePath;
+
+            Floor_imgFileName = Receive_FloorFileName; //824 일반바닥이나 커스텀이나 구분하지 않고 전달되는 파일이름을 저장. 
+
+            Flag_isCustomFloor = Receive_FlagisCustomFloor;
+
 
         }
         public void DeleteFloorImgBrush()
@@ -656,6 +674,8 @@ namespace Nollan.Visual_Space
             {
                 Floorib = null;
                 Floor_imgFilePath = null;
+
+
             }
 
         }
@@ -731,13 +751,25 @@ namespace Nollan.Visual_Space
                     ib.Stretch = Stretch.UniformToFill;
                     line.Stroke = ib;
 
-                }
-                else if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
+                    //823
+                    WallConvertInfo wci = new WallConvertInfo();
+                    wci.WallLineimgBrush = ib;
+                    //824
+                    wci.AssetBundleName = Wallpaer_imgFileName; //컬러창에서 선택할 시 다이얼로그에서 선택된 이름 wallpaper1.png 을 기억
+
+                    line.Tag = wci; //선이 생성된 라인의 경우 태그에 자신에게 그려진 이미지 브러시를 가지고 있게 된다.
+
+
+
+                }            
+                else //ib, 즉 이미지 브러시가 널 일 때, 선택된 벽지가 없을 때 이쪽으로 들어옴.
                 {
-                    line.Stroke = lineBrush;                                        
-                }
-                else
-                {
+                    //824 디폴트일 경우 태그에 디폴트라고 넣어줌
+                    WallConvertInfo wci = new WallConvertInfo();
+                    wci.AssetBundleName = "default";
+                    line.Tag = wci;
+
+
                     line.Stroke = Brushes.Black;
                     line.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
                 }
@@ -779,15 +811,18 @@ namespace Nollan.Visual_Space
                         //817
                         if (ib != null)
                         {
-                            selectedLine.Stroke = ib;
-                        }
-                        else if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
-                        {
-                            selectedLine.Stroke = lineBrush;
-                        }
+                            //823
+                           WallConvertInfo wci = selectedLine.Tag as WallConvertInfo;
+                            selectedLine.Stroke = wci.WallLineimgBrush; // 선
+                           // selectedLine.Stroke = ib;
+                        }                      
                         else
                         {
+
+                          
                             selectedLine.Stroke = Brushes.Black;
+                            WallConvertInfo wci = new WallConvertInfo();
+                            
                             selectedLine.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
                         }
 
@@ -2531,13 +2566,24 @@ namespace Nollan.Visual_Space
                             int _price = newInfo.price;
                             string _brand = newInfo.brand;
                             string _explain = newInfo.explain;
+                           
 
+                            //824                            
+                            string _objConvertSize = newInfo.obj_ConvertSize.ToString();
+
+
+                            //#if DEBUG
+                            //                            string convertImgPath = AppDomain.CurrentDomain.BaseDirectory + $"../../../pictures/{_ObjectType}/convert/{_ObjectType}.png";
+
+                            //#else
+                            //                            string convertImgPath = AppDomain.CurrentDomain.BaseDirectory + $"pictures/{_ObjectType}/convert/{_ObjectType}.png";
+                            //#endif
 
 #if DEBUG
-                            string convertImgPath = AppDomain.CurrentDomain.BaseDirectory + $"../../../pictures/{_ObjectType}/convert/{_ObjectType}.png";
+                            string convertImgPath = AppDomain.CurrentDomain.BaseDirectory + $"../../../pictures/{_ObjectType}/convert/{_objConvertSize}.png";
 
 #else
-                            string convertImgPath = AppDomain.CurrentDomain.BaseDirectory + $"pictures/{_ObjectType}/convert/{_ObjectType}.png";
+                                                        string convertImgPath = AppDomain.CurrentDomain.BaseDirectory + $"pictures/{_ObjectType}/convert/{_objConvertSize}.png";
 #endif
 
 
@@ -3022,12 +3068,11 @@ namespace Nollan.Visual_Space
                         //817
                         if (ib != null)
                         {
-                            selectedLine.Stroke = ib;
-                        }
-                        else if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
-                        {
-                            selectedLine.Stroke = lineBrush;
-                        }
+                            //823 선은 자기가 가지고 있는 브러시를 기억하고 그 색으로 다시 돌아옴.
+                           WallConvertInfo wci = selectedLine.Tag as WallConvertInfo;
+                           selectedLine.Stroke = wci.WallLineimgBrush;
+                            // selectedLine.Stroke = ib;
+                        }                    
                         else
                         {
                             selectedLine.Stroke = Brushes.Black;
@@ -3154,7 +3199,7 @@ namespace Nollan.Visual_Space
                 currentRect.Height = Math.Abs(prePosition.Y - Result_StartPoint.Item2);
                 currentRect.Name = $"Object{innerObjName++}";
 
-                if (currentRect.Width == 0 && currentRect.Height == 0)
+                if (currentRect.Width < 10 && currentRect.Height < 10)
                 {
                     mapCanvas.Children.Remove(currentRect);
                 }
@@ -3209,6 +3254,9 @@ namespace Nollan.Visual_Space
 
         }
 
+
+       
+
         private void SetRectangleProperty()
         {
             //사각형의 투명도를 100% 로 설정
@@ -3218,11 +3266,25 @@ namespace Nollan.Visual_Space
             //820
             if (Floorib != null)
             {
+
                 currentRect.Fill = Floorib; //사용자가 선택한 바닥 이미지브러시 적용   
-               
+
+                //823 바닥이 생성될 때 마다 자신이 가진 이미지 브러시를 기억하고 있음.
+                FloorConvertInfo fci = new FloorConvertInfo();
+                fci.RectimgBrush = Floorib;
+
+                //824               
+                fci.AssetBundleName = Floor_imgFileName;
+              
+                
+                currentRect.Tag = fci;
+
             }
             else
             {
+                FloorConvertInfo fci = new FloorConvertInfo();
+                fci.AssetBundleName = "default";
+                currentRect.Tag = fci;
                 currentRect.Fill = new SolidColorBrush(Colors.LightYellow); //사용자가 바닥을 따로 선택하지 않았을 땐 기본 바닥 적용.
             }
                 //사각형의 테두리를 선으로 지정
@@ -3388,9 +3450,10 @@ namespace Nollan.Visual_Space
             //innerObjName 
 
 
+           // listWindow.
 
 
-            drawCircle(); //맵 캔버스에 다시 중심점 그려준다.
+          //  drawCircle(); //맵 캔버스에 다시 중심점 그려준다.
         }
 
 
@@ -3410,8 +3473,6 @@ namespace Nollan.Visual_Space
 
             Canvas.SetLeft(circle, 396);
             Canvas.SetTop(circle, 396);
-
-
         }
 
 

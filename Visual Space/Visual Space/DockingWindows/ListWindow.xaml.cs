@@ -84,7 +84,9 @@ namespace Nollan.Visual_Space.DockingWindows
             string VisualName = ObjConvertimgInfo.VisualName;
             string ObjType = ObjConvertimgInfo.ObjectType;
             string ObjName = ObjConvertimgInfo.ObjectName;
+
             
+
 
             //오브젝트타입으로 트리뷰아이템을 추가하는데 해당트리뷰아이템 이름이 없다면 최상위에 트리뷰아이템(대분류)를 추가한 후 하위분류를 추가, 해당트리뷰가 있다면 이미 있는 대분류에 하위분류 추가
 
@@ -96,8 +98,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 tvItem.Tag = ObjConvertimgInfo;
                 tvItem.Selected += TvItem_Selected;
                 tvItem.KeyDown += TvItem_KeyDown;
-
-
+                
 
                 MyTreeView.Items.Add(tvItem);
 
@@ -116,7 +117,8 @@ namespace Nollan.Visual_Space.DockingWindows
             tbk_SelectedCash.Text = "";
             tbk_brand.Text = "";
             tbk_explain.Text = "";
-
+            
+           
 
         }
 
@@ -141,9 +143,17 @@ namespace Nollan.Visual_Space.DockingWindows
                     tbk_TotalCash.Text = (_TotalCash).ToString();
                     DeleteExplain();
 
-                    MyTreeView.Items.Remove(tvi);
+                    img_ListThumnail.Source = null; //823
+                    //if (MyTreeView.Items.Count == 0)
+                    //{
+                    //    img_ListThumnail.Source = null;
+                    //}
 
+                    MyTreeView.Items.Remove(tvi);
+                    
                     MyTreeView.Focus();
+
+                  
 
                 }
             }                            
@@ -158,6 +168,10 @@ namespace Nollan.Visual_Space.DockingWindows
             tbk_SelectedCash.Text = null;
             tbk_brand.Text = null;
             tbk_explain.Text = null;
+
+            //823
+            img_ListThumnail.Source = null;
+
 
 
         }
@@ -187,6 +201,12 @@ namespace Nollan.Visual_Space.DockingWindows
 
                     MyTreeView.Items.Remove(sender);
 
+                   
+                    //823 다없앨 때 이미지 남는거 고침
+                    if (MyTreeView.Items.Count == 0)
+                    {
+                        img_ListThumnail.Source = null;
+                    }
 
                     MyTreeView.Focus();
                     // Selected_ObjItemName = null;
@@ -212,6 +232,15 @@ namespace Nollan.Visual_Space.DockingWindows
 
             ObjConvertImageInfo objconvertimginfo;
             objconvertimginfo = (ObjConvertImageInfo)tvi.Tag;
+
+
+          
+                //823 선택할 때 이미지 나타내기
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(objconvertimginfo.ImgFilePath);
+                bitmap.EndInit();
+                img_ListThumnail.Source = bitmap;
            
 
             Selected_ObjItemName = objconvertimginfo.ObjectName;
@@ -222,8 +251,8 @@ namespace Nollan.Visual_Space.DockingWindows
             tbk_SelectedCash.Text = (objconvertimginfo.price).ToString(); //트리뷰 항목을 선택할 때 마다 텍스트블록의 내용의 바뀜
             tbk_brand.Text = objconvertimginfo.brand;
             tbk_explain.Text = objconvertimginfo.explain;
-  
 
+            
 
             //if (tvi != null)
             //{

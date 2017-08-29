@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Nollan.Visual_Space.DockingWindows"
              xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
-             d:DesignHeight="55" d:DesignWidth="55" 
+             d:DesignHeight="55" d:DesignWidth="55" Margin="3"
                   
                            >
 

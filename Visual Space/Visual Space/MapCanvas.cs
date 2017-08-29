@@ -9,6 +9,7 @@ using System.Windows.Controls;
 //using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace Nollan.Visual_Space
 {
@@ -37,8 +38,12 @@ namespace Nollan.Visual_Space
 
             //윤곽선을 그릴 개체 ( http://msdn.microsoft.com/ko-kr/library/system.windows.media.pen(v=vs.90).aspx )
             Pen pen = new Pen(Brushes.IndianRed, 0.5d);
+            
 
-
+            //822 
+            Point center = new Point(400, 400); // 맵캔버스에서 유니티 뷰어 중심점이 찍힐 좌표.                       
+            dc.DrawEllipse(Brushes.Blue, new Pen(Brushes.Blue, 3), center, 3, 3);
+            
 
             for (int i = 1; i < xlineCount + 1; i++)
             {
@@ -81,6 +86,5 @@ namespace Nollan.Visual_Space
         }
     }
 
-
-
+    
 }

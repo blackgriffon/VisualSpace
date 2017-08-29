@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using DockingLibrary;
 using SampleExpander;
 using MahApps.Metro;
-
+using static Nollan.Visual_Space.classes.ObjSizeInfo;
 
 namespace Nollan.Visual_Space.DockingWindows
 {
@@ -31,6 +31,7 @@ namespace Nollan.Visual_Space.DockingWindows
 
             createObjList(); //서버에서 받아올 리스트. 서버가 아직 없음으로 내가 임의로 리스트를 만든다. 만든 리스트 정보는 ObjectList에 추가된다.(총 6개)
             createbed(); //임시로 침대 때려박음. 위의 것과 동일.
+            createsubbed();
             createTable();
             createDoor();
             createWindow();
@@ -55,10 +56,22 @@ namespace Nollan.Visual_Space.DockingWindows
         {            
             for (int i = 0; i < 4; i++)
             {
+               // ObjSize _objSize = ObjSize.
+
                 ObjectInfo objInfo = new ObjectInfo();
                 objInfo.ObjectType = "chairs";
                 objInfo.VisualName = $"이케아의자{i}";
                 objInfo.AssetBundleName = $"chair_{i + 1}";
+
+                if (i == 0)
+                {
+                    objInfo.obj_ConvertSize = ObjSize.s_1x1;
+                }
+                else
+                {
+                    //824
+                    objInfo.obj_ConvertSize = ObjSize.s_1x2;
+                }
 
                 //816
                 objInfo.price = 1500;
@@ -86,10 +99,15 @@ namespace Nollan.Visual_Space.DockingWindows
                 objInfo.VisualName = $"에이스침대{i}";
                 objInfo.AssetBundleName = $"bed_{i+1}";
 
+                //824
+                objInfo.obj_ConvertSize = ObjSize.s_2x3;
+
                 //816
                 objInfo.price = 8500;
                 objInfo.brand = $"에이스";
                 objInfo.explain = $"설명 : 침대는 과학이다{i}";
+
+
 
 #if DEBUG
                 objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\beds\bed{i + 1}.png";
@@ -100,6 +118,38 @@ namespace Nollan.Visual_Space.DockingWindows
             }
         }
 
+
+        public void createsubbed()
+        {
+
+            for (int i = 0; i < 2; i++)
+            {
+                ObjectInfo objInfo = new ObjectInfo();
+                objInfo.ObjectType = "subbed";
+                objInfo.VisualName = $"에이스침대{i}";
+                objInfo.AssetBundleName = $"bed_{i + 1}";
+
+                //824
+                objInfo.obj_ConvertSize = ObjSize.s_2x3;
+
+                //816
+                objInfo.price = 8500;
+                objInfo.brand = $"에이스";
+                objInfo.explain = $"설명 : 침대는 과학이다{i}";
+
+
+
+#if DEBUG
+                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\beds\bed{i + 1}.png";
+#else
+                objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"pictures\beds\bed{i + 1}.png";
+#endif
+                ObjectList.Add(objInfo);
+            }
+        }
+
+
+
         public void createTable()
         {
 
@@ -109,6 +159,26 @@ namespace Nollan.Visual_Space.DockingWindows
                 objInfo.ObjectType = "tables";
                 objInfo.VisualName = $"LG 테이블{i}";
                 objInfo.AssetBundleName = $"table_{i + 1}";
+
+                switch (i)
+                {
+                    case 0:
+                        objInfo.obj_ConvertSize = ObjSize.s_2x3;
+                        break;
+
+                    case 1:
+                        objInfo.obj_ConvertSize = ObjSize.s_3x2;
+                        break;
+
+                    case 2:
+                        objInfo.obj_ConvertSize = ObjSize.s_3x3;
+                        break;
+
+                    //824
+                
+                }
+
+                //MessageBox.Show(objInfo.obj_ConvertSize.ToString() );
 
                 //816
                 objInfo.price = 1200;
@@ -121,6 +191,8 @@ namespace Nollan.Visual_Space.DockingWindows
 #else
                 objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"pictures\tables\table{i + 1}.png";
 #endif
+
+
                 ObjectList.Add(objInfo);
             }
         }
@@ -134,6 +206,8 @@ namespace Nollan.Visual_Space.DockingWindows
                 objInfo.ObjectType = "doors";
                 objInfo.VisualName = $"원목도어{i}";
                 objInfo.AssetBundleName = $"door_{i + 1}";
+
+                objInfo.obj_ConvertSize = ObjSize.s_2x1;
 
                 //816
                 objInfo.price = 3000;
@@ -160,6 +234,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 objInfo.VisualName = $"KCC창문{i}";
                 objInfo.AssetBundleName = $"window_{i + 1}";
 
+                objInfo.obj_ConvertSize = ObjSize.s_2x1;
 
                 //816
                 objInfo.price = 100000;
@@ -226,7 +301,11 @@ namespace Nollan.Visual_Space.DockingWindows
                         Categori cate_windows = new Categori(obj_List);
                         Expd_windows.Children.Add(cate_windows);
                         break;
-                        
+
+                    case "subbed":
+                        Categori cate_subbed = new Categori(obj_List);
+                        Expd_subbeds.Children.Add(cate_subbed);
+                        break;
 
 
                 }
