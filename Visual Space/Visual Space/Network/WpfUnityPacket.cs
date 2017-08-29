@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Nollan.Visual_Space.Network
 {
 
-    public enum WpfUnityPacketType : byte { eError = 0, WallInfo, ObjectInfoPacket, FloorInfoPacket };
+    public enum WpfUnityPacketType : byte { eError = 0, WallInfo, ObjectInfoPacket, FloorInfoPacket, CommandPacket };
 
     [ProtoContract]
     public class WpfUnityPacketHeader
@@ -53,10 +53,6 @@ namespace Nollan.Visual_Space.Network
         }
 
 
-
-
-
-
         [ProtoMember(1)] public WallInfoAction Action;
         [ProtoMember(2)] public string Name;
         [ProtoMember(3)] public float PosX;
@@ -65,8 +61,7 @@ namespace Nollan.Visual_Space.Network
         [ProtoMember(6)] public float ScaleX;
         [ProtoMember(7)] public float ScaleY;
         [ProtoMember(8)] public float ScaleZ;
-
-
+        [ProtoMember(9)] public byte[] ImageData;
 
     }
 
@@ -157,6 +152,18 @@ namespace Nollan.Visual_Space.Network
         [ProtoMember(6)] public float ScaleX;
         [ProtoMember(7)] public float ScaleY;
         [ProtoMember(8)] public float ScaleZ;
+        [ProtoMember(9)] public byte[] ImageData;
 
+    }
+
+    [ProtoContract]
+    public class CommandPacket
+    {
+        public enum CommandAction
+        {
+            ALLCLEAR,
+        }
+
+        [ProtoMember(1)] public CommandAction Action;
     }
 }

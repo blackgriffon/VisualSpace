@@ -7,7 +7,7 @@ using ProtoBuf;
 
 namespace Packet
 {
-    public enum PacketType : byte { eError = 0, WallInfo, ObjectInfoPacket, FloorInfoPacket };
+    public enum PacketType : byte { eError = 0, WallInfo, ObjectInfoPacket, FloorInfoPacket, CommandPacket };
 
 
     [ProtoContract]
@@ -76,7 +76,7 @@ namespace Packet
 
 
     [ProtoContract]
-    class WallInfo
+    public class WallInfo
     {
         [ProtoMember(1)] public WallInfoAction Action;
         [ProtoMember(2)] public string Name;
@@ -86,6 +86,7 @@ namespace Packet
         [ProtoMember(6)] public float ScaleX;
         [ProtoMember(7)] public float ScaleY;
         [ProtoMember(8)] public float ScaleZ;
+        [ProtoMember(9)] public byte[] ImageData;
     }
 
     public static class PacketFactory
@@ -174,6 +175,7 @@ namespace Packet
         [ProtoMember(5)] public float PosY;
         [ProtoMember(6)] public float PosZ;
         [ProtoMember(7)] public float Angle;
+
     }
 
 
@@ -189,8 +191,21 @@ namespace Packet
         [ProtoMember(6)] public float ScaleX;
         [ProtoMember(7)] public float ScaleY;
         [ProtoMember(8)] public float ScaleZ;
+        [ProtoMember(9)] public byte[] ImageData;
 
     }
 
+    public enum CommandAction
+    {
+        ALLCLEAR,
+    }
+
+
+    [ProtoContract]
+    public class CommandPacket
+    {
+
+        [ProtoMember(1)] public CommandAction Action;
+    }
 
 }

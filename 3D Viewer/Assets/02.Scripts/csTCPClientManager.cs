@@ -4,6 +4,7 @@ using UnityEngine;
 using Packet;
 using ProtoBuf;
 using TransportTCP;
+using System;
 
 public class csTCPClientManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class csTCPClientManager : MonoBehaviour
 
     public GameObject WallObject = null;
     public GameObject ParentObject = null;
-    public GameObject FloorObject = null;
+
 
 
 
@@ -47,28 +48,35 @@ public class csTCPClientManager : MonoBehaviour
         if (!client.Recevie(ref header))
             return;
 
+        GameObject gameObj;
         switch (header.ObjectType)
         {
+
             case Packet.PacketType.WallInfo:
-                GameObject gameObj;
+
                 Debug.Log("recevied Data PacketType.WallInfo");
                 WallInfo wallInfo = (WallInfo)header.Data;
                 switch (wallInfo.Action)
                 {
                     case WallInfoAction.CREATE:
-                        //gameObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                        gameObj = Instantiate(WallObject);
-                        gameObj.GetComponent<MeshRenderer>().enabled = true;
-                        gameObj.name = wallInfo.Name;
-                        gameObj.transform.position = new Vector3(wallInfo.PosX, wallInfo.PosY, wallInfo.PosZ);
-                        gameObj.transform.localScale = new Vector3(wallInfo.ScaleX, wallInfo.ScaleY, wallInfo.ScaleZ);
-                        gameObj.transform.parent = ParentObject.transform;
-                        gameObj.tag = "Wall";
+                        assertBundle.LoadWall(wallInfo);
                         break;
 
+
+
                     case WallInfoAction.MOVE:
-                        gameObj = GameObject.Find(wallInfo.Name);
+                        gameObj = moveObjectControl.SelecetdObject.transform.gameObject;
                         gameObj.transform.position = new Vector3(wallInfo.PosX, wallInfo.PosY, wallInfo.PosZ);
+
+                        var components = gameObj.GetComponentsInChildren<Transform>();
+                        for (int i = 1; i < components.Length; i++)
+                        {
+                                if (components[i].gameObject.name == "front" || components[i].gameObject.name == "back")
+                                    components[i].gameObject.GetComponent<Renderer>().material.mainTextureScale = new Vector2(wallInfo.ScaleX, wallInfo.ScaleY);
+                                else
+                                    components[i].gameObject.GetComponent<Renderer>().material.mainTextureScale = new Vector2(wallInfo.ScaleZ, wallInfo.ScaleY);
+                        }
+
                         gameObj.transform.localScale = new Vector3(wallInfo.ScaleX, wallInfo.ScaleY, wallInfo.ScaleZ);
                         break;
 
@@ -97,7 +105,7 @@ public class csTCPClientManager : MonoBehaviour
                     switch (objectInfo.Action)
                     {
                         case ObjectAction.CREATE:
-                            assertBundle.LoadGameObject(objectInfo);
+                            assertBundle.LoadObject(objectInfo);
                             break;
 
                         case ObjectAction.MOVE:
@@ -138,22 +146,16 @@ public class csTCPClientManager : MonoBehaviour
                     switch (floorInfo.Action)
                     {
                         case FloorInfoAction.CREATE:
-                            gameObj = Instantiate(FloorObject);
-                            gameObj.GetComponent<MeshRenderer>().enabled = true;
-                            gameObj.name = floorInfo.Name;
-                            gameObj.transform.position = new Vector3(floorInfo.PosX, floorInfo.PosY, floorInfo.PosZ);
-                            gameObj.transform.localScale = new Vector3(floorInfo.ScaleX, floorInfo.ScaleY, floorInfo.ScaleZ);
-                            gameObj.transform.parent = ParentObject.transform;
-                            gameObj.tag = "Floor";
+                            assertBundle.LoadFloor(floorInfo);
                             break;
 
                         case FloorInfoAction.MOVE:
-                            moveObjectControl.SelecetdObject.transform.position = 
+                            moveObjectControl.SelecetdObject.transform.position =
                                 new Vector3(floorInfo.PosX, floorInfo.PosY, floorInfo.PosZ);
                             break;
 
                         case FloorInfoAction.SELECT:
-                            moveObjectControl.SelecetdObject =  GameObject.Find(floorInfo.Name); 
+                            moveObjectControl.SelecetdObject = GameObject.Find(floorInfo.Name);
                             break;
 
 
@@ -171,6 +173,29 @@ public class csTCPClientManager : MonoBehaviour
                     }
                 }
                 break;
+
+            case PacketType.CommandPacket:
+                {
+                    CommandPacket command = (CommandPacket)header.Data;
+                    switch (command.Action)
+                    {
+                        case CommandAction.ALLCLEAR:
+                            ClearAllObjects();
+                            break;
+                    }
+                }
+                break;
+
+        }
+    }
+
+    private void ClearAllObjects()
+    {
+        var objects = ParentObject.GetComponentsInChildren<Transform>();
+
+        for(int i = 1; i < objects.Length; i++)
+        {
+            Destroy(objects[i].gameObject);
         }
     }
 

@@ -105,6 +105,10 @@ namespace TransportTCP
                             header.Data = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Packet.FloorInfoPacket>(_NetworkStream, ProtoBuf.PrefixStyle.Fixed32);
                             break;
 
+                        case PacketType.CommandPacket:
+                            header.Data = ProtoBuf.Serializer.DeserializeWithLengthPrefix<Packet.CommandPacket>(_NetworkStream, ProtoBuf.PrefixStyle.Fixed32);
+                            break;
+
 
                     }
 

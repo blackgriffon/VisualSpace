@@ -129,6 +129,11 @@ namespace Nollan.Visual_Space.Network
                         case WpfUnityPacketType.FloorInfoPacket:
                             ProtoBuf.Serializer.SerializeWithLengthPrefix<FloorInfoPacket>(_NetworkStream, (FloorInfoPacket)header.Data, ProtoBuf.PrefixStyle.Fixed32);
                             break;
+
+
+                        case WpfUnityPacketType.CommandPacket:
+                            ProtoBuf.Serializer.SerializeWithLengthPrefix<CommandPacket>(_NetworkStream, (CommandPacket)header.Data, ProtoBuf.PrefixStyle.Fixed32);
+                            break;
                     }
                 }
                 catch (System.IO.IOException)

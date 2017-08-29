@@ -118,7 +118,9 @@
     <Compile Include="classes\colorTag.cs" />
     <Compile Include="classes\ObjSizeInfo.cs" />
     <Compile Include="classes\Utils.cs" />
+    <Compile Include="Data\JsonTypeDesignData.cs" />
     <Compile Include="FloorConvertInfo.cs" />
+    <Compile Include="Util\ImageConvertor.cs" />
     <Compile Include="WallConvertInfo.cs" />
     <Compile Include="DockingWindows\Categori.xaml.cs">
       <DependentUpon>Categori.xaml</DependentUpon>
