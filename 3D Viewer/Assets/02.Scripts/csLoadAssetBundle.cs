@@ -19,11 +19,6 @@ public class csLoadAssetBundle : MonoBehaviour
         StartCoroutine(LoadAssetBundle("bundle.unity3d"));
 
     }
-    //#if UNITY_EDITOR
-    //string assetBundleDirectory = "C:\\Users\\TAEWOO\\Desktop\\VisualSpace\\3D Viewer\\Assets\\AssetBundles\\";
-    //#else
-    //    string assetBundleDirectory = System.Environment.CurrentDirectory+ "\\AssetBundles\\";
-    //#endif
 
     string assetBundleDirectory = "http://web.visualspace.uy.to/assetBundle/";
 
@@ -39,16 +34,6 @@ public class csLoadAssetBundle : MonoBehaviour
     }
 
 
-    //public void LoadWall(WallInfo wallInfo)
-    //{
-    //    StartCoroutine(coLoadWall(wallInfo));
-    //}
-
-    //public void LoadFloor(FloorInfoPacket floorInfo)
-    //{
-    //    StartCoroutine(coLoadFloor(floorInfo));
-    //}
-
 
 
     public void LoadObject(ObjectInfoPacket objInfo)
@@ -58,27 +43,6 @@ public class csLoadAssetBundle : MonoBehaviour
 
     public void LoadWall(WallInfo wallInfo)
     {
-        //AssetBundleRequest assetPrefeb = assetBundle.LoadAssetAsync<GameObject>(wallInfo.AssetBundleName);
-        //yield return assetPrefeb;
-        //GameObject pb = assetPrefeb.asset as GameObject;
-        //GameObject gameobj = Instantiate(pb, new Vector3(0, 0, 0), pb.transform.rotation);
-        //gameobj.name = wallInfo.Name;
-        //gameobj.transform.position = new Vector3(wallInfo.PosX, wallInfo.PosY, wallInfo.PosZ);
-        //gameobj.transform.localScale = new Vector3(wallInfo.ScaleX, wallInfo.ScaleY, wallInfo.ScaleZ);
-        //gameobj.transform.parent = this.transform;
-        //gameobj.tag = "Wall";
-
-
-
-        //AssetBundleRequest assetPrefeb = assetBundle.LoadAssetAsync<Texture2D>(wallInfo.AssetBundleName);
-        //Debug.Log("AssetBundle Name : " + wallInfo.AssetBundleName);
-        //yield return  assetPrefeb;
-
-
-        //Texture2D texture = assetPrefeb.asset as Texture2D;
-
-
-
         GameObject wall = Instantiate<GameObject>(WallModel);
         wall.name = wallInfo.Name;
         wall.transform.position = new Vector3(wallInfo.PosX, wallInfo.PosY, wallInfo.PosZ);
@@ -121,13 +85,7 @@ public class csLoadAssetBundle : MonoBehaviour
                     Destroy(components[i].gameObject);
             }
 
-
-
         }
-
-
-
-
 
     }
 
@@ -137,23 +95,25 @@ public class csLoadAssetBundle : MonoBehaviour
     public void LoadFloor(FloorInfoPacket floorInfo)
     {
 
-
-        Texture2D texture = new Texture2D(2, 2);
-        texture.LoadImage(floorInfo.ImageData);
-
-
         GameObject gameobj = GameObject.CreatePrimitive(PrimitiveType.Cube);
         gameobj.name = floorInfo.Name;
-        gameobj.GetComponent<Renderer>().material.mainTexture = texture;
-        gameobj.GetComponent<Renderer>().material.mainTextureScale = new Vector2(floorInfo.ScaleX, floorInfo.ScaleZ);
+
+
+        if (floorInfo.ImageData != null)
+        {
+
+            Texture2D texture = new Texture2D(2, 2);
+            texture.LoadImage(floorInfo.ImageData);
+            gameobj.GetComponent<Renderer>().material.mainTexture = texture;
+            gameobj.GetComponent<Renderer>().material.mainTextureScale = new Vector2(floorInfo.ScaleX, floorInfo.ScaleZ);
+        }
+
 
         gameobj.transform.position = new Vector3(floorInfo.PosX, floorInfo.PosY, floorInfo.PosZ);
         gameobj.transform.localScale = new Vector3(floorInfo.ScaleX, floorInfo.ScaleY, floorInfo.ScaleZ);
         gameobj.transform.Rotate(new Vector3(0, 180, 0));
         gameobj.transform.parent = this.transform;
         gameobj.tag = "Floor";
-
-
 
     }
 
@@ -173,7 +133,6 @@ public class csLoadAssetBundle : MonoBehaviour
             float z = gameobj.transform.eulerAngles.z;
             gameobj.transform.rotation = Quaternion.Euler(x, (float)objInfo.Angle, z);
             gameobj.tag = "Object";
-
 
         }
     }

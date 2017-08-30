@@ -36,8 +36,14 @@ namespace Nollan.Visual_Space.DockingWindows
 
             //Image myImage3 = new Image();
             //상대 파일경로의 png를 bitmap으로 변환.
+
+            NewInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + @"pictures\" + NewInfo.ObjectType + @"\" +
+                NewInfo.AssetBundleName + @".PNG";
+
             BitmapImage bitimage = new BitmapImage();
             bitimage.BeginInit();
+
+
             bitimage.UriSource = new Uri(NewInfo.FilePath, UriKind.RelativeOrAbsolute);
             bitimage.EndInit();
    

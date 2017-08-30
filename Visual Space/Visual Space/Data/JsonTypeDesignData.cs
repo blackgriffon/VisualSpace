@@ -42,6 +42,7 @@ namespace Nollan.Visual_Space.Data
                         objd.price = covertImgInfo.price;
                         objd.rotationAngle = covertImgInfo.rotationAngle;
                         objd.VisualName = covertImgInfo.VisualName;
+                        objd.obj_ConvertSize = (int)covertImgInfo.obj_ConvertSize;
 
                        objd.AssetBundleName = covertImgInfo.AssetBundleName;
 
@@ -168,9 +169,9 @@ namespace Nollan.Visual_Space.Data
 
                 float xc = (float)(data.objectData[i].Left - zeroPos + data.objectData[i].Width / 2);
                 float yc = (float)(data.objectData[i].Top - zeroPos + (float)data.objectData[i].Height / 2) * -1;
-                webgl3dObjectData.PosX = xc / 20;
+                webgl3dObjectData.PosX = xc / 40;
                 webgl3dObjectData.PosY = 0f;
-                webgl3dObjectData.PosZ = yc / 20;
+                webgl3dObjectData.PosZ = yc / 40;
                 webgl3dObjectData.Rotation = (float)data.objectData[i].rotationAngle;
 
                 webgl3dData.objectData.Add(webgl3dObjectData);
@@ -185,14 +186,14 @@ namespace Nollan.Visual_Space.Data
 
                 float xc = (float)(data.FloorData[i].Left - zeroPos + data.FloorData[i].Width / 2);
                 float yc = (float)(data.FloorData[i].Top - zeroPos + (float)data.FloorData[i].Height / 2) * -1;
-                webgl3dFloorData.PosX = xc / 20;
+                webgl3dFloorData.PosX = xc / 40;
                 webgl3dFloorData.PosY = 0f;
-                webgl3dFloorData.PosZ = yc / 20;
+                webgl3dFloorData.PosZ = yc / 40;
 
 
-                webgl3dFloorData.ScaleX = (float)data.FloorData[i].Width / 20;
+                webgl3dFloorData.ScaleX = (float)data.FloorData[i].Width / 40;
                 webgl3dFloorData.ScaleY = 0.01f;
-                webgl3dFloorData.ScaleZ = (float)data.FloorData[i].Height / 20;
+                webgl3dFloorData.ScaleZ = (float)data.FloorData[i].Height / 40;
 
                 webgl3dData.floorData.Add(webgl3dFloorData);
             }
@@ -221,14 +222,14 @@ namespace Nollan.Visual_Space.Data
                 float w = Math.Abs(x1 - x2);
                 float h = Math.Abs(y1 - y2);
 
-                webgl3dWallData.PosX = xc / 20;
+                webgl3dWallData.PosX = xc / 40;
                 webgl3dWallData.PosY = 1f;
 
-                webgl3dWallData.PosZ = yc / 20;
+                webgl3dWallData.PosZ = yc / 40;
 
-                webgl3dWallData.ScaleX = w / 20;
+                webgl3dWallData.ScaleX = w / 40;
                 webgl3dWallData.ScaleY = 2f;
-                webgl3dWallData.ScaleZ = h / 20;
+                webgl3dWallData.ScaleZ = h / 40;
 
                 if (webgl3dWallData.ScaleX == 0)
                 {
@@ -336,6 +337,7 @@ namespace Nollan.Visual_Space.Data
         public int price; //가격
         public string brand; //이케아, 삼성, lg 등 가구 브랜드
         public string explain; //가구 간단한 설명
+        public int obj_ConvertSize;
     }
 
     [Serializable]

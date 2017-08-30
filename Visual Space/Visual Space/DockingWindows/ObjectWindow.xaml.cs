@@ -16,6 +16,8 @@ using DockingLibrary;
 using SampleExpander;
 using MahApps.Metro;
 using static Nollan.Visual_Space.classes.ObjSizeInfo;
+using ProtoBuf;
+using System.IO;
 
 namespace Nollan.Visual_Space.DockingWindows
 {
@@ -29,16 +31,17 @@ namespace Nollan.Visual_Space.DockingWindows
             InitializeComponent();
 
 
-            createObjList(); //서버에서 받아올 리스트. 서버가 아직 없음으로 내가 임의로 리스트를 만든다. 만든 리스트 정보는 ObjectList에 추가된다.(총 6개)
-            createbed(); //임시로 침대 때려박음. 위의 것과 동일.
-            createsubbed();
-            createTable();
-            createDoor();
-            createWindow();
+            // TODO : 역직렬화 ObjectList에다가
+
+
+            LoadOjectInfo();
+            //createObjList(); //서버에서 받아올 리스트. 서버가 아직 없음으로 내가 임의로 리스트를 만든다. 만든 리스트 정보는 ObjectList에 추가된다.(총 6개)
+            //createbed(); //임시로 침대 때려박음. 위의 것과 동일.
+            //createsubbed();
+            //createTable();
+            //createDoor();
+            //createWindow();
             // appendImageToExpender();
-
-
-
 
 
             appendImageToExpender(ObjectList);  //ObjectList를 매개변수로 넣으면 리스트 tag에 있는 ObjectType을 보고 switch case문으로 분류해서 알맞는 익스팬더에 집어넣게 됨. 
@@ -48,12 +51,39 @@ namespace Nollan.Visual_Space.DockingWindows
 
         }
 
+
+        [ProtoContract]
+        public class TestClassList
+        {
+            [ProtoMember(1, OverwriteList = true)]
+            public List<ObjectInfo> list = new List<ObjectInfo>();
+        }
+
+
+        private void LoadOjectInfo()
+        {
+            TestClassList testClassList = new TestClassList();
+            string Local_txt = Directory.GetCurrentDirectory() + @"\Data.txt";
+
+            using (FileStream fs = new FileStream(Local_txt, FileMode.Open))
+            {
+                testClassList = ProtoBuf.Serializer.DeserializeWithLengthPrefix<TestClassList>(fs, PrefixStyle.Fixed32);
+            }
+
+            ObjectList = testClassList.list;
+
+        }
+
         public List<ObjectInfo> ObjectList = new List<ObjectInfo>(); //서버에서 받아온 정보를 이곳에다 넣는다.
        
 
         //서버에서 받아올 리스트. 서버가 아직 없음으로 내가 임의로 리스트를 만든다. 이걸 받아서 여기에 있는 정보로 익스펜더 안의 랩패널의 자식으로 추가
         public void createObjList()
         {            
+
+
+            
+
             for (int i = 0; i < 4; i++)
             {
                // ObjSize _objSize = ObjSize.
@@ -136,7 +166,6 @@ namespace Nollan.Visual_Space.DockingWindows
                 objInfo.price = 8500;
                 objInfo.brand = $"에이스";
                 objInfo.explain = $"설명 : 침대는 과학이다{i}";
-
 
 
 #if DEBUG

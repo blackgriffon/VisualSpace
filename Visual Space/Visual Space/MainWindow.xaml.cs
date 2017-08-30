@@ -347,11 +347,11 @@ namespace Nollan.Visual_Space
         private List<int> convert3FloorPosTo2DRect(FloorInfoPacket floorInfo)
         {
             int zeroPos = 400;
-            int w = (int)(Math.Round(floorInfo.ScaleX, 0)) * 20;
-            int h = (int)(Math.Round(floorInfo.ScaleZ, 0)) * 20;
+            int w = (int)(floorInfo.ScaleX * 40);
+            int h = (int)(floorInfo.ScaleZ * 40);
 
-            int left = (int)(floorInfo.PosX * 20 + zeroPos) - w / 2;
-            int top = (int)(floorInfo.PosZ * 20 * -1 + zeroPos) - h / 2;
+            int left = (int)((floorInfo.PosX * 40 + zeroPos) - w / 2f);
+            int top = (int)((floorInfo.PosZ * 40 * -1 + zeroPos) - h / 2f);
             return new List<int> { left, top, w, h };
 
         }
@@ -363,8 +363,8 @@ namespace Nollan.Visual_Space
             // 계산
 
             // 2D 상의 중심점을 구한다.
-            int xc = (int)(wallInfo.PosX * 20 + zeroPos);
-            int yc = (int)(wallInfo.PosZ * 20 * -1 + zeroPos);
+            int xc = (int)(wallInfo.PosX * 40 + zeroPos);
+            int yc = (int)(wallInfo.PosZ * 40 * -1 + zeroPos);
             int w, h;
 
             // 2D 상의 길이를 구한다.
@@ -372,13 +372,13 @@ namespace Nollan.Visual_Space
             // 따라서 반올림을 해줘서 값을 보정한다.
             if (wallInfo.ScaleX > wallInfo.ScaleZ)
             {
-                w = (int)(Math.Round(wallInfo.ScaleX - 0.2, 0)) * 20;
+                w = (int)((wallInfo.ScaleX - 0.2f) * 40);
                 h = 0;
             }
             else
             {
                 w = 0;
-                h = (int)(Math.Round(wallInfo.ScaleZ - 0.2, 0)) * 20;
+                h = (int)((wallInfo.ScaleZ - 0.2f) * 40);
             }
 
             // 이만큼 더해주면 x1,x2 빼주면 x2, y2가된다.
@@ -401,8 +401,8 @@ namespace Nollan.Visual_Space
             int zeroPos = 400;
             // 계산
 
-            float xc = objInofPk.PosX * 20 + zeroPos;
-            float yc = objInofPk.PosZ * 20 * -1 + zeroPos;
+            float xc = objInofPk.PosX * 40 + zeroPos;
+            float yc = objInofPk.PosZ * 40 * -1 + zeroPos;
 
 
             List<float> pos = new List<float>();
@@ -1671,9 +1671,9 @@ namespace Nollan.Visual_Space
                     float yc = ((float)Canvas.GetTop(img) - zeroPos + (float)img.Source.Height / 2) * -1;
 
 
-                    objectInfo.PosX = xc / 20;
+                    objectInfo.PosX = xc / 40;
                     objectInfo.PosY = 0f;
-                    objectInfo.PosZ = yc / 20;
+                    objectInfo.PosZ = yc / 40;
 
                     objectInfo.Rotation = (float)ObjInfo.rotationAngle;
                     break;
@@ -1729,15 +1729,15 @@ namespace Nollan.Visual_Space
                     float w = Math.Abs(x1 - x2);
                     float h = Math.Abs(y1 - y2);
 
-                    wallInfo.PosX = xc / 20;
+                    wallInfo.PosX = xc / 40;
                     wallInfo.PosY = 1.5f;
 
-                    wallInfo.PosZ = yc / 20;
+                    wallInfo.PosZ = yc / 40;
 
-                    wallInfo.ScaleX = w / 20;
+                    wallInfo.ScaleX = w / 40;
                     wallInfo.ScaleY = 3f;
-                    wallInfo.ScaleZ = h / 20;
-
+                    wallInfo.ScaleZ = h / 40;
+                
                     if (wallInfo.ScaleX == 0)
                     {
                         wallInfo.ScaleX = wallThickness;
@@ -1792,13 +1792,13 @@ namespace Nollan.Visual_Space
                     float yc = ((float)Canvas.GetTop(rect) - zeroPos + (float)rect.Height / 2) * -1;
 
 
-                    floorInfo.PosX = xc / 20;
+                    floorInfo.PosX = xc / 40;
                     floorInfo.PosY = 0;
-                    floorInfo.PosZ = yc / 20;
+                    floorInfo.PosZ = yc / 40;
 
-                    floorInfo.ScaleX = (float)rect.Width / 20;
+                    floorInfo.ScaleX = (float)rect.Width / 40;
                     floorInfo.ScaleY = 0.01f;
-                    floorInfo.ScaleZ = (float)rect.Height / 20;
+                    floorInfo.ScaleZ = (float)rect.Height / 40;
 
 
                     break;
@@ -3435,6 +3435,18 @@ namespace Nollan.Visual_Space
         {
 
 
+            AllClear();
+ 
+            server.Send(fillCommandInfo(CommandPacket.CommandAction.ALLCLEAR));
+
+            // listWindow.
+
+
+            //  drawCircle(); //맵 캔버스에 다시 중심점 그려준다.
+        }
+
+        private void AllClear()
+        {
             mapCanvas.Children.Clear();
 
 
@@ -3487,12 +3499,6 @@ namespace Nollan.Visual_Space
             colorWindow.HistroyFloorThumClear();
             Floor_imgFilePath = null;
             //innerObjName 
-            server.Send(fillCommandInfo(CommandPacket.CommandAction.ALLCLEAR));
-
-            // listWindow.
-
-
-            //  drawCircle(); //맵 캔버스에 다시 중심점 그려준다.
         }
 
 
@@ -3564,7 +3570,7 @@ namespace Nollan.Visual_Space
             bool? result = ofd.ShowDialog();
             if (result == true)
             {
-
+                AllClear();
                 server.Send(fillCommandInfo(CommandPacket.CommandAction.ALLCLEAR));
                 JsonTypeDesignDataControler controler = new JsonTypeDesignDataControler();
                 controler.Load(ofd.FileName);
@@ -3837,7 +3843,7 @@ namespace Nollan.Visual_Space
 
 #if DEBUG
                 string convertImgPath = AppDomain.CurrentDomain.BaseDirectory
-                    + $"../../../pictures/{objconverInfo.ObjectType}/convert/{objconverInfo.ObjectType}.png";
+                    + $"../../../pictures/{objconverInfo.ObjectType}/convert/{objconverInfo.obj_ConvertSize.ToString()}.png";
 
 #else
                             string convertImgPath = AppDomain.CurrentDomain.BaseDirectory + 

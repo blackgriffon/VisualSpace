@@ -89,7 +89,7 @@ public class csMoveObjectControl : MonoBehaviour
     }
 
 
-    float moveStep = 1f;
+    float moveStep = 0.5f;
 
 
 
