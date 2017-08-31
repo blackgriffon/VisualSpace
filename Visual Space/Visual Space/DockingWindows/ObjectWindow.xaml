@@ -4,19 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Nollan.Visual_Space.DockingWindows"     
-                         xmlns:main="clr-namespace:Visual_Space"
-                xmlns:explus="clr-namespace:SampleExpander;assembly=SampleExpander"
+             xmlns:main="clr-namespace:Visual_Space"
+             xmlns:explus="clr-namespace:SampleExpander;assembly=SampleExpander"
         xmlns:docking="clr-namespace:DockingLibrary;assembly=DockingLibrary" 
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300"
-             Title="ObjectWindow" AllowDrop="True" AllowsTransparency="True"  >
+             d:DesignHeight="500" d:DesignWidth="900" 
+             Title="소품창" AllowDrop="True" AllowsTransparency="True"  >
 
 
 
     <Window.Resources>
         <explus:MultiplyConverter x:Key="multiplyConverter" />
-        
+
 
         <!-- Simple Expander Button's Template-->
         <ControlTemplate x:Key="SimpleExpanderButtonTemp" TargetType="{x:Type ToggleButton}">
@@ -314,9 +314,9 @@
     </Window.Resources>
 
 
-    <ScrollViewer Background="Transparent" VerticalScrollBarVisibility="Visible" >  
-            
-        
+    <ScrollViewer Background="Transparent" VerticalScrollBarVisibility="Visible" >
+
+
         <StackPanel Background="LightCyan" Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top">
             <StackPanel.Resources>
                 <Style x:Key="TestContentStyle" TargetType="Button">
@@ -328,108 +328,148 @@
 
 
 
-            <Expander Template="{StaticResource SimpleExpanderTemp}"
-                  OverridesDefaultStyle="True" 
-                  Header="침대"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Top"     >
-
-                <StackPanel>
-                    <Expander Template="{StaticResource SimpleExpanderTemp}" OverridesDefaultStyle="True" Margin="20,0,0,0"
-                  Header="침대0"  HorizontalAlignment="Left" VerticalAlignment="Top" >
-                    <WrapPanel Name="Expd_beds"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
-                </Expander>
-
-                    <Expander Template="{StaticResource SimpleExpanderTemp}"    OverridesDefaultStyle="True"  Margin="20,0,0,0"
-                  Header="서브침대1"  HorizontalAlignment="Left" VerticalAlignment="Top" >
-                        <WrapPanel Name="Expd_subbeds"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
-                    </Expander>
-                </StackPanel>
+            <Expander Template="{StaticResource SimpleExpanderTemp}" OverridesDefaultStyle="True"  Header="침대"
+                  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                <WrapPanel Name="Expd_beds"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
             </Expander>
 
-            
+
             <Expander Template="{StaticResource SimpleExpanderTemp}" OverridesDefaultStyle="True" 
                       Header="의자" HorizontalAlignment="Left"  VerticalAlignment="Top"  >
-                <StackPanel>                    
-             
-                <Expander Template="{StaticResource SimpleExpanderTemp}" 
-                  OverridesDefaultStyle="True" Margin="20,0,0,0" Header="서브의자1" HorizontalAlignment="Left" VerticalAlignment="Top"  >
-                        <WrapPanel Name="Expd_chairs"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
-                    </Expander>
+                <WrapPanel Name="Expd_chairs"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
 
-                    <Expander Template="{StaticResource SimpleExpanderTemp}" 
-                  OverridesDefaultStyle="True" Margin="20,0,0,0" Header="서브의자2" HorizontalAlignment="Left" VerticalAlignment="Top"  >
-                        <WrapPanel Name="Expd_chairs1"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
-
-                    </Expander>               
-
-                </StackPanel>
             </Expander>
 
 
             <Expander Template="{StaticResource SimpleExpanderTemp}" OverridesDefaultStyle="True" Header="테이블"
                   HorizontalAlignment="Left"  VerticalAlignment="Top"  >
-                <StackPanel>
-                    <Expander Template="{StaticResource SimpleExpanderTemp}" 
-                  OverridesDefaultStyle="True" Margin="20,0,0,0" Header="서브테이블1" HorizontalAlignment="Left" VerticalAlignment="Top"  >
-                       
-                        <WrapPanel Name="Expd_tables"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
-                    </Expander>
-
-                    <Expander Template="{StaticResource SimpleExpanderTemp}" 
-                  OverridesDefaultStyle="True" Margin="20,0,0,0" Header="서브테이블2" HorizontalAlignment="Left" VerticalAlignment="Top"  >
-                        <WrapPanel Name="Expd_tables1"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
-
-                    </Expander>
-
-                   
-                 </StackPanel>
+                <WrapPanel Name="Expd_tables"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
             </Expander>
 
 
             <Expander Template="{StaticResource SimpleExpanderTemp}" OverridesDefaultStyle="True" Header="문"
                   HorizontalAlignment="Left"  VerticalAlignment="Top"  >
-                <StackPanel>
-
-                    <Expander Template="{StaticResource SimpleExpanderTemp}" 
-                  OverridesDefaultStyle="True" Margin="20,0,0,0" Header="서브문" HorizontalAlignment="Left" VerticalAlignment="Top"  >
-                       <WrapPanel Name="Expd_doors"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
-
-                    </Expander>
-
-                    <Expander Template="{StaticResource SimpleExpanderTemp}" 
-                  OverridesDefaultStyle="True" Margin="20,0,0,0" Header="서브문1" HorizontalAlignment="Left" VerticalAlignment="Top"  >
-                        <WrapPanel Name="Expd_doors1"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
-
-                    </Expander>
-
-
-                   
-                </StackPanel>
-               
+                <WrapPanel Name="Expd_doors"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
             </Expander>
 
 
             <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="창문" HorizontalAlignment="Left"
                   VerticalAlignment="Top"   >
-
-                <StackPanel>
-
-                    <Expander Template="{StaticResource SimpleExpanderTemp}" 
-                  OverridesDefaultStyle="True" Margin="20,0,0,0" Header="서브창" HorizontalAlignment="Left" VerticalAlignment="Top"  >
-                        <WrapPanel Name="Expd_windows"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
-
-                    </Expander>
-
-                    <Expander Template="{StaticResource SimpleExpanderTemp}" 
-                  OverridesDefaultStyle="True" Margin="20,0,0,0" Header="서브창" HorizontalAlignment="Left" VerticalAlignment="Top"  >
-                        <WrapPanel Name="Expd_windows1"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
-
-                    </Expander>
-                </StackPanel>             
-
+                <WrapPanel Name="Expd_windows"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
             </Expander>
 
+
+
+            <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="화분" HorizontalAlignment="Left"
+                  VerticalAlignment="Top"   >
+                <WrapPanel Name="Expd_flowers"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+            </Expander>
+
+
+
+            <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="램프" HorizontalAlignment="Left"
+                  VerticalAlignment="Top"   >
+                <WrapPanel Name="Expd_lamps"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+            </Expander>
+
+
+
+            <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="항아리" HorizontalAlignment="Left"
+                  VerticalAlignment="Top"   >
+                <WrapPanel Name="Expd_potteries"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+            </Expander>
+
+
+
+            <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="선반" HorizontalAlignment="Left"
+                  VerticalAlignment="Top"   >
+                <WrapPanel Name="Expd_shelves"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+            </Expander>
+
+
+
+
+
+            <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="텔레비젼" HorizontalAlignment="Left"
+                  VerticalAlignment="Top"   >
+                <WrapPanel Name="Expd_televisions"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+            </Expander>
+
+
+
+            <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="옷장" HorizontalAlignment="Left"
+                  VerticalAlignment="Top"   >
+                <WrapPanel Name="Expd_wardrobes"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+            </Expander>
+
+
+
+            <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="욕실" HorizontalAlignment="Left"
+                  VerticalAlignment="Top"   >
+                <StackPanel>
+                    <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="욕조" HorizontalAlignment="Left"
+                    VerticalAlignment="Top" Margin="30,0,0,0"  >
+                        <WrapPanel Name="Expd_bathes"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+                    </Expander>
+
+                    <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"  Header="세면대" HorizontalAlignment="Left"
+                       VerticalAlignment="Top" Margin="30,0,0,0"  >
+                        <WrapPanel Name="Expd_washstandes"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+                    </Expander>
+
+                    <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="변기" HorizontalAlignment="Left"
+                       VerticalAlignment="Top" Margin="30,0,0,0"  >
+                        <WrapPanel Name="Expd_toilets"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+                    </Expander>
+
+                    <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="세탁기" HorizontalAlignment="Left"
+                       VerticalAlignment="Top"   Margin="30,0,0,0" >
+                        <WrapPanel Name="Expd_washers"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+                    </Expander>
+
+                    <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="샤워부스" HorizontalAlignment="Left"
+                       VerticalAlignment="Top" Margin="30,0,0,0"  >
+                        <WrapPanel Name="Expd_showerbooths"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+                    </Expander>
+                </StackPanel>
+            </Expander>
+
+            <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="주방" HorizontalAlignment="Left"
+                  VerticalAlignment="Top"   >
+                <StackPanel>
+
+                    <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="싱크대" HorizontalAlignment="Left"
+                  VerticalAlignment="Top"  Margin="30,0,0,0" >
+                        <WrapPanel Name="Expd_sinks"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+                    </Expander>
+
+                    <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="가스레인지" HorizontalAlignment="Left"
+                  VerticalAlignment="Top"  Margin="30,0,0,0"  >
+                        <WrapPanel Name="Expd_gasstoves"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+                    </Expander>
+
+                    <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="오븐" HorizontalAlignment="Left"
+                  VerticalAlignment="Top" Margin="30,0,0,0"  >
+                        <WrapPanel Name="Expd_ovens"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+                    </Expander>
+
+                    <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="냉장고" HorizontalAlignment="Left"
+                  VerticalAlignment="Top" Margin="30,0,0,0"  >
+                        <WrapPanel Name="Expd_refrigerators"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+                    </Expander>
+
+                </StackPanel>
+            </Expander>
+
+            <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="정수기" HorizontalAlignment="Left"
+                  VerticalAlignment="Top"   >
+                <WrapPanel Name="Expd_waterpurifiers"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+            </Expander>
+
+            <Expander Template="{StaticResource SimpleExpanderTemp}"  OverridesDefaultStyle="True"   Header="장난감" HorizontalAlignment="Left"
+                  VerticalAlignment="Top"   >
+                <WrapPanel Name="Expd_toys"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="1, 1, 1, 1" AllowDrop="True"/>
+            </Expander>
 
 
         </StackPanel>

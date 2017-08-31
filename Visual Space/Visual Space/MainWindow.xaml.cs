@@ -1,5 +1,5 @@
-﻿#define RUN_3DVIWER_IN_UNITY_EDITER
-#define RUN_3DVIWER
+﻿//#define RUN_3DVIWER_IN_UNITY_EDITER
+//#define RUN_3DVIWER
 
 
 using Nollan.Visual_Space.DockingWindows;
@@ -696,6 +696,8 @@ namespace Nollan.Visual_Space
             if (!bMouseDown && bLine_check && !linePlusMinus_Check)
             {
 
+                this.mapCanvas.CaptureMouse(); //831
+
                 bMouseDown = true;
                 stPoint = TranslatePointToCanvas(e, mapCanvas);
                 remainderToFindVertex(stPoint.X, stPoint.Y); //가장 가까운 꼭지점을 찾는다. 그 값은 튜플형식으로 Result_StartPoint에 담기게됨.
@@ -1208,11 +1210,7 @@ namespace Nollan.Visual_Space
             //816
             MakeFloor_ClickUP(sender, e); //바닥 생성 or 이동 쪽 로직
 
-
-
-
-
-
+            
             if (!imageClick) //imageClick == false
             {
 
@@ -1523,6 +1521,8 @@ namespace Nollan.Visual_Space
                     //obj_image = null;
                 }
             }
+
+            this.mapCanvas.ReleaseMouseCapture();
 
         }
 
@@ -2922,8 +2922,9 @@ namespace Nollan.Visual_Space
 
                         if (oci.ObjectName == _objName)
                         {
-
-                            delimg = img;
+                            //   DeleteControlBorder(img); 
+                            DeleteControlBorder();//이미지에 생성된 보더 지우기. 리스트쪽에서 지울 땐 맵캔버스에 있는 보더 무조건 없애버린다. 831
+                            delimg = img;                           
                             break;
                         }
 
@@ -2931,8 +2932,17 @@ namespace Nollan.Visual_Space
                 }
 
                 mapCanvas.Children.Remove(delimg);  // 포이치문을 빠져나간 후 삭제한다.(포이치문 안에서는 삭제하면 오류남)
+                obj_image = null; //831
 
+            }
+        }
 
+        //리스트창 에서 이미지 지우려 하면 보더 있을 경우 보더 지우고 화면에 보더 없애줌.
+        public void DeleteControlBorder()
+        {
+            if (obj_image != null)
+            {            
+                    aLayer.Remove(aLayer.GetAdorners(obj_image)[0]);
             }
         }
 
@@ -3027,6 +3037,8 @@ namespace Nollan.Visual_Space
 
             }
         }
+
+    
 
 
         //사각형 보더 그리기
@@ -3433,16 +3445,20 @@ namespace Nollan.Visual_Space
         //818
         private void btn_New_Click(object sender, RoutedEventArgs e)
         {
+            //831            
 
+            if (MessageBox.Show("정말 초기화하시겠습니까?", "알림", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                AllClear();
 
-            AllClear();
- 
-            server.Send(fillCommandInfo(CommandPacket.CommandAction.ALLCLEAR));
+                server.Send(fillCommandInfo(CommandPacket.CommandAction.ALLCLEAR));
 
-            // listWindow.
-
-
-            //  drawCircle(); //맵 캔버스에 다시 중심점 그려준다.
+            }
+            else
+            {
+            
+            }
+            
         }
 
         private void AllClear()
@@ -3502,8 +3518,52 @@ namespace Nollan.Visual_Space
         }
 
 
+        private void btn_Help_Click(object sender, RoutedEventArgs e)
+        {
+
+            //MetroWindow helpwindow = new MetroWindow();
+            //helpwindow.Show();
+
+            HelpWindow helpWindow = new HelpWindow();
+            //  mainWindow.AddChild(helpWindow);
+            helpWindow.PopUp();
 
 
+
+
+        }
+
+        private void btnCreateColorWindow_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (colorWindow == null)
+            {
+                colorWindow = new DockingWindows.ColorWindow();
+                colorWindow.Call_MainWindow = this; // 자식폼에서 부모폼을 등록??? 자식에서 부모에게 갑 전달 실험용.
+                colorWindow.DockManager = ExpenderDockManager;// ListDockManager;            
+                                                              // listWindow.Show(Dock.Top);
+                colorWindow.ShowAsDocument();
+            }
+
+            colorWindow.ShowAsDocument();
+
+            //else
+            //{
+            //    if (colorWindow.Visibility == Visibility.Collapsed)
+            //    {
+            //        // MessageBox.Show("접힘");
+            //        colorWindow = null;
+            //        colorWindow = new DockingWindows.ColorWindow();
+            //        colorWindow.Call_MainWindow = this;
+            //        colorWindow.DockManager = ExpenderDockManager;
+            //        colorWindow.ShowAsDocument();
+            //        //   colorWindow.ChangeDock(Dock.Top);
+            //        // colorWindow.Visibility = Visibility.Visible;
+            //    }
+            //}
+            
+
+        }
 
 
 

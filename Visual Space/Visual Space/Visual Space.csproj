@@ -119,6 +119,9 @@
     <Compile Include="classes\ObjSizeInfo.cs" />
     <Compile Include="classes\Utils.cs" />
     <Compile Include="Data\JsonTypeDesignData.cs" />
+    <Compile Include="DockingWindows\HelpWindow.xaml.cs">
+      <DependentUpon>HelpWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FloorConvertInfo.cs" />
     <Compile Include="Util\ImageConvertor.cs" />
     <Compile Include="WallConvertInfo.cs" />
@@ -167,6 +170,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DockingWindows\CustomWallpaper.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DockingWindows\HelpWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

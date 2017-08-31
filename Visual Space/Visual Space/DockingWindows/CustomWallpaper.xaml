@@ -8,7 +8,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         
         mc:Ignorable="d"
-        Title="CustomWallpaper" Height="800" Width="750" MinHeight="800" MinWidth="750" MaxHeight="725" MaxWidth="750">
+        Title="커스텀창" Height="800" Width="750" MinHeight="800" MinWidth="750" MaxHeight="725" MaxWidth="750">
     <StackPanel Name="root" Margin="0,0,2,-69.048" >
 
         <xctk:ColorPicker Name="_colorPicker" VerticalAlignment="Top" Background="LightGray"

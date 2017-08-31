@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
+using System.IO;
 
 namespace Nollan.Visual_Space.DockingWindows
 {
@@ -24,7 +25,7 @@ namespace Nollan.Visual_Space.DockingWindows
         public Categori()
         {
             InitializeComponent();
-           
+
         }
 
 
@@ -32,21 +33,18 @@ namespace Nollan.Visual_Space.DockingWindows
         {
             InitializeComponent();
 
-
-
+#if DEBUG
+            NewInfo.FilePath = Directory.GetCurrentDirectory() + $@"\..\..\..\pictures\{NewInfo.ObjectType}\{NewInfo.AssetBundleName}.png";
+#else
+            NewInfo.FilePath = Directory.GetCurrentDirectory() + $@"\pictures\{NewInfo.ObjectType}\{NewInfo.AssetBundleName}.png";
+#endif
             //Image myImage3 = new Image();
             //상대 파일경로의 png를 bitmap으로 변환.
-
-            NewInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + @"pictures\" + NewInfo.ObjectType + @"\" +
-                NewInfo.AssetBundleName + @".PNG";
-
             BitmapImage bitimage = new BitmapImage();
             bitimage.BeginInit();
-
-
             bitimage.UriSource = new Uri(NewInfo.FilePath, UriKind.RelativeOrAbsolute);
             bitimage.EndInit();
-   
+
 
             //bitmap으로 바꾼 걸 카테고리의 이미지.source에 대입.
             img_cate.Stretch = Stretch.UniformToFill;
@@ -70,7 +68,7 @@ namespace Nollan.Visual_Space.DockingWindows
             NewInfo.ObjectType = _ObjectType;
             NewInfo.FilePath = _FilePath;
             NewInfo.VisualName = _VisualName;
-            
+
 
             //Image myImage3 = new Image();
             //상대 파일경로의 png를 bitmap으로 변환.
@@ -184,7 +182,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 if (converter.IsValid(dataString))
                 {
                     Brush newFill = (Brush)converter.ConvertFromString(dataString);
-              //      ractangleUI.Fill = newFill;
+                    //      ractangleUI.Fill = newFill;
 
                     // Set Effects to notify the drag source what effect
                     // the drag-and-drop operation had.
@@ -277,11 +275,11 @@ TextBox에서 gre라는 텍스트를 선택합니다.
         {
             base.OnDragEnter(e);
             // Save the current Fill brush so that you can revert back to this value in DragLeave.
-          //  _previousFill = ractangleUI.Fill;
+            //  _previousFill = ractangleUI.Fill;
 
             // If the DataObject contains string data, extract it.
             if (e.Data.GetDataPresent(DataFormats.StringFormat))
-            {           
+            {
                 string dataString = (string)e.Data.GetData(DataFormats.StringFormat);
 
                 // If the string can be converted into a Brush, convert it.
@@ -289,7 +287,7 @@ TextBox에서 gre라는 텍스트를 선택합니다.
                 if (converter.IsValid(dataString))
                 {
                     Brush newFill = (Brush)converter.ConvertFromString(dataString.ToString());
-             //       ractangleUI.Fill = newFill;
+                    //       ractangleUI.Fill = newFill;
                 }
             }
 
@@ -312,7 +310,7 @@ TextBox에서 gre라는 텍스트를 선택합니다.
         {
             base.OnDragLeave(e);
             // Undo the preview that was applied in OnDragEnter.
-        //    ractangleUI.Fill = _previousFill;
+            //    ractangleUI.Fill = _previousFill;
 
             /*
              재정의된 이 OnDragLeave는 다음 작업을 수행합니다.

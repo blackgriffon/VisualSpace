@@ -7,7 +7,7 @@
              xmlns:docking="clr-namespace:DockingLibrary;assembly=DockingLibrary" 
              xmlns:metroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"             
              mc:Ignorable="d" 
-             Title="ListWindow" Height="600" Width="Auto"  >
+             Title="목록창" Height="600" Width="Auto"  >
 
     <Grid Background="Transparent">
         <Grid.ColumnDefinitions>

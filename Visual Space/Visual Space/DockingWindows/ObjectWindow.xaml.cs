@@ -16,8 +16,8 @@ using DockingLibrary;
 using SampleExpander;
 using MahApps.Metro;
 using static Nollan.Visual_Space.classes.ObjSizeInfo;
-using ProtoBuf;
 using System.IO;
+using ProtoBuf;
 
 namespace Nollan.Visual_Space.DockingWindows
 {
@@ -30,11 +30,7 @@ namespace Nollan.Visual_Space.DockingWindows
         {
             InitializeComponent();
 
-
-            // TODO : 역직렬화 ObjectList에다가
-
-
-            LoadOjectInfo();
+            LoadObjectInfo();
             //createObjList(); //서버에서 받아올 리스트. 서버가 아직 없음으로 내가 임의로 리스트를 만든다. 만든 리스트 정보는 ObjectList에 추가된다.(총 6개)
             //createbed(); //임시로 침대 때려박음. 위의 것과 동일.
             //createsubbed();
@@ -42,6 +38,9 @@ namespace Nollan.Visual_Space.DockingWindows
             //createDoor();
             //createWindow();
             // appendImageToExpender();
+
+
+
 
 
             appendImageToExpender(ObjectList);  //ObjectList를 매개변수로 넣으면 리스트 tag에 있는 ObjectType을 보고 switch case문으로 분류해서 알맞는 익스팬더에 집어넣게 됨. 
@@ -52,41 +51,34 @@ namespace Nollan.Visual_Space.DockingWindows
         }
 
 
-        [ProtoContract]
-        public class TestClassList
+        // data.txt를 참조해서 모든 오브젝트 정보를 로드
+        private void LoadObjectInfo()
         {
-            [ProtoMember(1, OverwriteList = true)]
-            public List<ObjectInfo> list = new List<ObjectInfo>();
-        }
+
+#if DEBUG
+            string datafilePath = Directory.GetCurrentDirectory() + @"\..\..\..\Data.txt";
+#else
+            string datafilePath = Directory.GetCurrentDirectory() + @"\Data.txt";
+
+#endif
 
 
-        private void LoadOjectInfo()
-        {
-            TestClassList testClassList = new TestClassList();
-            string Local_txt = Directory.GetCurrentDirectory() + @"\Data.txt";
-
-            using (FileStream fs = new FileStream(Local_txt, FileMode.Open))
+            using (FileStream fs = new FileStream(datafilePath, FileMode.Open))
             {
-                testClassList = ProtoBuf.Serializer.DeserializeWithLengthPrefix<TestClassList>(fs, PrefixStyle.Fixed32);
+                ObjectInfoList l = ProtoBuf.Serializer.DeserializeWithLengthPrefix<ObjectInfoList>(fs, PrefixStyle.Fixed32);
+                ObjectList = l.list;
             }
-
-            ObjectList = testClassList.list;
-
         }
 
         public List<ObjectInfo> ObjectList = new List<ObjectInfo>(); //서버에서 받아온 정보를 이곳에다 넣는다.
-       
+
 
         //서버에서 받아올 리스트. 서버가 아직 없음으로 내가 임의로 리스트를 만든다. 이걸 받아서 여기에 있는 정보로 익스펜더 안의 랩패널의 자식으로 추가
         public void createObjList()
-        {            
-
-
-            
-
+        {
             for (int i = 0; i < 4; i++)
             {
-               // ObjSize _objSize = ObjSize.
+                // ObjSize _objSize = ObjSize.
 
                 ObjectInfo objInfo = new ObjectInfo();
                 objInfo.ObjectType = "chairs";
@@ -97,10 +89,18 @@ namespace Nollan.Visual_Space.DockingWindows
                 {
                     objInfo.obj_ConvertSize = ObjSize.s_1x1;
                 }
+                else if (i == 1)
+                {
+                    objInfo.obj_ConvertSize = ObjSize.s_1x2;
+                }
+                else if (i == 2)
+                {
+                    objInfo.obj_ConvertSize = ObjSize.s_2x1;
+                }
                 else
                 {
                     //824
-                    objInfo.obj_ConvertSize = ObjSize.s_1x2;
+                    objInfo.obj_ConvertSize = ObjSize.s_6x4;
                 }
 
                 //816
@@ -115,19 +115,18 @@ namespace Nollan.Visual_Space.DockingWindows
                 objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"pictures\chairs\chair{i + 1}.png";
 #endif
                 ObjectList.Add(objInfo);
-                
-            }             
-        }
 
+            }
+        }
         public void createbed()
         {
 
             for (int i = 0; i < 2; i++)
             {
                 ObjectInfo objInfo = new ObjectInfo();
-                objInfo.ObjectType = "beds"; 
+                objInfo.ObjectType = "beds";
                 objInfo.VisualName = $"에이스침대{i}";
-                objInfo.AssetBundleName = $"bed_{i+1}";
+                objInfo.AssetBundleName = $"bed_{i + 1}";
 
                 //824
                 objInfo.obj_ConvertSize = ObjSize.s_2x3;
@@ -147,8 +146,6 @@ namespace Nollan.Visual_Space.DockingWindows
                 ObjectList.Add(objInfo);
             }
         }
-
-
         public void createsubbed()
         {
 
@@ -168,6 +165,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 objInfo.explain = $"설명 : 침대는 과학이다{i}";
 
 
+
 #if DEBUG
                 objInfo.FilePath = AppDomain.CurrentDomain.BaseDirectory + $@"..\..\..\pictures\beds\bed{i + 1}.png";
 #else
@@ -176,9 +174,6 @@ namespace Nollan.Visual_Space.DockingWindows
                 ObjectList.Add(objInfo);
             }
         }
-
-
-
         public void createTable()
         {
 
@@ -203,8 +198,8 @@ namespace Nollan.Visual_Space.DockingWindows
                         objInfo.obj_ConvertSize = ObjSize.s_3x3;
                         break;
 
-                    //824
-                
+                        //824
+
                 }
 
                 //MessageBox.Show(objInfo.obj_ConvertSize.ToString() );
@@ -225,7 +220,6 @@ namespace Nollan.Visual_Space.DockingWindows
                 ObjectList.Add(objInfo);
             }
         }
-
         public void createDoor()
         {
 
@@ -252,7 +246,6 @@ namespace Nollan.Visual_Space.DockingWindows
                 ObjectList.Add(objInfo);
             }
         }
-
         public void createWindow()
         {
 
@@ -284,6 +277,8 @@ namespace Nollan.Visual_Space.DockingWindows
 
 
 
+
+
         ////드롭된 정보를 캔버스에서 도면 이미지로 변환하고 그것에 대한 정보를 기억.
         //public class ObjConvertImageInfo
         //{
@@ -298,27 +293,26 @@ namespace Nollan.Visual_Space.DockingWindows
         public void appendImageToExpender(List<ObjectInfo> _ObjectList)
         {
 
-            
+
             foreach (var obj_List in _ObjectList)
             {
 
                 switch (obj_List.ObjectType)
                 {
-                    case "chairs":
 
-                        Categori cate_chairs = new Categori(obj_List);
-                        Expd_chairs.Children.Add(cate_chairs);
+                    case "bathes":
+                        Categori cate_bathes = new Categori(obj_List);
+                        Expd_bathes.Children.Add(cate_bathes);
                         break;
-
 
                     case "beds":
                         Categori cate_beds = new Categori(obj_List);
                         Expd_beds.Children.Add(cate_beds);
                         break;
 
-                    case "tables":
-                        Categori cate_tables = new Categori(obj_List);
-                        Expd_tables.Children.Add(cate_tables);
+                    case "chairs":
+                        Categori cate_chairs = new Categori(obj_List);
+                        Expd_chairs.Children.Add(cate_chairs);
                         break;
 
                     case "doors":
@@ -326,14 +320,94 @@ namespace Nollan.Visual_Space.DockingWindows
                         Expd_doors.Children.Add(cate_doors);
                         break;
 
+                    case "flowers":
+                        Categori cate_flowers = new Categori(obj_List);
+                        Expd_flowers.Children.Add(cate_flowers);
+                        break;
+
+                    case "gasstoves":
+                        Categori cate_gasstoves = new Categori(obj_List);
+                        Expd_gasstoves.Children.Add(cate_gasstoves);
+                        break;
+
+                    case "lamps":
+                        Categori cate_lamps = new Categori(obj_List);
+                        Expd_lamps.Children.Add(cate_lamps);
+                        break;
+
+                    case "ovens":
+                        Categori cate_ovens = new Categori(obj_List);
+                        Expd_ovens.Children.Add(cate_ovens);
+                        break;
+
+                    case "potteries":
+                        Categori cate_potteries = new Categori(obj_List);
+                        Expd_potteries.Children.Add(cate_potteries);
+                        break;
+
+                    case "refrigerators":
+                        Categori cate_refrigerators = new Categori(obj_List);
+                        Expd_refrigerators.Children.Add(cate_refrigerators);
+                        break;
+
+                    case "shelves":
+                        Categori cate_shelves = new Categori(obj_List);
+                        Expd_shelves.Children.Add(cate_shelves);
+                        break;
+
+                    case "showerbooths":
+                        Categori cate_showerbooths = new Categori(obj_List);
+                        Expd_showerbooths.Children.Add(cate_showerbooths);
+                        break;
+
+                    case "sinks":
+                        Categori cate_sinks = new Categori(obj_List);
+                        Expd_sinks.Children.Add(cate_sinks);
+                        break;
+
+                    case "tables":
+                        Categori cate_tables = new Categori(obj_List);
+                        Expd_tables.Children.Add(cate_tables);
+                        break;
+
+                    case "televisions":
+                        Categori cate_televisions = new Categori(obj_List);
+                        Expd_televisions.Children.Add(cate_televisions);
+                        break;
+
+                    case "toilets":
+                        Categori cate_toilets = new Categori(obj_List);
+                        Expd_toilets.Children.Add(cate_toilets);
+                        break;
+
+                    case "wardrobes":
+                        Categori cate_wardrobes = new Categori(obj_List);
+                        Expd_wardrobes.Children.Add(cate_wardrobes);
+                        break;
+
+                    case "washers":
+                        Categori cate_washers = new Categori(obj_List);
+                        Expd_washers.Children.Add(cate_washers);
+                        break;
+
+                    case "washstandes":
+                        Categori cate_washstandes = new Categori(obj_List);
+                        Expd_washstandes.Children.Add(cate_washstandes);
+                        break;
+
+                    case "waterpurifiers":
+                        Categori cate_waterpurifiers = new Categori(obj_List);
+                        Expd_waterpurifiers.Children.Add(cate_waterpurifiers);
+                        break;
+
                     case "windows":
                         Categori cate_windows = new Categori(obj_List);
                         Expd_windows.Children.Add(cate_windows);
                         break;
 
-                    case "subbed":
-                        Categori cate_subbed = new Categori(obj_List);
-                        Expd_subbeds.Children.Add(cate_subbed);
+                    case "toys":
+                        Categori cate_toys = new Categori(obj_List);
+                        Expd_toys.Children.Add(cate_toys);
                         break;
 
 
@@ -342,9 +416,9 @@ namespace Nollan.Visual_Space.DockingWindows
 
 
 
-             //   Categori cate2 = new Categori("/pictures/chair0.PNG", "chair0");  //<<<<파일경로, 오브젝트타입
+                //   Categori cate2 = new Categori("/pictures/chair0.PNG", "chair0");  //<<<<파일경로, 오브젝트타입
 
-            //    Expd_temp.Children.Add(cate2);
+                //    Expd_temp.Children.Add(cate2);
             }
 
 
@@ -352,7 +426,7 @@ namespace Nollan.Visual_Space.DockingWindows
 
 
         public BitmapImage convertImageToBitmap(string FilePath) //이미지 파일을 비트맵이미지로 바꿔줌. 이러면 바로 image.source에 넣어주면 됨.
-        {            
+        {
             BitmapImage Bitmap = new BitmapImage();
             Bitmap.BeginInit();
             Bitmap.UriSource = new Uri(FilePath, UriKind.RelativeOrAbsolute);
@@ -365,7 +439,7 @@ namespace Nollan.Visual_Space.DockingWindows
 
 
 
-#region 이전 로직
+        #region 이전 로직
 
         //어떤 정보를 리스트로 받아야 될지 고민해보자.
         //List<string> strs = new List<string>
@@ -494,7 +568,7 @@ namespace Nollan.Visual_Space.DockingWindows
 
         //      }
 
-#endregion
+        #endregion
 
         //   pack://application:,,,/Resources/MyImage.png
 
@@ -516,7 +590,7 @@ namespace Nollan.Visual_Space.DockingWindows
 
 
 
-#region 마우스 드래그
+        #region 마우스 드래그
 
         //        protected override void OnMouseMove(MouseEventArgs e)
         //        {
@@ -743,7 +817,7 @@ namespace Nollan.Visual_Space.DockingWindows
 
         //        }
 
-#endregion
+        #endregion
 
 
 
