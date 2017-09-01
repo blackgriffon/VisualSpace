@@ -2661,7 +2661,7 @@ namespace Nollan.Visual_Space
                             ObjConvertimgInfo.ObjectName = $"Object{innerObjName}"; //이 이름을 가지고 유니티와 연동해서 양쪽으로 지우고 움직이고 함.
                                                                                     //  ObjConvertimgInfo.rotationPoint = null;//회전값을 위한 2차원의 x,y point좌표.    
 
-
+                            ObjConvertimgInfo.obj_ConvertSize = newInfo.obj_ConvertSize;
 
                             //---회전 811                      
                             rotateTransform = new RotateTransform();
