@@ -3450,7 +3450,6 @@ namespace Nollan.Visual_Space
             if (MessageBox.Show("정말 초기화하시겠습니까?", "알림", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 AllClear();
-
                 server.Send(fillCommandInfo(CommandPacket.CommandAction.ALLCLEAR));
 
             }
