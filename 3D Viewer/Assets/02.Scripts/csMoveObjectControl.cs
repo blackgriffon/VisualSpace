@@ -19,6 +19,12 @@ public class csMoveObjectControl : MonoBehaviour
     GraphicRaycaster gr;
     PointerEventData ped;
 
+
+    public Camera MainCamera;
+    private Vector3 InitialCameraPos;
+    private Quaternion InitialCameraRoation;
+
+
     public float Speed = 100;
 
 
@@ -26,12 +32,109 @@ public class csMoveObjectControl : MonoBehaviour
     {
         networkManager = GameObject.Find("NetworkManager").GetComponent<csTCPClientManager>();
         controlButtons.SetActive(false);
-        StartCoroutine(coCheckInput());
+        //StartCoroutine(coCheckInput());
         gr = UiCanvas.GetComponent<GraphicRaycaster>();
         ped = new PointerEventData(null);
 
+
+        InitialCameraPos = MainCamera.transform.position;
+        InitialCameraRoation = MainCamera.transform.rotation;
+
     }
-    
+
+    private void Update()
+    {
+        // 0.마우스 왼쪽이 눌리면
+        if (Input.GetMouseButtonDown(0))
+        {
+
+            // 1. 버튼이 눌렸는지를 먼저 검사한다.
+            ped.position = Input.mousePosition;
+            List<RaycastResult> results = new List<RaycastResult>(); // 여기에 히트 된 개체 저장 
+            gr.Raycast(ped, results);
+
+            if (processButtonEvent(results))
+                return;
+
+            // 1-1.버튼이 눌렸으면 오브젝트가 눌린것이 아니므로 return 한다.
+
+
+
+            // 2.버튼이 안눌렸으면 오브젝트가 눌렸는지 검사한다.
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            // 2-1.SupportObject는 나중에 움직이면 안되는 오브젝트를 추가할 수 있으니 미리 조건을 걸어놨다.
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity) && hit.transform.gameObject.tag != "SupportObject")
+            {
+
+                // 전에 선택된것이 있으면 해제 후
+                if (selecetdObject != null)
+                {
+                    switch (selecetdObject.tag)
+                    {
+                        case "Wall":
+                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.WallInfo));
+                            break;
+
+                        case "Object":
+                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.ObjectInfoPacket));
+                            break;
+
+                        case "Floor":
+                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.FloorInfoPacket));
+                            break;
+                    }
+
+                }
+
+
+                // 2-2.레이캐스트가 되면, SelecetdObject에 선택된 오브젝트를 대입한다.
+                SelecetdObject = hit.transform.gameObject;
+                // 테그에 따라서 2D 도면에 선택되었다고 메세지를 보낸다.
+                switch (selecetdObject.tag)
+                {
+                    case "Wall":
+                        networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, PacketType.WallInfo));
+                        break;
+
+                    case "Object":
+                        networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, PacketType.ObjectInfoPacket));
+                        break;
+
+                    case "Floor":
+                        networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, PacketType.FloorInfoPacket));
+                        break;
+                }
+            }
+
+            else
+            {
+                // 테그에 따라서 2D 도면에 선택이 해제되었다고 메세지를 보낸다.
+                if (selecetdObject != null)
+                {
+                    switch (selecetdObject.tag)
+                    {
+                        case "Wall":
+                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.WallInfo));
+                            break;
+
+                        case "Object":
+                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.ObjectInfoPacket));
+                            break;
+
+                        case "Floor":
+                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.FloorInfoPacket));
+                            break;
+                    }
+
+                }
+
+                // 2-3.레이캐스트가 안되거나 선택이 해지되었지 때문에, SelecetdObject에 null을 넣은다.
+                SelecetdObject = null;
+
+            }
+        }
+    }
+
 
     private GameObject selecetdObject = null;
     public GameObject SelecetdObject
@@ -267,10 +370,19 @@ public class csMoveObjectControl : MonoBehaviour
                 MoveLeft();
                 break;
 
+            case "CameraPosReset":
+                ResetPosition();
+                break;
+
 
         }
     }
 
+    private void ResetPosition()
+    {
+        MainCamera.transform.position = InitialCameraPos;
+        MainCamera.transform.rotation = InitialCameraRoation;
+    }
 
     public void MoveObject(Vector3 moveValue)
     {

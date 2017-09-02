@@ -16,15 +16,12 @@ public class csCameraControl : MonoBehaviour
     private bool isRotating;   // 카메라 회전
     private bool isZooming;      // 카메라 줌인
 
-    //
-    // UPDATE
-    //
 
+
+
+    
     void Update()
     {
-
-
-
 
         // Get the left mouse button
         if (Input.GetMouseButtonDown(0))
@@ -83,7 +80,7 @@ public class csCameraControl : MonoBehaviour
         }
 
 
-
-
     }
+
+
 }

@@ -286,6 +286,27 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="exe\3D Viewer.exe" />
+    <Resource Include="Help\afterplus.PNG" />
+    <Resource Include="Help\bar1.PNG" />
+    <Resource Include="Help\beforeplus.PNG" />
+    <Resource Include="Help\close1.PNG" />
+    <Resource Include="Help\close2.PNG" />
+    <Resource Include="Help\custom1.png" />
+    <Resource Include="Help\custom2.png" />
+    <Resource Include="Help\drawline.PNG" />
+    <Resource Include="Help\drawrectangle.PNG" />
+    <Resource Include="Help\home.PNG" />
+    <Resource Include="Help\load.PNG" />
+    <Resource Include="Help\minus.PNG" />
+    <Resource Include="Help\new.PNG" />
+    <Resource Include="Help\objectwindow.PNG" />
+    <Resource Include="Help\plus.PNG" />
+    <Resource Include="Help\popup.PNG" />
+    <Resource Include="Help\resizewall.PNG" />
+    <Resource Include="Help\save.PNG" />
+    <Resource Include="Help\turnleft.PNG" />
+    <Resource Include="Help\turnright.PNG" />
+    <Resource Include="Help\wallpaper.PNG" />
     <Resource Include="icons\Toolbar\arrow11.png" />
     <Resource Include="icons\Toolbar\arrow12.png" />
     <Resource Include="icons\Toolbar\mapminus.png" />
