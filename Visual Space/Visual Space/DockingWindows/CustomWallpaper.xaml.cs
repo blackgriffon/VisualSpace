@@ -76,7 +76,7 @@ namespace Nollan.Visual_Space.DockingWindows
             highlighterDA.IsHighlighter = true;
             highlighterDA.IgnorePressure = true;
             highlighterDA.StylusTip = StylusTip.Rectangle;
-            highlighterDA.Height = 20;
+            highlighterDA.Height = 30;
             highlighterDA.Width = 10;
 
             inkCanvas.DefaultDrawingAttributes = inkDA;
@@ -969,80 +969,28 @@ namespace Nollan.Visual_Space.DockingWindows
         }
 
  
-        //901 jpeg말고 다른 거 되면 오류?
+
         private void InputButtonToinkCanvas(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;             
             UIElement copyimg = DeepCopy(btn.Content as Image);
             Image img = copyimg as Image;
 
+            byte[] bytesource = Utils.ConvertBitmapSourceToByteArray(img.Source);
 
-            /*
-             // 파일  포멧
-                string upper = saveDialog.SafeFileName.ToUpper();
-                char[] format = upper.ToCharArray(saveDialog.SafeFileName.Length - 3, 3);
-                upper = new string(format);
+            MemoryStream memorystream = new MemoryStream(bytesource);
 
-
-                // 해당 포멧에 맞게 인코더
-                switch (upper.ToString())
-                {
-                    case "PNG":
-                        encoder = new PngBitmapEncoder();
-                        break;
-
-                    case "JPG":
-                        encoder = new JpegBitmapEncoder();
-                        break;
-
-                    case "GIF":
-                        encoder = new GifBitmapEncoder();
-                        break;
-
-                    case "BMP":
-                        encoder = new BmpBitmapEncoder();
-                        break;
-                }
-
-                // 인코더 프레임에 이미지 추가
-                encoder.Frames.Add(BitmapFrame.Create(source));
-
-                // 파일에 저장            
-                encoder.Save(stream);
-                stream.Close();
-             
-             */
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.StreamSource = memorystream;
+            bitmap.EndInit();
 
 
-
-            byte[] _tempbyte = null;
-
-            try
-            {
-                byte[] bytesource = Utils.ConvertBitmapSourceToByteArray(img.Source);
-                _tempbyte = bytesource;
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show("마우스 우클릭을 허용하지 않는 블로그 사진입니다. 저작권을 보호를 위해 양해해주세요.");
-            }
-
-            if (_tempbyte != null) //바이트배열이 존재할 경우에만 진입
-            {
-                MemoryStream memorystream = new MemoryStream(_tempbyte);
-
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = memorystream;
-                bitmap.EndInit();
+           // BitmapImage bmp = img.Source as BitmapImage;
+            ImageBrush imgBrush = new ImageBrush(bitmap);
+            inkCanvas.Background = imgBrush;
 
 
-                // BitmapImage bmp = img.Source as BitmapImage;
-                ImageBrush imgBrush = new ImageBrush(bitmap);
-                inkCanvas.Background = imgBrush;
-
-
-            }
            //  Utils.BufferFromImage(bmp); //비트맵이미지에서 바이트배열로 변환
 
             //System.Drawing.Bitmap newBMP = new System.Drawing.Bitmap(originalBMP, newWidth, newHeight);

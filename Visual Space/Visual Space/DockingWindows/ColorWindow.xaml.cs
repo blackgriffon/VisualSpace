@@ -31,56 +31,12 @@ namespace Nollan.Visual_Space.DockingWindows
         {
             InitializeComponent();
 
-            bgChange();
-           
+
             //  ColorReflection();
 
 
 
         }
-
-     
-
-        //902
-        string bg_RootFilePath = @"\Resources\bg3.png";
-        string bg_FloorFilePath = @"\Resources\bg2.png";       
-        private void bgChange()
-        {
-
-            grid_root.Background = GetBrushFromPath(bg_RootFilePath);
-            grid_Floor.Background = GetBrushFromPath(bg_FloorFilePath);            
-
-        }
-
-
-        public ImageBrush GetBrushFromPath(string Path)
-        {
-
-
-#if DEBUG
-
-            string dir = Directory.GetCurrentDirectory();
-            dir = dir.Substring(0, dir.LastIndexOf('\\'));
-            dir = dir.Substring(0, dir.LastIndexOf('\\'));
-            dir = dir.Substring(0, dir.LastIndexOf('\\'));
-            dir = dir + Path;
-
-#else
-            string dir = Directory.GetCurrentDirectory();
-            dir = dir +  Path;    
-#endif
-
-
-            BitmapImage bit = new BitmapImage();
-            bit.BeginInit();
-            bit.UriSource = new Uri(dir, UriKind.RelativeOrAbsolute);
-            bit.EndInit();
-
-            ImageBrush brush = new ImageBrush(bit);
-
-            return brush;
-        }
-
 
 
         public MainWindow Call_MainWindow;

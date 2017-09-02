@@ -22,7 +22,7 @@
         Icon="icons\windowicons\windowicon.PNG"
                    WindowState="Maximized"
                    ResizeMode="CanResize"
-                  AllowsTransparency="True" 
+                  AllowsTransparency="True"
                    >
 
 
@@ -86,13 +86,13 @@
                         새 파일 : 이 버튼을 누르면 모눈 캔버스 및 유니티 뷰어의 내용이 모두 삭제 됩니다.
                     </Button.ToolTip>
                 </Button>
-                <Button Name="btn_Save" Height="28" Click="btn_Save_Click">
+                <Button Name="btn_Save" Height="28" >
                     <Image Width="24" Height="24" Source="/icons/Toolbar/Save.png" Stretch="Fill"/>
                     <Button.ToolTip>
                         저장하기 : 사용자가 지금까지 해온 모눈 캔버스 및 유니티 뷰어의 내용들을 저장합니다.
                     </Button.ToolTip>
                 </Button>
-                <Button x:Name="btn_Load" Height="28" Click="btn_Load_Click" >
+                <Button x:Name="btn_Load" Height="28" >
                     <Image Width="24" Height="22" Source="/icons/Toolbar/Load.png" Stretch="Fill"/>
                     <Button.ToolTip>
                         불러오기 : 사용자가 저장한 내용들을 다시 불러옵니다.
@@ -267,7 +267,7 @@
 
                 <WindowsFormsHost Grid.Column="0" Grid.Row="1" Name="host" Margin="0, 0, 0, 0"  
                                   VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Width="auto" Height="auto" Grid.ColumnSpan="2" />
-               
+
 
 
 

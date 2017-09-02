@@ -4,86 +4,21 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
-using UnityEngine.Networking;
 
 public class csLoadAssetBundle : MonoBehaviour
 {
 
     AssetBundle assetBundle;
     public GameObject WallModel;
-    public Text debugLogText;
+
 
 
     private void Awake()
     {
 
-        PrintLog("Awake()");
-        //StartCoroutine(LoadAssetBundle("bundle.unity3d"));
-        StartCoroutine(LoadAssetBundleCasing("bundle.unity3d"));
-        //StartCoroutine(GetAssetBundle("bundle.unity3d"));
+        StartCoroutine(LoadAssetBundle("bundle.unity3d"));
 
     }
-
-
-    IEnumerator GetAssetBundle(string assertbundleName)
-    {
-        UnityWebRequest www = UnityWebRequest.GetAssetBundle(assetBundleDirectory + assertbundleName);
-        yield return www.Send();
-
-        if (www.isNetworkError)
-        {
-            Debug.Log(www.error);
-        }
-        else
-        {
-            assetBundle = ((DownloadHandlerAssetBundle)www.downloadHandler).assetBundle;
-        }
-
-        if (assetBundle == null)
-
-            PrintLog(www.error);
-        else
-
-            PrintLog(assetBundle.ToString());
-
-    }
-
-    void PrintLog(string str)
-    {
-        debugLogText.text = str;
-    }
-
-    private void OnApplicationQuit()
-    {
-        if (assetBundle != null)
-            assetBundle.Unload(true);
-    }
-
-    private IEnumerator LoadAssetBundleCasing(string assertbundleName)
-    {
-        while (!Caching.ready)
-            yield return null;
-
-        // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
-        using (WWW www = WWW.LoadFromCacheOrDownload(assetBundleDirectory + assertbundleName, 0))
-        {
-            yield return www;
-            assetBundle = www.assetBundle;
-
-
-
-        } // memory is freed from the web stream (www.Dispose() gets called implicitly)
-
-        if (assetBundle == null)
-
-            PrintLog("assetBundle is NULL");
-        else
-
-            PrintLog(assetBundle.ToString());
-
-    }
-
 
     string assetBundleDirectory = "http://web.visualspace.uy.to/assetBundle/";
 
@@ -95,17 +30,7 @@ public class csLoadAssetBundle : MonoBehaviour
         {
             yield return www;
             assetBundle = www.assetBundle;
-
         }
-
-        if (assetBundle == null)
-
-            PrintLog("assetBundle is NULL");
-        else
-
-            PrintLog(assetBundle.ToString());
-
-
     }
 
 
@@ -197,14 +122,6 @@ public class csLoadAssetBundle : MonoBehaviour
         AssetBundleRequest assetPrefeb = assetBundle.LoadAssetAsync<GameObject>(objInfo.AssetBundleName);
         yield return assetPrefeb;
 
-        if (assetPrefeb == null)
-
-            PrintLog("coLoadObject  ==>  null");
-        else
-
-            PrintLog("coLoadObject  ==> " + assetPrefeb.asset.name);
-
-
         if (assetPrefeb.isDone)
         {
             GameObject pb = assetPrefeb.asset as GameObject;
@@ -216,7 +133,6 @@ public class csLoadAssetBundle : MonoBehaviour
             float z = gameobj.transform.eulerAngles.z;
             gameobj.transform.rotation = Quaternion.Euler(x, (float)objInfo.Angle, z);
             gameobj.tag = "Object";
-
 
         }
     }

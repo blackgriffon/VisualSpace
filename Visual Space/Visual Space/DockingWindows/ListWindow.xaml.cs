@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DockingLibrary;
-using System.IO;
 
 namespace Nollan.Visual_Space.DockingWindows
 {
@@ -26,51 +25,13 @@ namespace Nollan.Visual_Space.DockingWindows
         {
             InitializeComponent();
 
+        
 
-            bgChange();
             //    this.MouseWheel += new MouseWheelEventHandler(MainWindow_MouseWheel);
             //   this.AddHandler(UIElement.MouseWheelEvent, new MouseWheelEventHandler(OnMouseWheel), true);
 
 
         }
-
-
-        string bg_StackpanelFilePath = @"\Resources\bg4.png";       
-        private void bgChange()
-        {
-            vsp_bg.Background = GetBrushFromPath(bg_StackpanelFilePath);     
-        }
-
-
-        public ImageBrush GetBrushFromPath(string Path)
-        {
-
-
-#if DEBUG
-
-            string dir = Directory.GetCurrentDirectory();
-            dir = dir.Substring(0, dir.LastIndexOf('\\'));
-            dir = dir.Substring(0, dir.LastIndexOf('\\'));
-            dir = dir.Substring(0, dir.LastIndexOf('\\'));
-            dir = dir + Path;
-
-#else
-            string dir = Directory.GetCurrentDirectory();
-            dir = dir +  Path;    
-#endif
-
-
-            BitmapImage bit = new BitmapImage();
-            bit.BeginInit();
-            bit.UriSource = new Uri(dir, UriKind.RelativeOrAbsolute);
-            bit.EndInit();
-
-            ImageBrush brush = new ImageBrush(bit);
-
-            return brush;
-        }
-
-
 
         //816
         public int _TotalCash = 0;

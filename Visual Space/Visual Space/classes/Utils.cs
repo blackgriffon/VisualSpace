@@ -59,18 +59,12 @@ namespace Nollan.Visual_Space.classes
             }
             return data;
         }
-
-        
         public static byte[] ConvertBitmapSourceToByteArray(ImageSource imageSource)
         {
             var image = imageSource as BitmapSource;
             byte[] data;
             BitmapEncoder encoder = new JpegBitmapEncoder();
-
-            
-            encoder.Frames.Add(BitmapFrame.Create(image)); //901 System.ArgumentException: '값이 예상 범위를 벗어났습니다.'
-
-
+            encoder.Frames.Add(BitmapFrame.Create(image));
             using (MemoryStream ms = new MemoryStream())
             {
                 encoder.Save(ms);
@@ -78,8 +72,6 @@ namespace Nollan.Visual_Space.classes
             }
             return data;
         }
-
-
         public static byte[] ConvertBitmapSourceToByteArray(Uri uri)
         {
             var image = new BitmapImage(uri);

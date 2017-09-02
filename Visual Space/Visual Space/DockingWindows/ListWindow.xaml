@@ -46,7 +46,7 @@
        
     </WrapPanel>
 
-        <VirtualizingStackPanel Name="vsp_bg" Grid.Column="1">
+        <VirtualizingStackPanel Grid.Column="1">
             <Grid>
                 <Label Content="총 금액"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,19,0,0" />
                 <TextBlock Name="tbk_TotalCash" Text="" Background="LightSteelBlue" Padding="3,0,0,0"
