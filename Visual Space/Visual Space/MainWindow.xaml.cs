@@ -1,5 +1,5 @@
 ﻿//#define RUN_3DVIWER_IN_UNITY_EDITER
-//#define RUN_3DVIWER
+#define RUN_3DVIWER
 
 
 using Nollan.Visual_Space.DockingWindows;
@@ -32,6 +32,7 @@ using Nollan.Visual_Space.classes;
 using System.Windows.Media.Media3D;
 using Nollan.Visual_Space.Data;
 using Nollan.Visual_Space.Util;
+using static Nollan.Visual_Space.classes.ObjSizeInfo;
 
 namespace Nollan.Visual_Space
 {
@@ -60,7 +61,7 @@ namespace Nollan.Visual_Space
             this.Loaded += MainWindow_Loaded;
             this.Closed += MainWindow_Closed;
 
-
+           // Window1_Loaded(); 맥시마이즈시 리사이징
 
 
         }
@@ -2661,7 +2662,7 @@ namespace Nollan.Visual_Space
                             ObjConvertimgInfo.ObjectName = $"Object{innerObjName}"; //이 이름을 가지고 유니티와 연동해서 양쪽으로 지우고 움직이고 함.
                                                                                     //  ObjConvertimgInfo.rotationPoint = null;//회전값을 위한 2차원의 x,y point좌표.    
 
-
+                            ObjConvertimgInfo.obj_ConvertSize = newInfo.obj_ConvertSize;
 
                             //---회전 811                      
                             rotateTransform = new RotateTransform();
@@ -3450,7 +3451,6 @@ namespace Nollan.Visual_Space
             if (MessageBox.Show("정말 초기화하시겠습니까?", "알림", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 AllClear();
-
                 server.Send(fillCommandInfo(CommandPacket.CommandAction.ALLCLEAR));
 
             }
@@ -3898,6 +3898,7 @@ namespace Nollan.Visual_Space
                 objconverInfo.price = imgData.price;
                 objconverInfo.rotationAngle = imgData.rotationAngle;
                 objconverInfo.VisualName = imgData.VisualName;
+                objconverInfo.obj_ConvertSize = (ObjSize)imgData.obj_ConvertSize;
                 img.Tag = objconverInfo;
                 Canvas.SetZIndex(img, 3);
 

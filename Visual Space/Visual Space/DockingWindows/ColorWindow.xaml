@@ -14,12 +14,12 @@
                          xmlns:avaltheme="clr-namespace:Xceed.Wpf.AvalonDock.Themes.Controls;assembly=Xceed.Wpf.AvalonDock.Themes.Aero"
       
                          
-        mc:Ignorable="d"
+        mc:Ignorable="d"  Name="root_colorWindow" 
         Title="벽지창" Height="900" Width="500" >
 
 
 
-    <Grid Background="Transparent">
+    <Grid Name="grid_root" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -35,11 +35,11 @@
 
 
 
-        <Grid Name="grid_Floor" Grid.Row="1" >
+        <Grid Name="grid_Floor" Grid.Row="1"  >
 
             <Label Content="이전 선택" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,198.476,0,0"/>
             <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="109.591" Width="364.739" Margin="106.89,198.51,0,0" >
-                <Rectangle Name="Floor_border" Stroke="Cyan" StrokeThickness="2" Width="364.739" Height="100" Fill="Transparent" 
+                <Rectangle Name="Floor_border" Stroke="Black" StrokeThickness="2" Width="364.739" Height="100" Fill="Transparent" 
                        Margin="0"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <StackPanel Orientation="Horizontal"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2.528,5.084,0,0" Height="94.507" Width="347.472">
                     <Button Name="btn_FloorViewBox1" Width="60" Height="60"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="38,18,0,0"  
@@ -62,7 +62,7 @@
 
             <Grid Name="Floor_SelectedGrid" Width="365" Height="128.909" Margin="106.629,0,0,280.107" 
                   HorizontalAlignment="Left" VerticalAlignment="Bottom" >
-                <Border BorderBrush="Cyan" BorderThickness="3" Margin="0">
+                <Border BorderBrush="Black" BorderThickness="3" Margin="0">
                     <Rectangle Name="Floor_Selectedborder" Stroke="Transparent" StrokeThickness="2" Width="365" Height="128.909" Fill="Transparent" 
                         HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0"/>
                 </Border>
@@ -102,7 +102,7 @@
 
             <Label Content="바닥커스텀" FontSize="15" FontWeight="Bold" Margin="10,325.738,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Grid Margin="106.629,318.192,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="83.816" Width="362.194">
-                <Border BorderThickness="2" BorderBrush="Cyan">
+                <Border BorderThickness="2" BorderBrush="Black">
                     <StackPanel Orientation="Horizontal" >
 
 
