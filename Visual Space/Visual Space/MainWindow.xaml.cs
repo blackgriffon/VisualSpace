@@ -3823,21 +3823,23 @@ namespace Nollan.Visual_Space
                     Stroke = System.Windows.Media.Brushes.Black
                 };
 
+
                 WallConvertInfo wallConvertInfo = new WallConvertInfo();
                 wallConvertInfo.AssetBundleName = ld.AssetBundleName;
-                line.Tag = wallConvertInfo;
 
                 Canvas.SetZIndex(line, 1);
 
-
+                
                 if (ld.ImageIndex >= 0)
                 {
+                    wallConvertInfo.WallLineimgBrush = imageBrushes[ld.ImageIndex];
                     line.Stroke = imageBrushes[ld.ImageIndex];
+
                 }
-                else
-                {
-                    line.Stroke = Brushes.Black;
-                }
+    
+
+                line.Tag = wallConvertInfo;
+
                 canvaes.Children.Add(line);
             }
 
@@ -3858,7 +3860,7 @@ namespace Nollan.Visual_Space
 
                 FloorConvertInfo floorConvertInfo = new FloorConvertInfo();
                 floorConvertInfo.AssetBundleName = fd.AssetBundleName;
-                rect.Tag = floorConvertInfo;
+
 
 
                 rect.Stroke = new SolidColorBrush(Colors.DarkGreen);
@@ -3869,10 +3871,11 @@ namespace Nollan.Visual_Space
                 if (fd.ImageIndex >= 0)
                 {
                     rect.Fill = imageBrushes[fd.ImageIndex];
+                    floorConvertInfo.RectimgBrush = imageBrushes[fd.ImageIndex];
                 }
 
 
-
+                rect.Tag = floorConvertInfo;
                 Canvas.SetTop(rect, fd.Top);
                 Canvas.SetLeft(rect, fd.Left);
                 canvaes.Children.Add(rect);
@@ -3906,10 +3909,21 @@ namespace Nollan.Visual_Space
                 string convertImgPath = AppDomain.CurrentDomain.BaseDirectory
                     + $"../../../pictures/{objconverInfo.ObjectType}/convert/{objconverInfo.obj_ConvertSize.ToString()}.png";
 
+                string imageFilePath = AppDomain.CurrentDomain.BaseDirectory
+                    + $"../../../pictures/{objconverInfo.ObjectType}/{objconverInfo.AssetBundleName}.png";
+
 #else
                             string convertImgPath = AppDomain.CurrentDomain.BaseDirectory + 
-                $"pictures/{objconverInfo.ObjectType}/convert/{objconverInfo.ObjectType}.png";
+                $"pictures/{objconverInfo.ObjectType}/convert/{objconverInfo.obj_ConvertSize.ToString()}.png";
+
+                
+                string imageFilePath = AppDomain.CurrentDomain.BaseDirectory
+                    + $"pictures/{objconverInfo.ObjectType}/{objconverInfo.AssetBundleName}.png";
 #endif
+
+                objconverInfo.ImgFilePath = imageFilePath;
+                
+
 
                 BitmapImage convertbitmap = new BitmapImage();
                 convertbitmap.BeginInit();

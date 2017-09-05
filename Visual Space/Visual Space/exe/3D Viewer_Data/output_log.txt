@@ -7,36 +7,63 @@ Direct3D:
     VRAM:     4053 MB
     Driver:   22.21.13.8233
 Begin MonoManager ReloadAssembly
-Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Timeline.dll (this message is harmless)
-Loading C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Timeline.dll into Unity Child Domain
-Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
-Loading C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\protobuf-net.dll (this message is harmless)
-Loading C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\protobuf-net.dll into Unity Child Domain
-Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\System.dll (this message is harmless)
-Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace-develop\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\System.Core.dll (this message is harmless)
-- Completed reload, in  0.121 seconds
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Timeline.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Timeline.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\protobuf-net.dll (this message is harmless)
+Loading C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\protobuf-net.dll into Unity Child Domain
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\System.dll (this message is harmless)
+Platform assembly: C:\Users\TAEWOO\Desktop\VisualSpace\Visual Space\Visual Space\exe\3D Viewer_Data\Managed\System.Core.dll (this message is harmless)
+- Completed reload, in  0.086 seconds
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.514847 ms
+UnloadTime: 0.918974 ms
 connected...
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Setting up 4 worker threads for Enlighten.
-  Thread -> id: 3b0 -> priority: 1 
-  Thread -> id: 368 -> priority: 1 
-  Thread -> id: 4108 -> priority: 1 
-  Thread -> id: 3d08 -> priority: 1 
+  Thread -> id: 287c -> priority: 1 
+  Thread -> id: 2db8 -> priority: 1 
+  Thread -> id: 2e0c -> priority: 1 
+  Thread -> id: 404c -> priority: 1 
+The file can not be loaded because it was created for another build target that is not compatible with this platform.
+Please make sure to build AssetBundles using the build target platform that it is used by.
+File's Build target is: 20
+
+ 
+(Filename:  Line: 1094)
+
+The AssetBundle 'http://web.visualspace.uy.to/assetBundle/bundle.unity3d' can't be loaded because it was not built with the right version or build target.
+ 
+(Filename:  Line: 432)
+
+Error while getting Asset Bundle: The AssetBundle 'http://web.visualspace.uy.to/assetBundle/bundle.unity3d' can't be loaded because it was not built with the right version or build target.
+ 
+(Filename:  Line: 182)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
 NullReferenceException: Object reference not set to an instance of an object
   at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
   at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
@@ -48,30 +75,642 @@ csTCPClientManager:Update()
 (Filename:  Line: -1)
 
 NullReferenceException: Object reference not set to an instance of an object
-  at csTCPClientManager.Update () [0x00000] in <filename unknown>:0 
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
  
 (Filename:  Line: -1)
 
 NullReferenceException: Object reference not set to an instance of an object
-  at csTCPClientManager.Update () [0x00000] in <filename unknown>:0 
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
  
 (Filename:  Line: -1)
 
-Internal: JobTempAlloc has allocations that are more than 4 frames old - this is not allowed and likely a leak
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
  
-(Filename:  Line: 371)
+(Filename:  Line: -1)
 
-Internal: JobTempAlloc has allocations that are more than 4 frames old - this is not allowed and likely a leak
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
  
-(Filename:  Line: 371)
+(Filename:  Line: -1)
 
-Internal: JobTempAlloc has allocations that are more than 4 frames old - this is not allowed and likely a leak
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
  
-(Filename:  Line: 371)
+(Filename:  Line: -1)
 
-Internal: JobTempAlloc has allocations that are more than 4 frames old - this is not allowed and likely a leak
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
  
-(Filename:  Line: 371)
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+recevied Data PacketType.WallInfo
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at csLoadAssetBundle+<coLoadObject>c__Iterator3.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+UnityEngine.MonoBehaviour:StartCoroutine_Auto_Internal(IEnumerator)
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+csLoadAssetBundle:LoadObject(ObjectInfoPacket)
+csTCPClientManager:Update()
+ 
+(Filename:  Line: -1)
 
 Internal: JobTempAlloc has allocations that are more than 4 frames old - this is not allowed and likely a leak
  

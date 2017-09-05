@@ -109,7 +109,6 @@ namespace Nollan.Visual_Space.DockingWindows
             grid_exp.Background = GetBrushFromPath(exp_FiveFilePath);
         }
 
-<<<<<<< HEAD
         string bg_SixFilePath = @"\Help\six_bg.png";
         string exp_SixFilePath = @"\Help\six_exp.png";
         private void tv_Six_Selected(object sender, RoutedEventArgs e)
@@ -133,10 +132,6 @@ namespace Nollan.Visual_Space.DockingWindows
             grid_img.Background = GetBrushFromPath(bg_EightFilePath);
             grid_exp.Background = GetBrushFromPath(exp_EightFilePath);
         }
-
-
-=======
->>>>>>> cfb9b1a115ae2d6a8f2b77c66bc0dbbed4547aae
 
 
         public ImageBrush GetBrushFromPath(string Path)
