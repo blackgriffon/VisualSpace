@@ -245,7 +245,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 //818 랙탱글 보더 색 바꾸기
                 ImageBrush imgBrush = new ImageBrush();
                 imgBrush.ImageSource = bitmap;
-                rc_border.Stroke = imgBrush;
+                rc_border.BorderBrush = imgBrush;
 
 
                 stackimgInput(bmi);
@@ -342,7 +342,7 @@ namespace Nollan.Visual_Space.DockingWindows
 
             img_UserSelectedFile.Source = null;
             tbk_FilePath.Text = null; //파일 경로 띄우는 텍스트 박스 삭제
-            rc_border.Stroke = Brushes.Black;
+            rc_border.BorderBrush = Brushes.Black;
 
         }
 
@@ -374,7 +374,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 //818 랙탱글 보더 색 바꾸기
                 ImageBrush imgBrush = new ImageBrush();
                 imgBrush.ImageSource = BitmapList[0].SaveBitmap;
-                rc_border.Stroke = imgBrush;
+                rc_border.BorderBrush = imgBrush;
 
                 
                 CustomThumnailClear(); //일반 벽지를 선택했으면 커스텀 벽지 섬네일은 해제
@@ -389,7 +389,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 //818 랙탱글 보더 색 바꾸기
                 ImageBrush imgBrush = new ImageBrush();
                 imgBrush.ImageSource = BitmapList[1].SaveBitmap;
-                rc_border.Stroke = imgBrush;
+                rc_border.BorderBrush = imgBrush;
 
                
                 CustomThumnailClear(); //일반 벽지를 선택했으면 커스텀 벽지 섬네일은 해제
@@ -404,7 +404,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 //818 랙탱글 보더 색 바꾸기
                 ImageBrush imgBrush = new ImageBrush();
                 imgBrush.ImageSource = BitmapList[2].SaveBitmap;
-                rc_border.Stroke = imgBrush;
+                rc_border.BorderBrush = imgBrush;
 
                 
                 CustomThumnailClear(); //일반 벽지를 선택했으면 커스텀 벽지 섬네일은 해제
@@ -424,7 +424,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 //818 랙탱글 보더 색 바꾸기
                 ImageBrush imgBrush = new ImageBrush();
                 imgBrush.ImageSource = BitmapList[0].SaveBitmap;
-                rc_border.Stroke = imgBrush;
+                rc_border.BorderBrush = imgBrush;
 
                 
                 CustomThumnailClear(); //일반 벽지를 선택했으면 커스텀 벽지 섬네일은 해제
@@ -439,7 +439,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 //818 랙탱글 보더 색 바꾸기
                 ImageBrush imgBrush = new ImageBrush();
                 imgBrush.ImageSource = BitmapList[1].SaveBitmap;
-                rc_border.Stroke = imgBrush;
+                rc_border.BorderBrush = imgBrush;
 
                 
                 CustomThumnailClear(); //일반 벽지를 선택했으면 커스텀 벽지 섬네일은 해제
@@ -463,7 +463,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 //818 랙탱글 보더 색 바꾸기
                 ImageBrush imgBrush = new ImageBrush();
                 imgBrush.ImageSource = BitmapList[0].SaveBitmap;
-                rc_border.Stroke = imgBrush;
+                rc_border.BorderBrush = imgBrush;
 
                 //823
                 CustomThumnailClear(); //일반 벽지를 선택했으면 커스텀 벽지 섬네일은 해제

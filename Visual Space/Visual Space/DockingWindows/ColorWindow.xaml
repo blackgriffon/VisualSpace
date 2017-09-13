@@ -16,7 +16,9 @@
                          
         mc:Ignorable="d"  Name="root_colorWindow" 
         Title="벽지창" Height="900" Width="500" >
+    <docking:DockableContent.Resources>
 
+    </docking:DockableContent.Resources>
 
 
     <Grid Name="grid_root" Background="Transparent">
@@ -37,10 +39,10 @@
 
         <Grid Name="grid_Floor" Grid.Row="1"  >
 
-            <Label Content="이전 선택" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,198.476,0,0"/>
-            <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="109.591" Width="364.739" Margin="106.89,198.51,0,0" >
-                <Rectangle Name="Floor_border" Stroke="Black" StrokeThickness="2" Width="364.739" Height="100" Fill="Transparent" 
-                       Margin="0"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label Content="이전 선택" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left" 
+                   VerticalAlignment="Top" Margin="20,191,0,0"/>
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="110" Width="365" Margin="107,189,0,0" >
+                <Border BorderBrush="Black" CornerRadius="15"  BorderThickness="2px, 1px, 2px, 1px"/>
                 <StackPanel Orientation="Horizontal"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2.528,5.084,0,0" Height="94.507" Width="347.472">
                     <Button Name="btn_FloorViewBox1" Width="60" Height="60"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="38,18,0,0"  
                         Click="btn_FloorViewBox1_Click"  >
@@ -58,11 +60,11 @@
             </Grid>
 
             <Label Content="바닥 선택" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
-                   Margin="10.206,0,0,389.362" FontSize="15" FontWeight="Bold"/>
+                   Margin="20,0,0,395" FontSize="15" FontWeight="Bold"/>
 
-            <Grid Name="Floor_SelectedGrid" Width="365" Height="128.909" Margin="106.629,0,0,280.107" 
+            <Grid Name="Floor_SelectedGrid" Width="365" Height="129" Margin="107,0,0,286" 
                   HorizontalAlignment="Left" VerticalAlignment="Bottom" >
-                <Border BorderBrush="Black" BorderThickness="3" Margin="0">
+                <Border BorderBrush="Black" CornerRadius="15"  BorderThickness="2px, 1px, 2px, 1px" Margin="0">
                     <Rectangle Name="Floor_Selectedborder" Stroke="Transparent" StrokeThickness="2" Width="365" Height="128.909" Fill="Transparent" 
                         HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0"/>
                 </Border>
@@ -73,11 +75,127 @@
 
                         <Button x:Name="btn_FloorFileDialog"  Content="바닥 선택" Click="btn_FloorFileDialog_Click"
                         HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" 
-                    Margin="3, 0, 0, 0" Width="110"/>
+                    Margin="3, 0, 0, 0" Width="110">
+                            <Button.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Button.Background>
+                            <Button.Style>
+
+                                
+                                <Style  TargetType="{x:Type Button}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate  TargetType="{x:Type Button}">
+
+                                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="False">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
+                                                    <!-- the background for the button -->
+                                                    <Rectangle RadiusX="20" RadiusY="30" Grid.RowSpan="2">
+                                                        <Rectangle.Fill>
+                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                                                <LinearGradientBrush.GradientStops>
+                                                                    <GradientStop Color="Blue" Offset="0"/>
+                                                                    <GradientStop Color="LightBlue" Offset="0.9"/>
+                                                                </LinearGradientBrush.GradientStops>
+                                                            </LinearGradientBrush>
+                                                        </Rectangle.Fill>
+                                                    </Rectangle>
+                                                    <!-- the "gel" hilight at the top of the button -->
+                                                    <Border Margin="5" CornerRadius="14,14,4,4">
+                                                        <Border.Background>
+                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                                                <LinearGradientBrush.GradientStops>
+                                                                    <GradientStop Color="Transparent" Offset="0.1"/>
+                                                                    <GradientStop Color="Transparent" Offset="0.5"/>
+                                                                    <GradientStop Color="Transparent" Offset="0.9"/>
+                                                                </LinearGradientBrush.GradientStops>
+                                                            </LinearGradientBrush>
+                                                        </Border.Background>
+                                                    </Border>
+                                                    <!-- place for the content inside the button to be displayed -->
+                                                    <ContentPresenter Grid.RowSpan="2"   
+                          x:Name="PrimaryContent"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Margin="{TemplateBinding Padding}" 
+                          Content="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}" 
+                          />
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Foreground" Value="gold" />
+                                </Style>
+                                
+
+                            </Button.Style>
+                        </Button>
 
                         <Button x:Name="btn_FloorFileDialogClear" Content="바닥 삭제" HorizontalAlignment="Left"  Click="btn_FloorFileDialogClear_Click"
                     VerticalAlignment="Bottom" 
-                Height="30" Margin="3, 0, 0, 0 "  Width="110" />
+                Height="30" Margin="3, 0, 0, 0 "  Width="110" >
+                            <Button.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Button.Background>
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate x:Name="RedControlTemplete" TargetType="{x:Type Button}">
+
+                                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="False">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
+                                                    <!-- the background for the button -->
+                                                    <Rectangle RadiusX="20" RadiusY="30" Grid.RowSpan="2">
+                                                        <Rectangle.Fill>
+                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                                                <LinearGradientBrush.GradientStops>
+                                                                    <GradientStop Color="#872234" Offset="0"/>
+                                                                    <GradientStop Color="#872234" Offset="0.9"/>
+                                                                </LinearGradientBrush.GradientStops>
+                                                            </LinearGradientBrush>
+                                                        </Rectangle.Fill>
+                                                    </Rectangle>
+                                                    <!-- the "gel" hilight at the top of the button -->
+                                                    <Border Margin="5" CornerRadius="14,14,4,4">
+                                                        <Border.Background>
+                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                                                <LinearGradientBrush.GradientStops>
+                                                                    <GradientStop Color="#C53550" Offset="0.1"/>
+                                                                    <GradientStop Color="#C43551" Offset="0.5"/>
+                                                                    <GradientStop Color="#C43551" Offset="0.9"/>
+                                                                </LinearGradientBrush.GradientStops>
+                                                            </LinearGradientBrush>
+                                                        </Border.Background>
+                                                    </Border>
+                                                    <!-- place for the content inside the button to be displayed -->
+                                                    <ContentPresenter Grid.RowSpan="2"   
+                          x:Name="PrimaryContent"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Margin="{TemplateBinding Padding}" 
+                          Content="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}" 
+                          />
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Foreground" Value="gold" />
+                                </Style>
+                            </Button.Style>
+
+                        </Button>
+
 
                     </StackPanel>
 
@@ -88,7 +206,7 @@
                     </Button>
 
                     <Grid Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="111.196,10.18,0,0" Width="220.159">
-                        <Border BorderBrush="Black" BorderThickness="2" Margin="0,0,0,0">
+                        <Border BorderBrush="Black" CornerRadius="15"  BorderThickness="2px, 1px, 2px, 1px" Margin="0,0,0,0">
                             <TextBlock Name="tbk_FloorFilePath" HorizontalAlignment="Left" Height="38" Margin="3,0,0,0" 
                    TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="192"/>
                         </Border>
@@ -100,10 +218,10 @@
 
 
 
-            <Label Content="바닥커스텀" FontSize="15" FontWeight="Bold" Margin="10,325.738,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Grid Margin="106.629,318.192,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="83.816" Width="362.194">
-                <Border BorderThickness="2" BorderBrush="Black">
-                    <StackPanel Orientation="Horizontal" >
+            <Label Content="바닥커스텀" FontSize="15" FontWeight="Bold" Margin="20,328,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Grid Margin="107,326,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="84" Width="362">
+                <Border  BorderBrush="Black" CornerRadius="15"  BorderThickness="2px, 1px, 2px, 1px">
+                    <StackPanel Orientation="Horizontal" Margin="0,-2,0,2" >
 
 
                         <Button x:Name="btn_MakeCustomFloor" Content="커스텀" Click="btn_CustomWallpaper_Click"
@@ -128,10 +246,9 @@
 
 
         <!--grid.row 0. 벽지 부분-->
-        <Label Content="이전 선택" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,216.319,0,0"/>
-        <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="106.136" Width="365" Margin="104.345,216.325,0,0" >
-            <Rectangle Name="rc_border" Stroke="Black" StrokeThickness="2" Width="365" Height="100" Fill="Transparent" 
-                       Margin="0"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label Content="이전 선택" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,204.319,0,0"/>
+        <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="106.136" Width="365" Margin="104.345,204.325,0,0" >
+            <Border Name="rc_border" BorderBrush="Black" CornerRadius="15"  BorderThickness="2px, 1px, 2px, 1px"/>
             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0">
                 <Button Name="btn_ViewBox1" Width="60" Height="60"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,20,0,0"  
                         Click="btn_ViewBox1_Click"  >
@@ -149,16 +266,128 @@
 
         </Grid>
 
-        <Label Content="벽지 선택" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,40.711,0,0"/>
-        <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="150.909" Width="365" Margin="104.345,43.265,0,0">
-            <Rectangle Stroke="Black" StrokeThickness="2" Width="365" Height="145.818" Fill="Transparent"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label Content="벽지 선택" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,30.711,0,0"/>
+        <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="150.909" Width="365" Margin="104.345,31.265,0,0">
+            <Border BorderBrush="Black" CornerRadius="15"  BorderThickness="2px, 1px, 2px, 1px"/>
+
             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Left" VerticalAlignment="Top"  
                                     Width="270.561" Height="38" Margin="139.975,73.805,-32.536,0" >
                 <Button Name="btn_FileDialog" Content="벽지 선택" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
                         Click="btn_FileDialog_Click"
-                Height="30" Margin="0"  Width="100"/>
+                Height="30" Margin="0"  Width="100" >
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                    <Button.Style>
+                        <Style  TargetType="{x:Type Button}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate  TargetType="{x:Type Button}">
+
+                                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="False">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <!-- the background for the button -->
+                                            <Rectangle RadiusX="20" RadiusY="30" Grid.RowSpan="2">
+                                                <Rectangle.Fill>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Color="Blue" Offset="0"/>
+                                                            <GradientStop Color="LightBlue" Offset="0.9"/>
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                            <!-- the "gel" hilight at the top of the button -->
+                                            <Border Margin="5" CornerRadius="14,14,4,4">
+                                                <Border.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Color="Transparent" Offset="0.1"/>
+                                                            <GradientStop Color="Transparent" Offset="0.5"/>
+                                                            <GradientStop Color="Transparent" Offset="0.9"/>
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Border.Background>
+                                            </Border>
+                                            <!-- place for the content inside the button to be displayed -->
+                                            <ContentPresenter Grid.RowSpan="2"   
+                          x:Name="PrimaryContent"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Margin="{TemplateBinding Padding}" 
+                          Content="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}" 
+                          />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Foreground" Value="gold" />
+                        </Style>
+                    </Button.Style>
+                </Button>
                 <Button Name="btn_FileDialogClear" Click="btn_FileDialogClear_Click" Content="벽지 삭제" HorizontalAlignment="Left" 
-                        VerticalAlignment="Bottom" Height="30"  Margin="10,0,0,0" Width="100"/>
+                        VerticalAlignment="Bottom" Height="30"  Margin="10,0,0,0" Width="100">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                    <Button.Style>
+                        <Style  TargetType="{x:Type Button}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate x:Name="RedControlTemplete" TargetType="{x:Type Button}">
+
+                                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="False">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <!-- the background for the button -->
+                                            <Rectangle RadiusX="20" RadiusY="30" Grid.RowSpan="2">
+                                                <Rectangle.Fill>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Color="#872234" Offset="0"/>
+                                                            <GradientStop Color="#872234" Offset="0.9"/>
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                            <!-- the "gel" hilight at the top of the button -->
+                                            <Border Margin="5" CornerRadius="14,14,4,4">
+                                                <Border.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Color="#C53550" Offset="0.1"/>
+                                                            <GradientStop Color="#C43551" Offset="0.5"/>
+                                                            <GradientStop Color="#C43551" Offset="0.9"/>
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Border.Background>
+                                            </Border>
+                                            <!-- place for the content inside the button to be displayed -->
+                                            <ContentPresenter Grid.RowSpan="2"   
+                          x:Name="PrimaryContent"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Margin="{TemplateBinding Padding}" 
+                          Content="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}" 
+                          />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Foreground" Value="gold" />
+                        </Style>
+                    </Button.Style>
+
+                </Button>
             </StackPanel>
 
 
@@ -168,7 +397,7 @@
             </Button>
 
             <Grid Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="142.519,22.902,-5.701,0" Width="205">
-                <Border BorderBrush="Black" BorderThickness="2" Margin="0,0,0,0">
+                <Border BorderBrush="Black" CornerRadius="15"  BorderThickness="2px, 1px, 2px, 1px" Margin="0,0,0,0">
                     <TextBlock Name="tbk_FilePath" HorizontalAlignment="Left" Height="38.181" Margin="3,0,0,0" 
                    TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="205"/>
                 </Border>
@@ -178,11 +407,12 @@
 
         </Grid>
 
-        <Label Content="벽지커스텀" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,335.94,0,0"
+        <Label Content="벽지커스텀" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,325.94,0,0"
                    FontSize="14" FontWeight="Bold"/>
 
-        <Grid  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="104.345,335.94,0,0" Height="84.502" Width="365">
-            <Border BorderBrush="Black" BorderThickness="2" Grid.Row="0" Width="364.545" Height="84.502" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Grid  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="104.345,325.94,0,0" Height="84.502" Width="365">
+            <Border BorderBrush="Black"  CornerRadius="15"   BorderThickness="2px, 3px, 2px, 3px"
+                    Grid.Row="0" Width="364.545" Height="84.502" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="365" Height="84.502" >
 
 
@@ -206,8 +436,11 @@
             </StackPanel>
         </Grid>
 
-        <Border BorderBrush="Black" BorderThickness="2" Grid.Row="0"  />
-        <Border BorderBrush="Black" BorderThickness="2" Grid.Row="1"  />
+        <Border BorderBrush="Black"  Grid.Row="0" 
+                CornerRadius="15" 
+                BorderThickness="2px, 5px, 2px, 5px" Margin="10"  />
+        <Border BorderBrush="Black" CornerRadius="15" 
+                BorderThickness="2px, 5px, 2px, 5px" Margin="10"  Grid.Row="1"  />
 
 
     </Grid>

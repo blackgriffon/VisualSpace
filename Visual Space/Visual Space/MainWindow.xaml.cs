@@ -1,5 +1,5 @@
-﻿#define RUN_3DVIWER_IN_UNITY_EDITER
-#define RUN_3DVIWER
+﻿// #define RUN_3DVIWER_IN_UNITY_EDITER
+ #define RUN_3DVIWER //하단부에 유니티뷰어 띄우고 싶으면 이쪽은 주석해제하면 됨.
 
 
 using Nollan.Visual_Space.DockingWindows;
@@ -47,8 +47,7 @@ namespace Nollan.Visual_Space
 
 
         public MainWindow()
-        {
-            InitializeComponent();
+        {InitializeComponent();
 
 #if RUN_3DVIWER
             server = new WpfUnityTCPServer("127.0.0.1", 9010);
@@ -175,19 +174,27 @@ namespace Nollan.Visual_Space
                                     //    selectedLine.Stroke = Brushes.Black;
                                     //}
 
-                                    //817
-                                    if (ib != null)
+                                    if (ib != null || selectedLine.Tag != null) //906 태그가 있을 시 이쪽으로 와서 자기가 가진 태그 이미지 브러시에 맞는 색 가지도록 수정.
                                     {
-                                        selectedLine.Stroke = ib;
-                                    }
-                                    else if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
-                                    {
-                                        selectedLine.Stroke = lineBrush;
+                                        //823
+                                        WallConvertInfo wci = selectedLine.Tag as WallConvertInfo;
+                                        selectedLine.Stroke = wci.WallLineimgBrush; // 선
+                                                                                    // selectedLine.Stroke = ib;
                                     }
                                     else
                                     {
+
+
                                         selectedLine.Stroke = Brushes.Black;
+                                        WallConvertInfo wci = new WallConvertInfo();
                                         selectedLine.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
+
+                                        // selectedLine.Stroke = Brushes.Black;
+
+
+
+                                        selectedLine = null;
+
                                     }
 
                                 // selectedLine.Stroke = Brushes.Black;
@@ -767,6 +774,8 @@ namespace Nollan.Visual_Space
                 }
                 else //ib, 즉 이미지 브러시가 널 일 때, 선택된 벽지가 없을 때 이쪽으로 들어옴.
                 {
+
+
                     //824 디폴트일 경우 태그에 디폴트라고 넣어줌
                     WallConvertInfo wci = new WallConvertInfo();
                     wci.AssetBundleName = "default";
@@ -812,7 +821,7 @@ namespace Nollan.Visual_Space
 
 
                         //817
-                        if (ib != null)
+                        if (ib != null || selectedLine.Tag != null) //906 태그가 있을 시 이쪽으로 와서 자기가 가진 태그 이미지 브러시에 맞는 색 가지도록 수정.
                         {
                             //823
                             WallConvertInfo wci = selectedLine.Tag as WallConvertInfo;
@@ -2154,9 +2163,10 @@ namespace Nollan.Visual_Space
                     {
                         selectedLine.Stroke = ib;
                     }
-                    else if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
+                    else if (ib != null && selectedLine.Tag != null) //라인브러시 설정했으면 설정한 색대로
                     {
-                        selectedLine.Stroke = lineBrush;
+                        WallConvertInfo wci = selectedLine.Tag as WallConvertInfo;
+                        selectedLine.Stroke = wci.WallLineimgBrush;
                     }
                     else
                     {
