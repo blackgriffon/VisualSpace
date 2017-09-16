@@ -3,9 +3,6 @@ using System.Collections;
 
 public class csCameraControl : MonoBehaviour
 {
-    //
-    // VARIABLES
-    //
 
     public float turnSpeed = 4.0f;      // 카메라 회전속도
     public float panSpeed = 4.0f;      // 카메라 수평회전속도
@@ -15,9 +12,6 @@ public class csCameraControl : MonoBehaviour
     private bool isPanning;      // 카메라 수평회전
     private bool isRotating;   // 카메라 회전
     private bool isZooming;      // 카메라 줌인
-
-
-
 
     
     void Update()

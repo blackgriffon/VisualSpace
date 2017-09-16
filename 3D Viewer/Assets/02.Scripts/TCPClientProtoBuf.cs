@@ -15,9 +15,7 @@ namespace TransportTCP
     {
         // 송신 수신을 위한 데이터
         Queue<Packet.Header> recevieDataQueue = new Queue<Header>();
-        Queue<Packet.Header> sendDataQueue = new Queue<Header>();
-
-        // 서버와 통신할 소켓
+                // 서버와 통신할 소켓
         TcpClient _Client = null;
 
         // 직렬화 후 서버에 데이터 보낼때 사용되는 NetworkStream
@@ -71,9 +69,9 @@ namespace TransportTCP
             _NetworkStream = _Client.GetStream();
 
 
-            Thread lLoopWrite = new Thread(new ThreadStart(LoopWrite));
-            lLoopWrite.IsBackground = true;
-            lLoopWrite.Start();
+            //Thread lLoopWrite = new Thread(new ThreadStart(LoopWrite));
+            //lLoopWrite.IsBackground = true;
+            //lLoopWrite.Start();
 
             Thread lLoopRead = new Thread(new ThreadStart(LoopRead));
             lLoopRead.IsBackground = true;
@@ -128,67 +126,48 @@ namespace TransportTCP
             Debug.Log("client: reader is shutting down");
         }
 
-        private void LoopWrite()
+
+
+        public void Send(Packet.Header header)
         {
-            while (!_ExitLoop)
-            {
-                try
-                {
-                    Packet.Header header;
-
-                    if (sendDataQueue.Count <= 0)
-                        continue;
-                    lock (sendDataQueue)
-                        header = sendDataQueue.Dequeue();
-
-                    ProtoBuf.Serializer.SerializeWithLengthPrefix<Packet.Header>(_NetworkStream, header, ProtoBuf.PrefixStyle.Fixed32);
-
-                    switch (header.ObjectType)
-                    {
-                        case Packet.PacketType.WallInfo:
-                            ProtoBuf.Serializer.SerializeWithLengthPrefix<Packet.WallInfo>(_NetworkStream, (Packet.WallInfo)header.Data, ProtoBuf.PrefixStyle.Fixed32);
-                            break;
-
-                        case Packet.PacketType.ObjectInfoPacket:
-                            ProtoBuf.Serializer.SerializeWithLengthPrefix<Packet.ObjectInfoPacket>(_NetworkStream, (Packet.ObjectInfoPacket)header.Data, ProtoBuf.PrefixStyle.Fixed32);
-                            break;
-
-                        case Packet.PacketType.FloorInfoPacket:
-                            ProtoBuf.Serializer.SerializeWithLengthPrefix<Packet.FloorInfoPacket>(_NetworkStream, (Packet.FloorInfoPacket)header.Data, ProtoBuf.PrefixStyle.Fixed32);
-                            break;
-
-                    }
-                }
-                catch (System.IO.IOException)
-                {
-
-                }
-                catch (Exception ex) { Debug.Log(ex.Message); }
-            }
-            _ExitLoop = true;
-            Debug.Log("client: writer is shutting down");
-        } //
-
-
-        public void Send(Packet.Header xHeader)
-        {
-            if (xHeader == null)
+            if (header == null)
                 return;
 
-            lock (sendDataQueue)
+            try
+            {
+                ProtoBuf.Serializer.SerializeWithLengthPrefix<Packet.Header>(_NetworkStream, header, ProtoBuf.PrefixStyle.Fixed32);
+
+                switch (header.ObjectType)
+                {
+                    case Packet.PacketType.WallInfo:
+                        ProtoBuf.Serializer.SerializeWithLengthPrefix<Packet.WallInfo>(_NetworkStream, (Packet.WallInfo)header.Data, ProtoBuf.PrefixStyle.Fixed32);
+                        break;
+
+                    case Packet.PacketType.ObjectInfoPacket:
+                        ProtoBuf.Serializer.SerializeWithLengthPrefix<Packet.ObjectInfoPacket>(_NetworkStream, (Packet.ObjectInfoPacket)header.Data, ProtoBuf.PrefixStyle.Fixed32);
+                        break;
+
+                    case Packet.PacketType.FloorInfoPacket:
+                        ProtoBuf.Serializer.SerializeWithLengthPrefix<Packet.FloorInfoPacket>(_NetworkStream, (Packet.FloorInfoPacket)header.Data, ProtoBuf.PrefixStyle.Fixed32);
+                        break;
+
+                }
+            }
+            catch (System.IO.IOException)
             {
 
-                sendDataQueue.Enqueue(xHeader);
             }
-        } 
+            catch (Exception ex)
+            {
+                Debug.Log(ex.Message);
+            }
+        }
+         
 
 
         public bool Recevie(ref Packet.Header header)
         {
-
-            if (header == null)
-                return false;
-
+            
             lock(recevieDataQueue)
             {
                 if (recevieDataQueue.Count <= 0)

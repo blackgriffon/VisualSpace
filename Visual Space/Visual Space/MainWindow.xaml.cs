@@ -1,4 +1,4 @@
-﻿// #define RUN_3DVIWER_IN_UNITY_EDITER
+﻿ #define RUN_3DVIWER_IN_UNITY_EDITER
  #define RUN_3DVIWER //하단부에 유니티뷰어 띄우고 싶으면 이쪽은 주석해제하면 됨.
 
 
@@ -44,6 +44,7 @@ namespace Nollan.Visual_Space
     {
 
         IWpfUnityTCPServer server = null;
+        int zeroPos = 400;
 
 
         public MainWindow()
@@ -164,15 +165,6 @@ namespace Nollan.Visual_Space
                             {
                                 if (selectedLine != null)
 
-                                    ////815
-                                    //if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
-                                    //{
-                                    //    selectedLine.Stroke = lineBrush;
-                                    //}
-                                    //else
-                                    //{
-                                    //    selectedLine.Stroke = Brushes.Black;
-                                    //}
 
                                     if (ib != null || selectedLine.Tag != null) //906 태그가 있을 시 이쪽으로 와서 자기가 가진 태그 이미지 브러시에 맞는 색 가지도록 수정.
                                     {
@@ -287,7 +279,7 @@ namespace Nollan.Visual_Space
                             case FloorInfoPacket.FloorInfoAction.MOVE3D:
                                 Dispatcher.Invoke(() =>
                                 {
-                                    var pos = convert3FloorPosTo2DRect(floorInfoPk);
+                                    var pos = convert3DFloorPosTo2DRect(floorInfoPk);
                                     Canvas.SetLeft(SelectedRectangle, pos[0]);
                                     Canvas.SetTop(SelectedRectangle, pos[1]);
 
@@ -352,9 +344,11 @@ namespace Nollan.Visual_Space
             }
         }
 
-        private List<int> convert3FloorPosTo2DRect(FloorInfoPacket floorInfo)
+
+        // 
+        private List<int> convert3DFloorPosTo2DRect(FloorInfoPacket floorInfo)
         {
-            int zeroPos = 400;
+            
             int w = (int)(floorInfo.ScaleX * 40);
             int h = (int)(floorInfo.ScaleZ * 40);
 
@@ -366,10 +360,6 @@ namespace Nollan.Visual_Space
 
         private List<int> convert3DWallPosTo2DLine(WallInfo wallInfo)
         {
-
-            int zeroPos = 400;
-            // 계산
-
             // 2D 상의 중심점을 구한다.
             int xc = (int)(wallInfo.PosX * 40 + zeroPos);
             int yc = (int)(wallInfo.PosZ * 40 * -1 + zeroPos);
@@ -398,7 +388,6 @@ namespace Nollan.Visual_Space
             pos.Add(yc - h);
             pos.Add(xc + w);
             pos.Add(yc + h);
-
             return pos;
         }
 
@@ -406,9 +395,7 @@ namespace Nollan.Visual_Space
         private List<float> convert3DObjectPosTo2DImage(ObjectInfoPacket objInofPk)
         {
 
-            int zeroPos = 400;
-            // 계산
-
+  
             float xc = objInofPk.PosX * 40 + zeroPos;
             float yc = objInofPk.PosZ * 40 * -1 + zeroPos;
 
@@ -698,10 +685,8 @@ namespace Nollan.Visual_Space
 
 
 
-
-
             // 선을 그리는 경우 마우스다운시
-            if (!bMouseDown && bLine_check && !linePlusMinus_Check)
+            if (!bMouseDown && bLine_check && !linePlusMinus_Check && selectedLine == null && obj_image == null)
             {
 
                 this.mapCanvas.CaptureMouse(); //831
@@ -783,7 +768,7 @@ namespace Nollan.Visual_Space
 
 
                     line.Stroke = Brushes.Black;
-                    line.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
+                    //line.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
                 }
 
 
@@ -821,22 +806,24 @@ namespace Nollan.Visual_Space
 
 
                         //817
-                        if (ib != null || selectedLine.Tag != null) //906 태그가 있을 시 이쪽으로 와서 자기가 가진 태그 이미지 브러시에 맞는 색 가지도록 수정.
-                        {
+
                             //823
+
                             WallConvertInfo wci = selectedLine.Tag as WallConvertInfo;
-                            selectedLine.Stroke = wci.WallLineimgBrush; // 선
-                                                                        // selectedLine.Stroke = ib;
-                        }
-                        else
-                        {
+
+                            if (wci.WallLineimgBrush != null)
+                            {
+                                selectedLine.Stroke = wci.WallLineimgBrush; // 선
+                                                                            // selectedLine.Stroke = ib;
+                            }
+                            else
+                            {
+                                selectedLine.Stroke = Brushes.Black;
+                                selectedLine.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
+                            }
 
 
-                            selectedLine.Stroke = Brushes.Black;
-                            WallConvertInfo wci = new WallConvertInfo();
 
-                            selectedLine.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
-                        }
 
 
 
@@ -1673,7 +1660,7 @@ namespace Nollan.Visual_Space
                 case ObjectInfoPacket.ObjectAction.CREATE:
                 case ObjectInfoPacket.ObjectAction.MOVE:
 
-                    int zeroPos = 400;
+                    
                     // 계산
                     // 2d 좌표 기준으로 200 / 200Canvas.GetTop(img) 센터로 지정한다.
 
@@ -1720,7 +1707,7 @@ namespace Nollan.Visual_Space
                 case WallInfo.WallInfoAction.CREATE:
                 case WallInfo.WallInfoAction.MOVE:
 
-                    int zeroPos = 400;
+                    
                     float wallThickness = 0.2f;
                     // 계산
                     // 2d 좌표 기준으로 200 / 200 센터로 지정한다.
@@ -1795,7 +1782,7 @@ namespace Nollan.Visual_Space
                 case FloorInfoPacket.FloorInfoAction.CREATE:
                 case FloorInfoPacket.FloorInfoAction.MOVE:
 
-                    int zeroPos = 400;
+                    
                     // 계산
                     // 2d 좌표 기준으로 200 / 200 센터로 지정한다.
                     float xc = (float)Canvas.GetLeft(rect) - zeroPos + (float)rect.Width / 2;
@@ -3594,62 +3581,6 @@ namespace Nollan.Visual_Space
 
 
 
-        private void btn_Save_Click(object sender, RoutedEventArgs e)
-        {
-
-
-            Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
-            sfd.Filter = "NCVSF(*.NCVSF)|*.NCVSF";
-
-
-            sfd.AddExtension = true;
-
-            string dir = Directory.GetCurrentDirectory();
-
-            sfd.InitialDirectory = dir; //대화상자 시작시 초기 디렉토리 지정
-            sfd.Title = "저장 하기";
-
-
-            bool? result = sfd.ShowDialog();
-            if (result == true) //파일 저장 실해
-            {
-                JsonTypeDesignDataControler controler = new JsonTypeDesignDataControler();
-                controler.GetCanvasData(mapCanvas);
-                controler.Save(sfd.FileName);
-                MessageBox.Show("성공적으로 저장하였습니다.");
-            }
-
-
-        }
-
-        private void btn_Load_Click(object sender, RoutedEventArgs e)
-        {
-
-            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
-            ofd.Filter = "NCVSF(*.NCVSF)|*.NCVSF";
-            ofd.Multiselect = false;
-
-            ofd.AddExtension = true;
-
-            string dir = Directory.GetCurrentDirectory();
-
-            ofd.InitialDirectory = dir; //대화상자 시작시 초기 디렉토리 지정
-            ofd.Title = "불러 오기";
-
-
-            bool? result = ofd.ShowDialog();
-            if (result == true)
-            {
-                AllClear();
-                server.Send(fillCommandInfo(CommandPacket.CommandAction.ALLCLEAR));
-                JsonTypeDesignDataControler controler = new JsonTypeDesignDataControler();
-                controler.Load(ofd.FileName);
-                SetDataToCanvas(mapCanvas, controler.data);
-                MessageBox.Show("성공적으로 불러왔습니다.");
-            }
-        }
-
-
 
 
 
@@ -3808,7 +3739,68 @@ namespace Nollan.Visual_Space
         //}
 
 
-        public void SetDataToCanvas(Canvas canvaes, JsonTypeDesignData data)
+
+
+
+
+        private void btn_Save_Click(object sender, RoutedEventArgs e)
+        {
+
+
+            Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
+            sfd.Filter = "NCVSF(*.NCVSF)|*.NCVSF";
+
+
+            sfd.AddExtension = true;
+
+            string dir = Directory.GetCurrentDirectory();
+
+            sfd.InitialDirectory = dir; //대화상자 시작시 초기 디렉토리 지정
+            sfd.Title = "저장 하기";
+
+
+            bool? result = sfd.ShowDialog();
+            if (result == true) //파일 저장 실해
+            {
+                JsonTypeDesignDataControler controler = new JsonTypeDesignDataControler();
+                controler.GetCanvasData(mapCanvas);
+                controler.Save(sfd.FileName);
+                MessageBox.Show("성공적으로 저장하였습니다.");
+            }
+
+
+        }
+
+        private void btn_Load_Click(object sender, RoutedEventArgs e)
+        {
+
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.Filter = "NCVSF(*.NCVSF)|*.NCVSF";
+            ofd.Multiselect = false;
+
+            ofd.AddExtension = true;
+
+            string dir = Directory.GetCurrentDirectory();
+
+            ofd.InitialDirectory = dir; //대화상자 시작시 초기 디렉토리 지정
+            ofd.Title = "불러 오기";
+
+
+            bool? result = ofd.ShowDialog();
+            if (result == true)
+            {
+                AllClear();
+                server.Send(fillCommandInfo(CommandPacket.CommandAction.ALLCLEAR));
+                JsonTypeDesignDataControler controler = new JsonTypeDesignDataControler();
+                controler.Load(ofd.FileName);
+                SetLoadedDataIn2DAnd3D(mapCanvas, controler.data);
+                MessageBox.Show("성공적으로 불러왔습니다.");
+            }
+        }
+
+
+
+        public void SetLoadedDataIn2DAnd3D(Canvas canvaes, JsonTypeDesignData data)
         {
 
             List<ImageBrush> imageBrushes = new List<ImageBrush>();
@@ -3846,10 +3838,8 @@ namespace Nollan.Visual_Space
                     line.Stroke = imageBrushes[ld.ImageIndex];
 
                 }
-    
 
                 line.Tag = wallConvertInfo;
-
                 canvaes.Children.Add(line);
             }
 
@@ -3865,25 +3855,17 @@ namespace Nollan.Visual_Space
                     Opacity = 0.6,
                 };
 
-
-
-
                 FloorConvertInfo floorConvertInfo = new FloorConvertInfo();
                 floorConvertInfo.AssetBundleName = fd.AssetBundleName;
-
-
-
                 rect.Stroke = new SolidColorBrush(Colors.DarkGreen);
-
-
                 Canvas.SetZIndex(rect, 0);
 
+                // fd.ImageIndex가 0이상이면 커스텀 바닥을 적용한다.
                 if (fd.ImageIndex >= 0)
                 {
                     rect.Fill = imageBrushes[fd.ImageIndex];
                     floorConvertInfo.RectimgBrush = imageBrushes[fd.ImageIndex];
                 }
-
 
                 rect.Tag = floorConvertInfo;
                 Canvas.SetTop(rect, fd.Top);
@@ -3900,7 +3882,6 @@ namespace Nollan.Visual_Space
                 };
 
                 ObjConvertImageInfo objconverInfo = new ObjConvertImageInfo();
-
                 objconverInfo.AssetBundleName = imgData.AssetBundleName;
                 objconverInfo.brand = imgData.brand;
                 objconverInfo.convertFilePath = imgData.convertFilePath;
@@ -3961,12 +3942,10 @@ namespace Nollan.Visual_Space
                 AppendToChildList(objconverInfo); //리스트쪽으로 컨버트된 이미지 태그에 등록한 클래스 정보들을 자식의 함수를 통해 넘겨줌.
                 ObjConvertimgList.Add(objconverInfo); //왼쪽 UI에서 지울 수 있도록 이미지의 tag에 넣었던 정보를 리스트 안에도 저장. 
 
-
-
-
                 canvaes.Children.Add(img);
             }
 
+            // 로드한 데이터를 3D View에 나타내기 위해 데이터를 전송한다.
             foreach (var item in canvaes.Children)
             {
                 switch (item)

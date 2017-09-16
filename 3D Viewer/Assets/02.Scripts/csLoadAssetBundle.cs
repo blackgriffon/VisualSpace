@@ -17,35 +17,22 @@ public class csLoadAssetBundle : MonoBehaviour
 
     private void Awake()
     {
-
-        PrintLog("Awake()");
-        //StartCoroutine(LoadAssetBundle("bundle.unity3d"));
-        StartCoroutine(LoadAssetBundleCasing("bundlewindows.unity3d"));
-        //StartCoroutine(GetAssetBundle("bundle.unity3d"));
-
+        StartCoroutine(LoadAssetBundleUsingWebRequest("bundle.unity3d"));
     }
 
 
-    IEnumerator GetAssetBundle(string assertbundleName)
+    string assetBundleDirectory = "http://web.visualspace.uy.to/assetBundle/Windows/";
+
+    IEnumerator LoadAssetBundleUsingWebRequest(string assertbundleName)
     {
-        UnityWebRequest www = UnityWebRequest.GetAssetBundle(assetBundleDirectory + assertbundleName);
-        yield return www.Send();
 
-        if (www.isNetworkError)
-        {
-            Debug.Log(www.error);
-        }
-        else
-        {
-            assetBundle = ((DownloadHandlerAssetBundle)www.downloadHandler).assetBundle;
-        }
+        while (!Caching.ready)
+            yield return null;
 
-        if (assetBundle == null)
+        UnityWebRequest request = UnityWebRequest.GetAssetBundle(assetBundleDirectory + assertbundleName, 1, 0);
+        yield return request.Send();
 
-            PrintLog(www.error);
-        else
-
-            PrintLog(assetBundle.ToString());
+        assetBundle = DownloadHandlerAssetBundle.GetContent(request);
 
     }
 
@@ -54,67 +41,8 @@ public class csLoadAssetBundle : MonoBehaviour
         debugLogText.text = str;
     }
 
-    private void OnApplicationQuit()
-    {
-        if (assetBundle != null)
-            assetBundle.Unload(true);
-    }
 
-    private IEnumerator LoadAssetBundleCasing(string assertbundleName)
-    {
-        while (!Caching.ready)
-            yield return null;
-
-        // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
-        using (WWW www = WWW.LoadFromCacheOrDownload(assetBundleDirectory + assertbundleName, 0))
-        {
-            yield return www;
-            assetBundle = www.assetBundle;
-
-
-
-        } // memory is freed from the web stream (www.Dispose() gets called implicitly)
-
-        if (assetBundle == null)
-
-            PrintLog("assetBundle is NULL");
-        else
-
-            PrintLog(assetBundle.ToString());
-
-    }
-
-
-    string assetBundleDirectory = "http://web.visualspace.uy.to/assetBundle/";
-
-
-    public IEnumerator LoadAssetBundle(string assertbundleName)
-    {
-        //using (WWW www = new WWW("file:///" + assetBundleDirectory + assertbundleName))
-        using (WWW www = new WWW(assetBundleDirectory + assertbundleName))
-        {
-            yield return www;
-            assetBundle = www.assetBundle;
-
-        }
-
-        if (assetBundle == null)
-
-            PrintLog("assetBundle is NULL");
-        else
-
-            PrintLog(assetBundle.ToString());
-
-
-    }
-
-
-
-
-    public void LoadObject(ObjectInfoPacket objInfo)
-    {
-        StartCoroutine(coLoadObject(objInfo));
-    }
+    
 
     public void LoadWall(WallInfo wallInfo)
     {
@@ -165,8 +93,6 @@ public class csLoadAssetBundle : MonoBehaviour
     }
 
 
-
-
     public void LoadFloor(FloorInfoPacket floorInfo)
     {
 
@@ -192,17 +118,19 @@ public class csLoadAssetBundle : MonoBehaviour
 
     }
 
+
+
+
+    public void LoadObject(ObjectInfoPacket objInfo)
+    {
+        StartCoroutine(coLoadObject(objInfo));
+    }
+
+
     public IEnumerator coLoadObject(ObjectInfoPacket objInfo)
     {
         AssetBundleRequest assetPrefeb = assetBundle.LoadAssetAsync<GameObject>(objInfo.AssetBundleName);
         yield return assetPrefeb;
-
-        if (assetPrefeb == null)
-
-            PrintLog("coLoadObject  ==>  null");
-        else
-
-            PrintLog("coLoadObject  ==> " + assetPrefeb.asset.name);
 
 
         if (assetPrefeb.isDone)
@@ -217,8 +145,13 @@ public class csLoadAssetBundle : MonoBehaviour
             gameobj.transform.rotation = Quaternion.Euler(x, (float)objInfo.Angle, z);
             gameobj.tag = "Object";
 
-
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        if (assetBundle != null)
+            assetBundle.Unload(true);
     }
 
 

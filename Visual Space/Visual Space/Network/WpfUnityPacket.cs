@@ -11,6 +11,7 @@ namespace Nollan.Visual_Space.Network
     public enum WpfUnityPacketType : byte { eError = 0, WallInfo, ObjectInfoPacket, FloorInfoPacket, CommandPacket };
 
     [ProtoContract]
+
     public class WpfUnityPacketHeader
     {
         
@@ -116,6 +117,8 @@ namespace Nollan.Visual_Space.Network
 
         [ProtoMember(1)] public ObjectAction Action;
         [ProtoMember(2)] public string Name;
+        // todo 추가 AssetBundleName
+        // todo 변경 AssetBundleName > ObjectName..
         [ProtoMember(3)] public string AssetBundleName;
         [ProtoMember(4)] public float PosX;
         [ProtoMember(5)] public float PosY;
