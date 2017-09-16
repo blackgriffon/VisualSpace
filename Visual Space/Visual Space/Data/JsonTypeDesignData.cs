@@ -36,15 +36,13 @@ namespace Nollan.Visual_Space.Data
 
                         objd.ObjectType = covertImgInfo.ObjectType;
                         objd.brand = covertImgInfo.brand;
-                        objd.convertFilePath = covertImgInfo.convertFilePath;
                         objd.explain = covertImgInfo.explain;
-                        objd.ImgFilePath = covertImgInfo.ImgFilePath;
                         objd.price = covertImgInfo.price;
                         objd.rotationAngle = covertImgInfo.rotationAngle;
                         objd.VisualName = covertImgInfo.VisualName;
                         objd.obj_ConvertSize = (int)covertImgInfo.obj_ConvertSize;
 
-                       objd.AssetBundleName = covertImgInfo.AssetBundleName;
+                       objd.ObjectName = covertImgInfo.AssetBundleName;
 
                         data.objectData.Add(objd);
                         break;
@@ -58,14 +56,14 @@ namespace Nollan.Visual_Space.Data
                         ld.y1 = line.Y1;
                         ld.x2 = line.X2;
                         ld.y2 = line.Y2;
-                        ld.AssetBundleName = wallConvertInfo.AssetBundleName;
+                        ld.WallImageName = wallConvertInfo.AssetBundleName;
 
                         if (line.Stroke as ImageBrush != null)
                         {
 
                             for (int i = 0; i < data.imageData.Count; i++)
                             {
-                                if (ld.AssetBundleName == data.imageData[i].ImageName)
+                                if (ld.WallImageName == data.imageData[i].ImageName)
                                 {
                                     ld.ImageIndex = i;
                                     break;
@@ -76,7 +74,7 @@ namespace Nollan.Visual_Space.Data
                             if(ld.ImageIndex == -1)
                             {
                                 ImageData imgData = new ImageData();
-                                imgData.ImageName = ld.AssetBundleName;
+                                imgData.ImageName = ld.WallImageName;
                                 int len = ImageConvertor.ConvertImageBrushToJpegByteArray(line.Stroke as ImageBrush).Length;
                                 byte[] bt = ImageConvertor.ConvertImageBrushToJpegByteArray(line.Stroke as ImageBrush);
                                 imgData.ImageBinary = ImageConvertor.ConvertImageBrushToJpegByteArray(line.Stroke as ImageBrush).ToList<byte>();
@@ -98,7 +96,7 @@ namespace Nollan.Visual_Space.Data
                         fd.Left = Canvas.GetLeft(rect);
                         fd.Width = rect.ActualWidth;
                         fd.Height = rect.ActualHeight;
-                        fd.AssetBundleName = floorConvertInfo.AssetBundleName;
+                        fd.FloorImageName = floorConvertInfo.AssetBundleName;
                         fd.ImageIndex = -1;
 
                         if (rect.Fill as ImageBrush != null)
@@ -106,7 +104,7 @@ namespace Nollan.Visual_Space.Data
 
                             for (int i = 0; i < data.imageData.Count; i++)
                             {
-                                if (fd.AssetBundleName == data.imageData[i].ImageName)
+                                if (fd.FloorImageName == data.imageData[i].ImageName)
                                 {
                                     fd.ImageIndex = i;
                                     break;
@@ -117,7 +115,7 @@ namespace Nollan.Visual_Space.Data
                             if (fd.ImageIndex == -1)
                             {
                                 ImageData imgData = new ImageData();
-                                imgData.ImageName = fd.AssetBundleName;
+                                imgData.ImageName = fd.FloorImageName;
 
                                 imgData.ImageBinary = ImageConvertor.ConvertImageBrushToJpegByteArray(rect.Fill as ImageBrush).ToList<byte>();
                                 data.imageData.Add(imgData);
@@ -193,13 +191,8 @@ namespace Nollan.Visual_Space.Data
         // public string objectName; 
 
         // todo 용도 변경 에셋번들 패키지 이름..
-        public string AssetBundleName; // 에셋번들이름
+        public string ObjectName; // ObjectName
         public string VisualName; //사용자가 변경할 수 있는 이름.
-        // todo 삭제..
-        public string convertFilePath; //변환시켜줄 이미지
-        // todo 삭제..
-        public string ImgFilePath; //드롭할 때 tag에서 받아올 오른쪽 UI에 있는 원본 이미지 경로
-
         public double rotationAngle; //시계방향으로 회전하기 위한 2차원 x,y 정보 좌표계.   
         public int price; //가격
         public string brand; //이케아, 삼성, lg 등 가구 브랜드
@@ -214,12 +207,7 @@ namespace Nollan.Visual_Space.Data
         public double y1;
         public double x2;
         public double y2;
-
-        // todo 삭제
-        public string ImgFilePath;
-
-        // todo 변경 AssetBundleName -> WallImageName
-        public string AssetBundleName;
+        public string WallImageName;
         public int ImageIndex;
     }
 
@@ -230,10 +218,7 @@ namespace Nollan.Visual_Space.Data
         public double Left;
         public double Width;
         public double Height;
-        // todo 삭제
-        public string ImgFilePath;
-        // todo 변경 AssetBundleName -> FloorImageName
-        public string AssetBundleName;
+        public string FloorImageName;
         public int ImageIndex;
     }
 

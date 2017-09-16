@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class csCameraControl : MonoBehaviour
+public class csCameraControlManager : MonoBehaviour
 {
 
     public float turnSpeed = 4.0f;      // 카메라 회전속도

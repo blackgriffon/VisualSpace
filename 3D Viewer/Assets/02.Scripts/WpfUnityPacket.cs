@@ -1,11 +1,11 @@
-﻿using ProtoBuf;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using ProtoBuf;
 
-namespace Nollan.Visual_Space.Network
+namespace WpfUnityPacket
 {
 
     public enum WpfUnityPacketType : byte { eError = 0, WallInfoPacket, ObjectInfoPacket, FloorInfoPacket, CommandPacket };
@@ -25,6 +25,7 @@ namespace Nollan.Visual_Space.Network
         ROTATION3D,
         ALLCLEAR,
     }
+
 
     [ProtoContract]
     [ProtoInclude(1, typeof(WallInfoPacket))]
@@ -126,5 +127,74 @@ namespace Nollan.Visual_Space.Network
 
         [ProtoMember(1)] public WpfUnityCommand Command;
     }
+
+
+
+
+
+    public static class PacketFactory
+    {
+        public static WpfUnityPacketHeader MakeDeselect(string name, WpfUnityPacketType packetType)
+        {
+
+
+            switch (packetType)
+            {
+                case WpfUnityPacketType.WallInfoPacket:
+                    WallInfoPacket wallInfo = new WallInfoPacket();
+                    wallInfo.Command = WpfUnityCommand.DESELECT3D;
+                    wallInfo.Name = name;
+                    return wallInfo;
+
+
+                case WpfUnityPacketType.ObjectInfoPacket:
+                    ObjectInfoPacket objectInfo = new ObjectInfoPacket();
+                    objectInfo.Command = WpfUnityCommand.DESELECT3D;
+                    objectInfo.Name = name;
+                    return objectInfo;
+
+                case WpfUnityPacketType.FloorInfoPacket:
+                    FloorInfoPacket floorInfo = new FloorInfoPacket();
+                    floorInfo.Command = WpfUnityCommand.DESELECT3D;
+                    floorInfo.Name = name;
+                    return floorInfo;
+
+            }
+
+            return null;
+
+        }
+
+        public static WpfUnityPacketHeader MakeSelect(string name, WpfUnityPacketType packetType)
+        {
+
+            switch (packetType)
+            {
+                case WpfUnityPacketType.WallInfoPacket:
+                    WallInfoPacket wallInfo = new WallInfoPacket();
+                    wallInfo.Command = WpfUnityCommand.SELECT3D;
+                    wallInfo.Name = name;
+                    return wallInfo;
+
+
+                case WpfUnityPacketType.ObjectInfoPacket:
+                    ObjectInfoPacket objectInfo = new ObjectInfoPacket();
+                    objectInfo.Command = WpfUnityCommand.SELECT3D;
+                    objectInfo.Name = name;
+                    return objectInfo;
+                    
+
+                case WpfUnityPacketType.FloorInfoPacket:
+                    FloorInfoPacket floorInfo = new FloorInfoPacket();
+                    floorInfo.Command = WpfUnityCommand.SELECT3D;
+                    floorInfo.Name = name;
+                    return floorInfo;
+            }
+
+
+            return null;
+        }
+    }
+
+
 }
-  

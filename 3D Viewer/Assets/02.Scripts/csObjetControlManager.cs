@@ -1,5 +1,5 @@
 ﻿using cakeslice;
-using Packet;
+using WpfUnityPacket;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,12 +8,12 @@ using System;
 using UnityEngine.UI;
 
 
-public class csMoveObjectControl : MonoBehaviour
+public class csObjetControlManager : MonoBehaviour
 {
 
     private Ray ray;
     RaycastHit hit = new RaycastHit();
-    csTCPClientManager networkManager;
+    public csWpfUnityTCPClientManager networkManager;
     public GameObject controlButtons = null;
     public Canvas UiCanvas = null;
     GraphicRaycaster gr;
@@ -23,16 +23,12 @@ public class csMoveObjectControl : MonoBehaviour
     public Camera MainCamera;
     private Vector3 InitialCameraPos;
     private Quaternion InitialCameraRoation;
-
-
-    public float Speed = 100;
-
+    float moveStep = 0.5f;
+    
 
     private void Awake()
     {
-        networkManager = GameObject.Find("NetworkManager").GetComponent<csTCPClientManager>();
         controlButtons.SetActive(false);
-        //StartCoroutine(coCheckInput());
         gr = UiCanvas.GetComponent<GraphicRaycaster>();
         ped = new PointerEventData(null);
 
@@ -72,15 +68,15 @@ public class csMoveObjectControl : MonoBehaviour
                     switch (selecetdObject.tag)
                     {
                         case "Wall":
-                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.WallInfo));
+                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, WpfUnityPacketType.WallInfoPacket));
                             break;
 
                         case "Object":
-                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.ObjectInfoPacket));
+                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, WpfUnityPacketType.ObjectInfoPacket));
                             break;
 
                         case "Floor":
-                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.FloorInfoPacket));
+                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, WpfUnityPacketType.FloorInfoPacket));
                             break;
                     }
 
@@ -93,15 +89,15 @@ public class csMoveObjectControl : MonoBehaviour
                 switch (selecetdObject.tag)
                 {
                     case "Wall":
-                        networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, PacketType.WallInfo));
+                        networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, WpfUnityPacketType.WallInfoPacket));
                         break;
 
                     case "Object":
-                        networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, PacketType.ObjectInfoPacket));
+                        networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, WpfUnityPacketType.ObjectInfoPacket));
                         break;
 
                     case "Floor":
-                        networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, PacketType.FloorInfoPacket));
+                        networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, WpfUnityPacketType.FloorInfoPacket));
                         break;
                 }
             }
@@ -114,15 +110,15 @@ public class csMoveObjectControl : MonoBehaviour
                     switch (selecetdObject.tag)
                     {
                         case "Wall":
-                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.WallInfo));
+                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, WpfUnityPacketType.WallInfoPacket));
                             break;
 
                         case "Object":
-                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.ObjectInfoPacket));
+                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, WpfUnityPacketType.ObjectInfoPacket));
                             break;
 
                         case "Floor":
-                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.FloorInfoPacket));
+                            networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, WpfUnityPacketType.FloorInfoPacket));
                             break;
                     }
 
@@ -192,7 +188,7 @@ public class csMoveObjectControl : MonoBehaviour
     }
 
 
-    float moveStep = 0.5f;
+
 
 
 
@@ -230,15 +226,15 @@ public class csMoveObjectControl : MonoBehaviour
                         switch (selecetdObject.tag)
                         {
                             case "Wall":
-                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.WallInfo));
+                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, WpfUnityPacketType.WallInfoPacket));
                                 break;
 
                             case "Object":
-                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.ObjectInfoPacket));
+                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, WpfUnityPacketType.ObjectInfoPacket));
                                 break;
 
                             case "Floor":
-                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.FloorInfoPacket));
+                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, WpfUnityPacketType.FloorInfoPacket));
                                 break;
                         }
 
@@ -251,15 +247,15 @@ public class csMoveObjectControl : MonoBehaviour
                     switch (selecetdObject.tag)
                     {
                         case "Wall":
-                            networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, PacketType.WallInfo));
+                            networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, WpfUnityPacketType.WallInfoPacket));
                             break;
 
                         case "Object":
-                            networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, PacketType.ObjectInfoPacket));
+                            networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, WpfUnityPacketType.ObjectInfoPacket));
                             break;
 
                         case "Floor":
-                            networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, PacketType.FloorInfoPacket));
+                            networkManager.Send(PacketFactory.MakeSelect(selecetdObject.name, WpfUnityPacketType.FloorInfoPacket));
                             break;
                     }
                 }
@@ -272,15 +268,15 @@ public class csMoveObjectControl : MonoBehaviour
                         switch (selecetdObject.tag)
                         {
                             case "Wall":
-                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.WallInfo));
+                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, WpfUnityPacketType.WallInfoPacket));
                                 break;
 
                             case "Object":
-                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.ObjectInfoPacket));
+                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, WpfUnityPacketType.ObjectInfoPacket));
                                 break;
 
                             case "Floor":
-                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, PacketType.FloorInfoPacket));
+                                networkManager.Send(PacketFactory.MakeDeselect(selecetdObject.name, WpfUnityPacketType.FloorInfoPacket));
                                 break;
                         }
 
@@ -388,15 +384,15 @@ public class csMoveObjectControl : MonoBehaviour
     {
         SelecetdObject.transform.position += moveValue;
         //SelecetdObject.transform.Translate(Vector3.left * moveStep);
-        Packet.Header header = new Packet.Header();
+        
 
         switch (SelecetdObject.tag)
         {
             case "Wall":
                 
-                header.ObjectType = Packet.PacketType.WallInfo;
-                WallInfo wallInfo = new WallInfo();
-                wallInfo.Action = WallInfoAction.MOVE3D;
+                
+                WallInfoPacket wallInfo = new WallInfoPacket();
+                wallInfo.Command = WpfUnityCommand.MOVE3D;
                 wallInfo.Name = SelecetdObject.name;
                 wallInfo.PosX = SelecetdObject.transform.position.x;
                 wallInfo.PosY = SelecetdObject.transform.position.y;
@@ -405,27 +401,24 @@ public class csMoveObjectControl : MonoBehaviour
                 wallInfo.ScaleX = SelecetdObject.transform.localScale.x;
                 wallInfo.ScaleY = SelecetdObject.transform.localScale.y;
                 wallInfo.ScaleZ = SelecetdObject.transform.localScale.z;
-                header.Data = wallInfo;
-                networkManager.Send(header);
+                networkManager.Send(wallInfo);
                 break;
 
             case "Object":
-                header.ObjectType = Packet.PacketType.ObjectInfoPacket;
+
                 ObjectInfoPacket objectInfo = new ObjectInfoPacket();
-                objectInfo.Action = ObjectAction.MOVE3D;
+                objectInfo.Command = WpfUnityCommand.MOVE3D;
                 objectInfo.Name = SelecetdObject.name;
                 objectInfo.PosX = SelecetdObject.transform.position.x;
                 objectInfo.PosY = SelecetdObject.transform.position.y;
                 objectInfo.PosZ = SelecetdObject.transform.position.z;
-                header.Data = objectInfo;
-                networkManager.Send(header);
+                networkManager.Send(objectInfo);
                 break;
 
 
             case "Floor":
-                header.ObjectType = Packet.PacketType.FloorInfoPacket;
                 FloorInfoPacket floorInfo = new FloorInfoPacket();
-                floorInfo.Action = FloorInfoAction.MOVE3D;
+                floorInfo.Command = WpfUnityCommand.MOVE3D;
                 floorInfo.Name = SelecetdObject.name;
                 floorInfo.PosX = SelecetdObject.transform.position.x;
                 floorInfo.PosY = SelecetdObject.transform.position.y;
@@ -434,8 +427,7 @@ public class csMoveObjectControl : MonoBehaviour
                 floorInfo.ScaleX = SelecetdObject.transform.localScale.x;
                 floorInfo.ScaleY = SelecetdObject.transform.localScale.y;
                 floorInfo.ScaleZ = SelecetdObject.transform.localScale.z;
-                header.Data = floorInfo;
-                networkManager.Send(header);
+                networkManager.Send(floorInfo);
                 break;
 
 
@@ -467,34 +459,30 @@ public class csMoveObjectControl : MonoBehaviour
 
     public void DeleteObject()
     {
-        Packet.Header header = new Packet.Header();
-
-
-        switch(SelecetdObject.tag)
+        WpfUnityPacketHeader header = null;
+        switch (SelecetdObject.tag)
         {
+            
 
             case "Wall":
-                header.ObjectType = Packet.PacketType.WallInfo;
-                WallInfo wallInfo = new WallInfo();
-                wallInfo.Action = WallInfoAction.REMOVE3D;
+                WallInfoPacket wallInfo = new WallInfoPacket();
+                wallInfo.Command = WpfUnityCommand.REMOVE3D;
                 wallInfo.Name = SelecetdObject.gameObject.name;
-                header.Data = wallInfo;
+                header = wallInfo;
                 break;
 
             case "Object":
-                header.ObjectType = Packet.PacketType.ObjectInfoPacket;
                 ObjectInfoPacket objectInfo = new ObjectInfoPacket();
-                objectInfo.Action = ObjectAction.REMOVE3D;
+                objectInfo.Command = WpfUnityCommand.REMOVE3D;
                 objectInfo.Name = SelecetdObject.gameObject.name;
-                header.Data = objectInfo;
+                header = objectInfo;
                 break;
 
             case "Floor":
-                header.ObjectType = Packet.PacketType.FloorInfoPacket;
                 FloorInfoPacket floorInfo = new FloorInfoPacket();
-                floorInfo.Action = FloorInfoAction.REMOVE3D;
+                floorInfo.Command = WpfUnityCommand.REMOVE3D;
                 floorInfo.Name = SelecetdObject.gameObject.name;
-                header.Data = floorInfo;
+                header = floorInfo;
                 break;
         }
 

@@ -72,25 +72,6 @@ namespace Nollan.Visual_Space.Network
                     if (header == null) break;
 
 
-                    switch (header.ObjectType)
-                    {
-                        case Network.WpfUnityPacketType.WallInfo:
-                            WallInfo lineInfo = ProtoBuf.Serializer.DeserializeWithLengthPrefix<WallInfo>(_NetworkStream, ProtoBuf.PrefixStyle.Fixed32);
-                            header.Data = lineInfo;
-                            break;
-
-
-                        case Network.WpfUnityPacketType.ObjectInfoPacket:
-                            ObjectInfoPacket objInfoPk = ProtoBuf.Serializer.DeserializeWithLengthPrefix<ObjectInfoPacket>(_NetworkStream, ProtoBuf.PrefixStyle.Fixed32);
-                            header.Data = objInfoPk;
-                            break;
-
-                        case WpfUnityPacketType.FloorInfoPacket:
-                            FloorInfoPacket floorInfoPk = ProtoBuf.Serializer.DeserializeWithLengthPrefix<FloorInfoPacket>(_NetworkStream, ProtoBuf.PrefixStyle.Fixed32);
-                            header.Data = floorInfoPk;
-                            break;
-                    }
-
                     if (OnReceviedCompleted != null)
                         OnReceviedCompleted(header);
                 }
@@ -113,28 +94,8 @@ namespace Nollan.Visual_Space.Network
 
                 try
                 {
-
                     ProtoBuf.Serializer.SerializeWithLengthPrefix<WpfUnityPacketHeader>(_NetworkStream, header, ProtoBuf.PrefixStyle.Fixed32);
-
-                    switch (header.ObjectType)
-                    {
-                        case WpfUnityPacketType.WallInfo:
-                            ProtoBuf.Serializer.SerializeWithLengthPrefix<WallInfo>(_NetworkStream, (WallInfo)header.Data, ProtoBuf.PrefixStyle.Fixed32);
-                            break;
-
-                        case WpfUnityPacketType.ObjectInfoPacket:
-                            ProtoBuf.Serializer.SerializeWithLengthPrefix<ObjectInfoPacket>(_NetworkStream, (ObjectInfoPacket)header.Data, ProtoBuf.PrefixStyle.Fixed32);
-                            break;
-
-                        case WpfUnityPacketType.FloorInfoPacket:
-                            ProtoBuf.Serializer.SerializeWithLengthPrefix<FloorInfoPacket>(_NetworkStream, (FloorInfoPacket)header.Data, ProtoBuf.PrefixStyle.Fixed32);
-                            break;
-
-
-                        case WpfUnityPacketType.CommandPacket:
-                            ProtoBuf.Serializer.SerializeWithLengthPrefix<CommandPacket>(_NetworkStream, (CommandPacket)header.Data, ProtoBuf.PrefixStyle.Fixed32);
-                            break;
-                    }
+                    
                 }
                 catch (System.IO.IOException)
                 {

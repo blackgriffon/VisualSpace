@@ -1,5 +1,5 @@
-﻿ #define RUN_3DVIWER_IN_UNITY_EDITER
- #define RUN_3DVIWER //하단부에 유니티뷰어 띄우고 싶으면 이쪽은 주석해제하면 됨.
+﻿#define RUN_3DVIWER_IN_UNITY_EDITER
+#define RUN_3DVIWER //하단부에 유니티뷰어 띄우고 싶으면 이쪽은 주석해제하면 됨.
 
 
 using Nollan.Visual_Space.DockingWindows;
@@ -48,7 +48,8 @@ namespace Nollan.Visual_Space
 
 
         public MainWindow()
-        {InitializeComponent();
+        {
+            InitializeComponent();
 
 #if RUN_3DVIWER
             server = new WpfUnityTCPServer("127.0.0.1", 9010);
@@ -61,7 +62,7 @@ namespace Nollan.Visual_Space
             this.Loaded += MainWindow_Loaded;
             this.Closed += MainWindow_Closed;
 
-           // Window1_Loaded(); 맥시마이즈시 리사이징
+            // Window1_Loaded(); 맥시마이즈시 리사이징
 
 
         }
@@ -73,340 +74,7 @@ namespace Nollan.Visual_Space
 #endif
         }
 
-        private void OnReceviedCompleted(WpfUnityPacketHeader header)
-        {
-            switch (header.ObjectType)
-            {
-                case WpfUnityPacketType.WallInfo:
-                    WallInfo wallInfo = (WallInfo)header.Data;
-
-                    switch (wallInfo.Action)
-                    {
-                        case WallInfo.WallInfoAction.MOVE3D:
-
-                            Dispatcher.Invoke(() =>
-                            {
-                                foreach (var el in mapCanvas.Children)
-                                {
-                                    if (el is Line l)
-                                    {
-                                        if (l.Name == wallInfo.Name)
-                                        {
-
-                                            List<int> pos = convert3DWallPosTo2DLine(wallInfo);
-
-                                            l.X1 = pos[2];
-                                            l.Y1 = pos[3];
-                                            l.X2 = pos[0];
-                                            l.Y2 = pos[1];
-                                            break;
-                                        }
-                                    }
-                                }
-
-                            });
-                            break;
-
-                        case WallInfo.WallInfoAction.REMOVE3D:
-                            Dispatcher.Invoke(() =>
-                            {
-                                Line toRemove = null;
-
-                                // foreach 문 안에서 list의 요소를 지우면 에러가 난다.
-                                foreach (var el in mapCanvas.Children)
-                                {
-                                    if (el is Line l)
-                                    {
-                                        if (l.Name == wallInfo.Name)
-                                        {
-                                            toRemove = l;
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                if (toRemove != null)
-                                    mapCanvas.Children.Remove(toRemove as UIElement);
-                            });
-                            break;
-
-
-                        case WallInfo.WallInfoAction.SELECT3D:
-                            Dispatcher.Invoke(() =>
-                            {
-                                Line toSelect = null;
-
-                                // foreach 문 안에서 list의 요소를 지우면 에러가 난다.
-                                foreach (var el in mapCanvas.Children)
-                                {
-                                    if (el is Line l)
-                                    {
-                                        if (l.Name == wallInfo.Name)
-                                        {
-
-                                            toSelect = l;
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                if (toSelect != null)
-                                {
-
-                                    selectedLine = toSelect;
-                                    selectedLine.Stroke = Brushes.Red;
-                                }
-
-                            });
-                            break;
-
-                        case WallInfo.WallInfoAction.DESELECT3D:
-                            Dispatcher.Invoke(() =>
-                            {
-                                if (selectedLine != null)
-
-
-                                    if (ib != null || selectedLine.Tag != null) //906 태그가 있을 시 이쪽으로 와서 자기가 가진 태그 이미지 브러시에 맞는 색 가지도록 수정.
-                                    {
-                                        //823
-                                        WallConvertInfo wci = selectedLine.Tag as WallConvertInfo;
-                                        selectedLine.Stroke = wci.WallLineimgBrush; // 선
-                                                                                    // selectedLine.Stroke = ib;
-                                    }
-                                    else
-                                    {
-
-
-                                        selectedLine.Stroke = Brushes.Black;
-                                        WallConvertInfo wci = new WallConvertInfo();
-                                        selectedLine.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
-
-                                        // selectedLine.Stroke = Brushes.Black;
-
-
-
-                                        selectedLine = null;
-
-                                    }
-
-                                // selectedLine.Stroke = Brushes.Black;
-
-
-
-                                selectedLine = null;
-
-                            });
-                            break;
-                    }
-                    break;
-
-
-                case WpfUnityPacketType.ObjectInfoPacket:
-                    {
-                        ObjectInfoPacket objInfoPk = (ObjectInfoPacket)header.Data;
-                        switch (objInfoPk.Action)
-                        {
-                            case ObjectInfoPacket.ObjectAction.REMOVE3D:
-                                Dispatcher.Invoke(() =>
-                                {
-                                    DeleteObject();
-                                    obj_image = null;
-                                });
-                                break;
-
-
-                            case ObjectInfoPacket.ObjectAction.MOVE3D:
-                                List<float> pos = convert3DObjectPosTo2DImage(objInfoPk);
-                                Dispatcher.Invoke(() =>
-                                {
-                                    Canvas.SetLeft(obj_image, pos[0] - obj_image.ActualWidth / 2);
-                                    Canvas.SetTop(obj_image, pos[1] - obj_image.ActualHeight / 2);
-                                });
-                                break;
-
-
-                            case ObjectInfoPacket.ObjectAction.SELECT3D:
-                                Dispatcher.Invoke(() =>
-                                {
-                                    Image toSelect = null;
-
-                                    // foreach 문 안에서 list의 요소를 지우면 에러가 난다.
-                                    foreach (var el in mapCanvas.Children)
-                                    {
-                                        if (el is Image img)
-                                        {
-                                            if (img.Name == objInfoPk.Name)
-                                            {
-
-                                                toSelect = img;
-                                                break;
-                                            }
-                                        }
-                                    }
-
-                                    if (toSelect != null)
-                                    {
-
-                                        obj_image = toSelect;
-                                        DrawControlBorder(obj_image);
-                                        //selectedLine.Stroke = Brushes.Red;
-                                    }
-
-                                });
-                                break;
-
-
-
-                            case ObjectInfoPacket.ObjectAction.DESELECT3D:
-                                Dispatcher.Invoke(() =>
-                                {
-                                    if (obj_image != null)
-                                    {
-                                        DeleteControlBorder(obj_image);
-                                        obj_image = null;
-                                    }
-                                });
-                                break;
-                        }
-                    }
-                    break;
-
-                case WpfUnityPacketType.FloorInfoPacket:
-                    {
-                        FloorInfoPacket floorInfoPk = (FloorInfoPacket)header.Data;
-                        switch (floorInfoPk.Action)
-                        {
-                            case FloorInfoPacket.FloorInfoAction.MOVE3D:
-                                Dispatcher.Invoke(() =>
-                                {
-                                    var pos = convert3DFloorPosTo2DRect(floorInfoPk);
-                                    Canvas.SetLeft(SelectedRectangle, pos[0]);
-                                    Canvas.SetTop(SelectedRectangle, pos[1]);
-
-                                });
-
-                                break;
-
-                            case FloorInfoPacket.FloorInfoAction.REMOVE3D:
-                                Dispatcher.Invoke(() =>
-                                {
-                                    DeleteRectangle();
-                                });
-                                break;
-
-                            case FloorInfoPacket.FloorInfoAction.SELECT3D:
-                                Dispatcher.Invoke(() =>
-                                {
-                                    Rectangle toSelect = null;
-
-                                    // foreach 문 안에서 list의 요소를 지우면 에러가 난다.
-                                    foreach (var el in mapCanvas.Children)
-                                    {
-                                        if (el is Rectangle rect)
-                                        {
-                                            if (rect.Name == floorInfoPk.Name)
-                                            {
-
-                                                toSelect = rect;
-
-                                                break;
-                                            }
-                                        }
-                                    }
-
-                                    if (toSelect != null)
-                                    {
-
-                                        SelectedRectangle = toSelect;
-                                        DrawControlRectangleBorder(SelectedRectangle);
-
-
-                                        //selectedLine.Stroke = Brushes.Red;
-                                    }
-
-                                });
-                                break;
-
-                            case FloorInfoPacket.FloorInfoAction.DESELECT3D:
-                                Dispatcher.Invoke(() =>
-                                {
-                                    DeleteControlRectangleBorder(SelectedRectangle);
-                                    SelectedRectangle = null;
-                                });
-                                break;
-
-
-                        }
-                        break;
-
-                    }
-
-            }
-        }
-
-
-        // 
-        private List<int> convert3DFloorPosTo2DRect(FloorInfoPacket floorInfo)
-        {
-            
-            int w = (int)(floorInfo.ScaleX * 40);
-            int h = (int)(floorInfo.ScaleZ * 40);
-
-            int left = (int)((floorInfo.PosX * 40 + zeroPos) - w / 2f);
-            int top = (int)((floorInfo.PosZ * 40 * -1 + zeroPos) - h / 2f);
-            return new List<int> { left, top, w, h };
-
-        }
-
-        private List<int> convert3DWallPosTo2DLine(WallInfo wallInfo)
-        {
-            // 2D 상의 중심점을 구한다.
-            int xc = (int)(wallInfo.PosX * 40 + zeroPos);
-            int yc = (int)(wallInfo.PosZ * 40 * -1 + zeroPos);
-            int w, h;
-
-            // 2D 상의 길이를 구한다.
-            // float이기 때문에 유니티상에서 정확하게 소수점 1자리로 안떨어지고 2.6이면 2.5xxxxx 로 나온다.
-            // 따라서 반올림을 해줘서 값을 보정한다.
-            if (wallInfo.ScaleX > wallInfo.ScaleZ)
-            {
-                w = (int)((wallInfo.ScaleX - 0.2f) * 40);
-                h = 0;
-            }
-            else
-            {
-                w = 0;
-                h = (int)((wallInfo.ScaleZ - 0.2f) * 40);
-            }
-
-            // 이만큼 더해주면 x1,x2 빼주면 x2, y2가된다.
-            w = w / 2;
-            h = h / 2;
-
-            List<int> pos = new List<int>();
-            pos.Add(xc - w);
-            pos.Add(yc - h);
-            pos.Add(xc + w);
-            pos.Add(yc + h);
-            return pos;
-        }
-
-
-        private List<float> convert3DObjectPosTo2DImage(ObjectInfoPacket objInofPk)
-        {
-
-  
-            float xc = objInofPk.PosX * 40 + zeroPos;
-            float yc = objInofPk.PosZ * 40 * -1 + zeroPos;
-
-
-            List<float> pos = new List<float>();
-            pos.Add(xc);
-            pos.Add(yc);
-
-            return pos;
-        }
-
+ 
 
 
 
@@ -549,7 +217,7 @@ namespace Nollan.Visual_Space
         bool? Flag_VerticalLinePlusMinus = null;
         bool? Result_separateLine = null;
         int i = 0;
-        Image obj_image;
+        Image selectedImage;
         bool imageClick = false;
 
         //선 증가 감소 플래그
@@ -686,7 +354,7 @@ namespace Nollan.Visual_Space
 
 
             // 선을 그리는 경우 마우스다운시
-            if (!bMouseDown && bLine_check && !linePlusMinus_Check && selectedLine == null && obj_image == null)
+            if (!bMouseDown && bLine_check && !linePlusMinus_Check && selectedLine == null && selectedImage == null)
             {
 
                 this.mapCanvas.CaptureMouse(); //831
@@ -792,7 +460,7 @@ namespace Nollan.Visual_Space
                     if (e.OriginalSource != line) //오리지널소스가 선이 아닐 때.(맵캔버스 or 이미지일 경우가 된다.)
                     {
                         // 선택해재 정보 전송
-                        server.Send(PacketFactory.MakeDeselect(selectedLine.Name));
+                        server.Send(fillWallInfo(selectedLine, WpfUnityCommand.DESELECT));
 
                         ////815
                         //if (lineBrush != null) //라인브러시 설정했으면 설정한 색대로
@@ -807,20 +475,20 @@ namespace Nollan.Visual_Space
 
                         //817
 
-                            //823
+                        //823
 
-                            WallConvertInfo wci = selectedLine.Tag as WallConvertInfo;
+                        WallConvertInfo wci = selectedLine.Tag as WallConvertInfo;
 
-                            if (wci.WallLineimgBrush != null)
-                            {
-                                selectedLine.Stroke = wci.WallLineimgBrush; // 선
-                                                                            // selectedLine.Stroke = ib;
-                            }
-                            else
-                            {
-                                selectedLine.Stroke = Brushes.Black;
-                                selectedLine.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
-                            }
+                        if (wci.WallLineimgBrush != null)
+                        {
+                            selectedLine.Stroke = wci.WallLineimgBrush; // 선
+                                                                        // selectedLine.Stroke = ib;
+                        }
+                        else
+                        {
+                            selectedLine.Stroke = Brushes.Black;
+                            selectedLine.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
+                        }
 
 
 
@@ -843,25 +511,16 @@ namespace Nollan.Visual_Space
                     }
                 }
 
-                //else if (obj_image != null && e.OriginalSource == mapCanvas) //이미지를 선택한 채로 지우게 되면 오류 뜸. 트라이캐치로 잡자
-                //{
-                //    server.Send(fillObjectInfo(obj_image, ObjectInfoPacket.ObjectAction.DESELECT));
-
-
-                //    obj_image = null;
-
-                //}
-
                 // 전에 선택된것이 오브젝트일때
-                else if (obj_image != null)
+                else if (selectedImage != null)
                 {
-                    server.Send(fillObjectInfo(obj_image, ObjectInfoPacket.ObjectAction.DESELECT));
+                    server.Send(fillObjectInfo(selectedImage, WpfUnityCommand.DESELECT));
 
                     //811
-                    DeleteControlBorder(obj_image); //보더 지운다
+                    DeleteControlBorder(selectedImage); //보더 지운다
 
 
-                    obj_image = null;
+                    selectedImage = null;
                 }
 
                 // 선 클릭                                         //817 바닥 생성이 Off일 때 조건 추가
@@ -910,28 +569,28 @@ namespace Nollan.Visual_Space
                 //  Object(Image)가 선택되었는지 확인한다. //817 바닥생성 on일 경우 이미지 움직이지 않음.
                 else if (e.OriginalSource.GetType() == typeof(Image) && !Flag_isCheckedFloor) // 클릭했을 때 original source가 image인 경우
                 {
-                    obj_image = e.OriginalSource as Image; //현재 클릭된 이미지를 기억?
+                    selectedImage = e.OriginalSource as Image; //현재 클릭된 이미지를 기억?
                                                            // MessageBox.Show("이미지");
                                                            //  imageStPoint = TranslatePointToCanvas(e, mapCanvas); //클릭한 좌표를 맵캔버스 기준으로 변환해서 반환값을 가져온다.
 
 
                     //811
-                    if (obj_image != null)
+                    if (selectedImage != null)
                     {
                         imageClick = true;
 
                         //818
                         Flag_ImageOneClick = true;
 
-                        txtBox.Text = obj_image.Name;
+                        txtBox.Text = selectedImage.Name;
 
-                        server.Send(fillObjectInfo(obj_image, ObjectInfoPacket.ObjectAction.SELECT));
+                        server.Send(fillObjectInfo(selectedImage, WpfUnityCommand.SELECT));
 
 
 
                         // e
 
-                        DrawControlBorder(obj_image); //이미지 클릭하면 보더생김.
+                        DrawControlBorder(selectedImage); //이미지 클릭하면 보더생김.
 
                     }
 
@@ -943,13 +602,7 @@ namespace Nollan.Visual_Space
 
             }
 
-
-
-
-
         }
-
-
 
         //마우스무브시
         private void MapCanvas_MouseMove(object sender, MouseEventArgs e)
@@ -1048,15 +701,15 @@ namespace Nollan.Visual_Space
             else //( !Flag_isCheckedFloor ) //바닥 생성 버튼이 꺼져있다면? 이동을 의미
             {
                 if (e.MouseDevice.LeftButton == MouseButtonState.Pressed
-                    && SelectedRectangle != null && !Flag_isCheckedFloor && Flag_ImageOneClick) //왼쪽 눌렸을 때 , 818 플래그 추가
+                    && selectedRectangle != null && !Flag_isCheckedFloor && Flag_ImageOneClick) //왼쪽 눌렸을 때 , 818 플래그 추가
                 {
                     Point Rc_CurPoint = e.GetPosition(mapCanvas);
 
                     double Rc_distanceX = Rc_CurPoint.X - prePosition.X;
                     double Rc_distanceY = Rc_CurPoint.Y - prePosition.Y;
 
-                    Canvas.SetLeft(SelectedRectangle, prePosition.X + Rc_distanceX - (SelectedRectangle.ActualWidth / 2));
-                    Canvas.SetTop(SelectedRectangle, prePosition.Y + Rc_distanceY - (SelectedRectangle.ActualHeight / 2));
+                    Canvas.SetLeft(selectedRectangle, prePosition.X + Rc_distanceX - (selectedRectangle.ActualWidth / 2));
+                    Canvas.SetTop(selectedRectangle, prePosition.Y + Rc_distanceY - (selectedRectangle.ActualHeight / 2));
 
                     Flag_imgMove = true; //818 여기서 트루해줘야 바닥 움직일 수 있음.
                 }
@@ -1170,23 +823,23 @@ namespace Nollan.Visual_Space
             else //imageClick = true 일 때
             {
                 //817 바닥생성 플래그가 off 상태여야 이미지 움직일 수 있음
-                if (obj_image != null && !Flag_isCheckedFloor && Flag_ImageOneClick == true) //816 이거 안하면 이미지 클릭 삭제 하다보면 오류 뜸
+                if (selectedImage != null && !Flag_isCheckedFloor && Flag_ImageOneClick == true) //816 이거 안하면 이미지 클릭 삭제 하다보면 오류 뜸
                 {
-                    ObjConvertImageInfo oci = (ObjConvertImageInfo)obj_image.Tag;
+                    ObjConvertImageInfo oci = (ObjConvertImageInfo)selectedImage.Tag;
 
                     //818
                     Flag_imgMove = true;
 
-                    Canvas.SetLeft(obj_image, e.GetPosition(mapCanvas).X - obj_image.ActualWidth / 2);
-                    Canvas.SetTop(obj_image, e.GetPosition(mapCanvas).Y - obj_image.ActualHeight / 2);
+                    Canvas.SetLeft(selectedImage, e.GetPosition(mapCanvas).X - selectedImage.ActualWidth / 2);
+                    Canvas.SetTop(selectedImage, e.GetPosition(mapCanvas).Y - selectedImage.ActualHeight / 2);
 
 
                     //811
                     if (oci.ObjectType == "doors" || oci.ObjectType == "windows")
                     {
                         Point windoorClickPoint = new Point(e.GetPosition(mapCanvas).X, e.GetPosition(mapCanvas).Y); //마우스현재좌표 얻어오기
-                        Point bitSize = new Point(obj_image.ActualWidth, obj_image.ActualHeight);
-                        WindowDoorPointSearching(obj_image, bitSize, windoorClickPoint);
+                        Point bitSize = new Point(selectedImage.ActualWidth, selectedImage.ActualHeight);
+                        WindowDoorPointSearching(selectedImage, bitSize, windoorClickPoint);
                     }
 
                 }
@@ -1207,7 +860,7 @@ namespace Nollan.Visual_Space
             //816
             MakeFloor_ClickUP(sender, e); //바닥 생성 or 이동 쪽 로직
 
-            
+
             if (!imageClick) //imageClick == false
             {
 
@@ -1321,7 +974,7 @@ namespace Nollan.Visual_Space
                     writeLog(line.X1, line.Y1, line.X2, line.Y2, "마우스업-선그리기 로그");
 
 
-                    WpfUnityPacketHeader header = fillWallInfo(line, WallInfo.WallInfoAction.CREATE);
+                    WpfUnityPacketHeader header = fillWallInfo(line, WpfUnityCommand.CREATE);
                     server.Send(header);
 
                     line = null;
@@ -1432,7 +1085,7 @@ namespace Nollan.Visual_Space
                             }
                         }
 
-                        WpfUnityPacketHeader header = fillWallInfo(line, WallInfo.WallInfoAction.MOVE);
+                        WpfUnityPacketHeader header = fillWallInfo(line, WpfUnityCommand.MOVE);
                         server.Send(header);
                         // line.Stroke = Brushes.Black;
                         line = null; //이렇게 null로 참조를 끊어줘야 업이벤트가 끝나고 선이 마우스에서 떨어짐.                    
@@ -1469,7 +1122,7 @@ namespace Nollan.Visual_Space
 
                         //line.Stroke = Brushes.Black;
 
-                        WpfUnityPacketHeader header = fillWallInfo(line, WallInfo.WallInfoAction.MOVE);
+                        WpfUnityPacketHeader header = fillWallInfo(line, WpfUnityCommand.MOVE);
                         server.Send(header);
                         bMouseDown = false;
                         line = null; //이렇게 null로 참조를 끊어줘야 업이벤트가 끝나고 선이 마우스에서 떨어짐.
@@ -1492,25 +1145,25 @@ namespace Nollan.Visual_Space
                 imageClick = false;
 
 
-                if (obj_image != null && Flag_imgMove) //816 오류방지, 818 플래그 추가하여 이미지 클릭시 움직이지 않게.(무브해야 플래그 트루됨)
+                if (selectedImage != null && Flag_imgMove) //816 오류방지, 818 플래그 추가하여 이미지 클릭시 움직이지 않게.(무브해야 플래그 트루됨)
                 {
-                    Canvas.SetLeft(obj_image, e.GetPosition(mapCanvas).X - obj_image.ActualWidth / 2);
-                    Canvas.SetTop(obj_image, e.GetPosition(mapCanvas).Y - obj_image.ActualHeight / 2);
+                    Canvas.SetLeft(selectedImage, e.GetPosition(mapCanvas).X - selectedImage.ActualWidth / 2);
+                    Canvas.SetTop(selectedImage, e.GetPosition(mapCanvas).Y - selectedImage.ActualHeight / 2);
 
 
 
                     //811
-                    ObjConvertImageInfo oci = (ObjConvertImageInfo)obj_image.Tag;
+                    ObjConvertImageInfo oci = (ObjConvertImageInfo)selectedImage.Tag;
 
                     if (oci.ObjectType == "doors" || oci.ObjectType == "windows")
                     {
                         Point windoorClickPoint = new Point(e.GetPosition(mapCanvas).X, e.GetPosition(mapCanvas).Y); //마우스현재좌표 얻어오기
-                        Point bitSize = new Point(obj_image.ActualWidth, obj_image.ActualHeight);
-                        WindowDoorPointSearching(obj_image, bitSize, windoorClickPoint);
+                        Point bitSize = new Point(selectedImage.ActualWidth, selectedImage.ActualHeight);
+                        WindowDoorPointSearching(selectedImage, bitSize, windoorClickPoint);
                     }
 
 
-                    server.Send(fillObjectInfo(obj_image, ObjectInfoPacket.ObjectAction.MOVE));
+                    server.Send(fillObjectInfo(selectedImage, WpfUnityCommand.MOVE));
 
 
                     Flag_ImageOneClick = false; //818
@@ -1644,23 +1297,23 @@ namespace Nollan.Visual_Space
 
 
 
-        private WpfUnityPacketHeader fillObjectInfo(Image img, ObjectInfoPacket.ObjectAction action)
+        private WpfUnityPacketHeader fillObjectInfo(Image img, WpfUnityCommand action)
         {
             // 공통적인 작업
             ObjectInfoPacket objectInfo = new ObjectInfoPacket();
             ObjConvertImageInfo ObjInfo = (ObjConvertImageInfo)img.Tag;
             objectInfo.Name = ObjInfo.ObjectName;
-            objectInfo.AssetBundleName = ObjInfo.AssetBundleName;
-            objectInfo.Action = action;
+            objectInfo.ObjectName = ObjInfo.AssetBundleName;
+            objectInfo.Command = action;
 
             // del 일때는 굳이 다른 정보가 필요없다.
             switch (action)
             {
 
-                case ObjectInfoPacket.ObjectAction.CREATE:
-                case ObjectInfoPacket.ObjectAction.MOVE:
+                case WpfUnityCommand.CREATE:
+                case WpfUnityCommand.MOVE:
 
-                    
+
                     // 계산
                     // 2d 좌표 기준으로 200 / 200Canvas.GetTop(img) 센터로 지정한다.
 
@@ -1675,28 +1328,26 @@ namespace Nollan.Visual_Space
                     objectInfo.Rotation = (float)ObjInfo.rotationAngle;
                     break;
 
-                case ObjectInfoPacket.ObjectAction.ROTATION:
+                case WpfUnityCommand.ROTATION:
                     objectInfo.Rotation = (float)ObjInfo.rotationAngle;
                     break;
 
             }
 
 
-            WpfUnityPacketHeader header = new WpfUnityPacketHeader(WpfUnityPacketType.ObjectInfoPacket, objectInfo);
-            return header;
+            return objectInfo;
         }
 
 
-        private WpfUnityPacketHeader fillWallInfo(Line line, WallInfo.WallInfoAction action)
+        private WpfUnityPacketHeader fillWallInfo(Line line, WpfUnityCommand action)
         {
 
             // 공통적인 작업
-            WallInfo wallInfo = new WallInfo();
+            WallInfoPacket wallInfo = new WallInfoPacket();
             wallInfo.Name = line.Name;
-            wallInfo.Action = action;
+            wallInfo.Command = action;
             WallConvertInfo wcinfo = (WallConvertInfo)line.Tag;
-            //ImageBrush ib = line.Stroke as ImageBrush;
-            //byte[] data = ConvertImageBrushToJpegByteArray(ib);
+
 
 
             // del 일때는 굳이 좌표정보가 필요없다.
@@ -1704,10 +1355,10 @@ namespace Nollan.Visual_Space
             {
 
 
-                case WallInfo.WallInfoAction.CREATE:
-                case WallInfo.WallInfoAction.MOVE:
+                case WpfUnityCommand.CREATE:
+                case WpfUnityCommand.MOVE:
 
-                    
+
                     float wallThickness = 0.2f;
                     // 계산
                     // 2d 좌표 기준으로 200 / 200 센터로 지정한다.
@@ -1734,7 +1385,7 @@ namespace Nollan.Visual_Space
                     wallInfo.ScaleX = w / 40;
                     wallInfo.ScaleY = 3f;
                     wallInfo.ScaleZ = h / 40;
-                
+
                     if (wallInfo.ScaleX == 0)
                     {
                         wallInfo.ScaleX = wallThickness;
@@ -1749,7 +1400,7 @@ namespace Nollan.Visual_Space
 
             }
 
-            if (action == WallInfo.WallInfoAction.CREATE)
+            if (action == WpfUnityCommand.CREATE)
             {
 
                 ImageBrush ib = line.Stroke as ImageBrush;
@@ -1757,32 +1408,31 @@ namespace Nollan.Visual_Space
             }
 
 
-            WpfUnityPacketHeader header = new WpfUnityPacketHeader(WpfUnityPacketType.WallInfo, wallInfo);
-            return header;
+            return wallInfo;
 
 
         }
 
 
-        private WpfUnityPacketHeader fillFloorInfo(Rectangle rect, FloorInfoPacket.FloorInfoAction action)
+        private WpfUnityPacketHeader fillFloorInfo(Rectangle rect, WpfUnityCommand command)
         {
 
             // 공통적인 작업
             FloorInfoPacket floorInfo = new FloorInfoPacket();
             floorInfo.Name = rect.Name;
-            floorInfo.Action = action;
+            floorInfo.Command = command;
 
             FloorConvertInfo fcinfo = (FloorConvertInfo)rect.Tag;
 
 
 
             // del 일때는 굳이 좌표정보가 필요없다.
-            switch (action)
+            switch (command)
             {
-                case FloorInfoPacket.FloorInfoAction.CREATE:
-                case FloorInfoPacket.FloorInfoAction.MOVE:
+                case WpfUnityCommand.CREATE:
+                case WpfUnityCommand.MOVE:
 
-                    
+
                     // 계산
                     // 2d 좌표 기준으로 200 / 200 센터로 지정한다.
                     float xc = (float)Canvas.GetLeft(rect) - zeroPos + (float)rect.Width / 2;
@@ -1801,7 +1451,7 @@ namespace Nollan.Visual_Space
                     break;
 
             }
-            if (action == FloorInfoPacket.FloorInfoAction.CREATE)
+            if (command == WpfUnityCommand.CREATE)
             {
 
                 ImageBrush ib = rect.Fill as ImageBrush;
@@ -1809,21 +1459,18 @@ namespace Nollan.Visual_Space
             }
 
 
-            WpfUnityPacketHeader header = new WpfUnityPacketHeader(WpfUnityPacketType.FloorInfoPacket, floorInfo);
-            return header;
+            return floorInfo;
 
 
         }
 
 
-        private WpfUnityPacketHeader fillCommandInfo(CommandPacket.CommandAction action)
+        private WpfUnityPacketHeader fillCommandInfo(WpfUnityCommand command)
         {
             // 공통적인 작업
-            CommandPacket command = new CommandPacket();
-            command.Action = action;
-
-            WpfUnityPacketHeader header = new WpfUnityPacketHeader(WpfUnityPacketType.CommandPacket, command);
-            return header;
+            CommandPacket cmd = new CommandPacket();
+            cmd.Command = command;
+            return cmd;
 
 
         }
@@ -2162,16 +1809,16 @@ namespace Nollan.Visual_Space
                     }
 
 
-                    server.Send(PacketFactory.MakeDeselect(selectedLine.Name));
+                    server.Send(fillWallInfo(selectedLine, WpfUnityCommand.DESELECT));
 
                     line.Stroke = Brushes.Red;
-                    server.Send(PacketFactory.MakeSelect(line.Name));
+                    server.Send(fillWallInfo(line, WpfUnityCommand.SELECT));
 
                 }
                 else //else1. 선을 한 번도 선택을 하지 않았으면 이쪽으로.
                 {
                     line.Stroke = Brushes.Red;
-                    server.Send(PacketFactory.MakeSelect(line.Name));
+                    server.Send(fillWallInfo(line, WpfUnityCommand.SELECT));
                 }
 
             }
@@ -2709,7 +2356,7 @@ namespace Nollan.Visual_Space
 
 
 
-                            server.Send(fillObjectInfo(convertimg, ObjectInfoPacket.ObjectAction.CREATE));
+                            server.Send(fillObjectInfo(convertimg, WpfUnityCommand.CREATE));
 
 
 
@@ -2717,11 +2364,11 @@ namespace Nollan.Visual_Space
 
 
                             //811
-                            if (obj_image != null) //선택된 이미지가 있다면 맵캔버스에 새로 추가되니 선택된 이미지 취소하자.
+                            if (selectedImage != null) //선택된 이미지가 있다면 맵캔버스에 새로 추가되니 선택된 이미지 취소하자.
                             {
 
-                                DeleteControlBorder(obj_image);
-                                obj_image = null;
+                                DeleteControlBorder(selectedImage);
+                                selectedImage = null;
 
                             }
 
@@ -2811,9 +2458,9 @@ namespace Nollan.Visual_Space
 
             if (e.Key == Key.Delete)
             {
-                if (obj_image != null)
+                if (selectedImage != null)
                 {
-                    WpfUnityPacketHeader header = fillObjectInfo(obj_image, ObjectInfoPacket.ObjectAction.REMOVE);
+                    WpfUnityPacketHeader header = fillObjectInfo(selectedImage, WpfUnityCommand.REMOVE);
                     server.Send(header);
                     DeleteObject();
 
@@ -2823,17 +2470,17 @@ namespace Nollan.Visual_Space
                 else if (selectedLine != null)
                 {
 
-                    WpfUnityPacketHeader header = fillWallInfo(selectedLine, WallInfo.WallInfoAction.REMOVE);
+                    WpfUnityPacketHeader header = fillWallInfo(selectedLine, WpfUnityCommand.REMOVE);
                     server.Send(header);
                     DeleteLine();
                 }
 
                 //812
-                else if (SelectedRectangle != null)
+                else if (selectedRectangle != null)
 
                 {
 
-                    WpfUnityPacketHeader header = fillFloorInfo(SelectedRectangle, FloorInfoPacket.FloorInfoAction.REMOVE);
+                    WpfUnityPacketHeader header = fillFloorInfo(selectedRectangle, WpfUnityCommand.REMOVE);
                     server.Send(header);
                     DeleteRectangle();
 
@@ -2848,10 +2495,10 @@ namespace Nollan.Visual_Space
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
 
-            if (obj_image != null)
+            if (selectedImage != null)
             {
 
-                WpfUnityPacketHeader header = fillObjectInfo(obj_image, ObjectInfoPacket.ObjectAction.REMOVE);
+                WpfUnityPacketHeader header = fillObjectInfo(selectedImage, WpfUnityCommand.REMOVE);
                 server.Send(header);
 
                 DeleteObject();
@@ -2859,14 +2506,14 @@ namespace Nollan.Visual_Space
             else if (selectedLine != null)
             {
 
-                WpfUnityPacketHeader header = fillWallInfo(selectedLine, WallInfo.WallInfoAction.REMOVE);
+                WpfUnityPacketHeader header = fillWallInfo(selectedLine, WpfUnityCommand.REMOVE);
                 server.Send(header);
 
                 DeleteLine();
             }
-            else if (SelectedRectangle != null)
+            else if (selectedRectangle != null)
             {
-                WpfUnityPacketHeader header = fillFloorInfo(SelectedRectangle, FloorInfoPacket.FloorInfoAction.REMOVE);
+                WpfUnityPacketHeader header = fillFloorInfo(selectedRectangle, WpfUnityCommand.REMOVE);
                 server.Send(header);
                 DeleteRectangle();
             }
@@ -2876,15 +2523,15 @@ namespace Nollan.Visual_Space
         public void DeleteObject()
         {
 
-            ObjConvertImageInfo oct = (ObjConvertImageInfo)obj_image.Tag;
+            ObjConvertImageInfo oct = (ObjConvertImageInfo)selectedImage.Tag;
             listWindow.DeleteList(oct);
 
             //811
             //  aLayer.Remove(aLayer.GetAdorners(obj_image)[0]);
 
 
-            mapCanvas.Children.Remove(obj_image as UIElement);
-            obj_image = null;
+            mapCanvas.Children.Remove(selectedImage as UIElement);
+            selectedImage = null;
 
         }
 
@@ -2897,8 +2544,8 @@ namespace Nollan.Visual_Space
         public void DeleteRectangle()
         {
 
-            mapCanvas.Children.Remove(SelectedRectangle as UIElement);
-            SelectedRectangle = null;
+            mapCanvas.Children.Remove(selectedRectangle as UIElement);
+            selectedRectangle = null;
 
         }
 
@@ -2922,7 +2569,7 @@ namespace Nollan.Visual_Space
                         {
                             //   DeleteControlBorder(img); 
                             DeleteControlBorder();//이미지에 생성된 보더 지우기. 리스트쪽에서 지울 땐 맵캔버스에 있는 보더 무조건 없애버린다. 831
-                            delimg = img;                           
+                            delimg = img;
                             break;
                         }
 
@@ -2930,7 +2577,7 @@ namespace Nollan.Visual_Space
                 }
 
                 mapCanvas.Children.Remove(delimg);  // 포이치문을 빠져나간 후 삭제한다.(포이치문 안에서는 삭제하면 오류남)
-                obj_image = null; //831
+                selectedImage = null; //831
 
             }
         }
@@ -2938,9 +2585,9 @@ namespace Nollan.Visual_Space
         //리스트창 에서 이미지 지우려 하면 보더 있을 경우 보더 지우고 화면에 보더 없애줌.
         public void DeleteControlBorder()
         {
-            if (obj_image != null)
-            {            
-                    aLayer.Remove(aLayer.GetAdorners(obj_image)[0]);
+            if (selectedImage != null)
+            {
+                aLayer.Remove(aLayer.GetAdorners(selectedImage)[0]);
             }
         }
 
@@ -2952,28 +2599,28 @@ namespace Nollan.Visual_Space
         public int rotateAngle = 45; //회전각도 상수
         private void RightAngleTransform_Click(object sender, RoutedEventArgs e) //오른쪽 회전. 45도씩.
         {
-            if (obj_image != null)
+            if (selectedImage != null)
             {
 
 
 
-                if (((RotateTransform)obj_image.RenderTransform).Angle == 360)
+                if (((RotateTransform)selectedImage.RenderTransform).Angle == 360)
                 {
-                    ((RotateTransform)obj_image.RenderTransform).Angle = 0;
+                    ((RotateTransform)selectedImage.RenderTransform).Angle = 0;
 
                 }
 
-                 ((RotateTransform)obj_image.RenderTransform).Angle += rotateAngle;
+                 ((RotateTransform)selectedImage.RenderTransform).Angle += rotateAngle;
 
 
-                ObjConvertImageInfo oci = (ObjConvertImageInfo)obj_image.Tag;
-                oci.rotationAngle = ((RotateTransform)obj_image.RenderTransform).Angle;
-                obj_image.Tag = oci; //변한 회전값 입력해줌.        
+                ObjConvertImageInfo oci = (ObjConvertImageInfo)selectedImage.Tag;
+                oci.rotationAngle = ((RotateTransform)selectedImage.RenderTransform).Angle;
+                selectedImage.Tag = oci; //변한 회전값 입력해줌.        
 
                 // MessageBox.Show(rotateTransform.Angle.ToString());
                 //  MessageBox.Show(((RotateTransform)obj_image.RenderTransform).Angle.ToString());
 
-                server.Send(fillObjectInfo(obj_image, ObjectInfoPacket.ObjectAction.ROTATION));
+                server.Send(fillObjectInfo(selectedImage, WpfUnityCommand.ROTATION));
 
             }
         }
@@ -2981,23 +2628,23 @@ namespace Nollan.Visual_Space
         //811
         private void LeftAngleTransform_Click(object sender, RoutedEventArgs e) //왼쪽 회전버튼 -45도씩.
         {
-            if (obj_image != null)
+            if (selectedImage != null)
             {
 
-                if (((RotateTransform)obj_image.RenderTransform).Angle == 0)
+                if (((RotateTransform)selectedImage.RenderTransform).Angle == 0)
                 {
-                    ((RotateTransform)obj_image.RenderTransform).Angle = 360;
+                    ((RotateTransform)selectedImage.RenderTransform).Angle = 360;
                     //MessageBox.Show("-0임");
                 }
 
-                ((RotateTransform)obj_image.RenderTransform).Angle -= rotateAngle;
+                ((RotateTransform)selectedImage.RenderTransform).Angle -= rotateAngle;
 
 
 
-                ObjConvertImageInfo oci = (ObjConvertImageInfo)obj_image.Tag;
-                oci.rotationAngle = ((RotateTransform)obj_image.RenderTransform).Angle;
-                obj_image.Tag = oci; //변한 회전값 입력해줌.
-                server.Send(fillObjectInfo(obj_image, ObjectInfoPacket.ObjectAction.ROTATION));
+                ObjConvertImageInfo oci = (ObjConvertImageInfo)selectedImage.Tag;
+                oci.rotationAngle = ((RotateTransform)selectedImage.RenderTransform).Angle;
+                selectedImage.Tag = oci; //변한 회전값 입력해줌.
+                server.Send(fillObjectInfo(selectedImage, WpfUnityCommand.ROTATION));
 
 
 
@@ -3036,7 +2683,7 @@ namespace Nollan.Visual_Space
             }
         }
 
-    
+
 
 
         //사각형 보더 그리기
@@ -3074,30 +2721,30 @@ namespace Nollan.Visual_Space
         /// 현재 그려지는 사각형
         /// </summary>
         Rectangle currentRect;
-        Rectangle SelectedRectangle;
+        Rectangle selectedRectangle;
         //812
         private void MakeFloor_ClickDOWN(object sender, MouseButtonEventArgs e)
         {
 
             if (e.OriginalSource.GetType() == typeof(MapCanvas) || e.OriginalSource.GetType() == typeof(Image) || e.OriginalSource.GetType() == typeof(Line))
             {
-                if (SelectedRectangle != null) //맵캔버스, 이미지, 라인 등을 오른쪽 클릭했을 시
+                if (selectedRectangle != null) //맵캔버스, 이미지, 라인 등을 오른쪽 클릭했을 시
                 {
 
 
                     //814
-                    DeleteControlRectangleBorder(SelectedRectangle);
-                    server.Send(fillFloorInfo(SelectedRectangle, FloorInfoPacket.FloorInfoAction.DESELECT));
-                    SelectedRectangle = null;
+                    DeleteControlRectangleBorder(selectedRectangle);
+                    server.Send(fillFloorInfo(selectedRectangle, WpfUnityCommand.DESELECT));
+                    selectedRectangle = null;
 
 
 
 
                     //814 바닥 선택했을 때 선이랑 이미지 선택 해제
-                    if (obj_image != null)
+                    if (selectedImage != null)
                     {
-                        DeleteControlBorder(obj_image);
-                        obj_image = null;
+                        DeleteControlBorder(selectedImage);
+                        selectedImage = null;
                     }
                     else if (selectedLine != null)
                     {
@@ -3165,20 +2812,20 @@ namespace Nollan.Visual_Space
                 if (e.OriginalSource.GetType() == typeof(Rectangle) && !bLine_check) //817 선그리기 체그해제일 때
                 {
                     //814
-                    if (SelectedRectangle != null)
+                    if (selectedRectangle != null)
                     {
-                        DeleteControlRectangleBorder(SelectedRectangle);
-                        server.Send(fillFloorInfo(SelectedRectangle, FloorInfoPacket.FloorInfoAction.DESELECT));
-                        SelectedRectangle = null;
+                        DeleteControlRectangleBorder(selectedRectangle);
+                        server.Send(fillFloorInfo(selectedRectangle, WpfUnityCommand.DESELECT));
+                        selectedRectangle = null;
                     }
 
-                    SelectedRectangle = e.OriginalSource as Rectangle;
+                    selectedRectangle = e.OriginalSource as Rectangle;
                     Point prePosition = e.GetPosition(mapCanvas);
-                    server.Send(fillFloorInfo(SelectedRectangle, FloorInfoPacket.FloorInfoAction.SELECT));
+                    server.Send(fillFloorInfo(selectedRectangle, WpfUnityCommand.SELECT));
 
 
                     //814 바닥 보더 생성
-                    DrawControlRectangleBorder(SelectedRectangle);
+                    DrawControlRectangleBorder(selectedRectangle);
 
                     Flag_ImageOneClick = true; //818 여기서 true해줘야 무브에서 움직일 때 통과함
 
@@ -3186,10 +2833,10 @@ namespace Nollan.Visual_Space
 
 
                     //814 바닥 선택했을 때 선이랑 이미지 선택 해제
-                    if (obj_image != null)
+                    if (selectedImage != null)
                     {
-                        DeleteControlBorder(obj_image);
-                        obj_image = null;
+                        DeleteControlBorder(selectedImage);
+                        selectedImage = null;
                     }
                     else if (selectedLine != null)
                     {
@@ -3255,7 +2902,7 @@ namespace Nollan.Visual_Space
                 {
 
                     SetRectangleProperty();
-                    server.Send(fillFloorInfo(currentRect, FloorInfoPacket.FloorInfoAction.CREATE));
+                    server.Send(fillFloorInfo(currentRect, WpfUnityCommand.CREATE));
                 }
 
                 currentRect = null;
@@ -3278,20 +2925,20 @@ namespace Nollan.Visual_Space
                 if (e.OriginalSource.GetType() == typeof(Rectangle) && Flag_imgMove) //호출한 e가 바닥(랙탱글)일 때
                 {
                     //812
-                    if (SelectedRectangle != null)
+                    if (selectedRectangle != null)
                     {
                         Point upPoint = e.GetPosition(mapCanvas);
-                        double Rc_LeftPoint = upPoint.X - (SelectedRectangle.ActualWidth / 2); //선택된 사각형의 왼쪽 모서리 점
-                        double Rc_TopPoint = upPoint.Y - (SelectedRectangle.ActualHeight / 2);
+                        double Rc_LeftPoint = upPoint.X - (selectedRectangle.ActualWidth / 2); //선택된 사각형의 왼쪽 모서리 점
+                        double Rc_TopPoint = upPoint.Y - (selectedRectangle.ActualHeight / 2);
 
                         remainderToFindVertex(Rc_LeftPoint, Rc_TopPoint);
-                        Canvas.SetLeft(SelectedRectangle, Result_StartPoint.Item1);
-                        Canvas.SetTop(SelectedRectangle, Result_StartPoint.Item2);
+                        Canvas.SetLeft(selectedRectangle, Result_StartPoint.Item1);
+                        Canvas.SetTop(selectedRectangle, Result_StartPoint.Item2);
 
                         //  SelectedRectangle = null;           
 
 
-                        server.Send(fillFloorInfo(SelectedRectangle, FloorInfoPacket.FloorInfoAction.MOVE));
+                        server.Send(fillFloorInfo(selectedRectangle, WpfUnityCommand.MOVE));
 
                         Flag_ImageOneClick = false; //818
                         Flag_imgMove = false; //818    
@@ -3448,14 +3095,14 @@ namespace Nollan.Visual_Space
             if (MessageBox.Show("정말 초기화하시겠습니까?", "알림", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 AllClear();
-                server.Send(fillCommandInfo(CommandPacket.CommandAction.ALLCLEAR));
+                server.Send(fillCommandInfo(WpfUnityCommand.ALLCLEAR));
 
             }
             else
             {
-            
+
             }
-            
+
         }
 
         private void AllClear()
@@ -3472,12 +3119,12 @@ namespace Nollan.Visual_Space
             Ch_linePlusMinus.IsChecked = false;
             Toggle_Floor.IsChecked = false;
 
-            obj_image = null;
+            selectedImage = null;
             line = null;
             selectedLine = null;
             ib = null;
             lineBrush = null;
-            SelectedRectangle = null;
+            selectedRectangle = null;
 
             imageClick = false;
             bMouseDown = false;
@@ -3558,7 +3205,7 @@ namespace Nollan.Visual_Space
             //        // colorWindow.Visibility = Visibility.Visible;
             //    }
             //}
-            
+
 
         }
 
@@ -3579,13 +3226,6 @@ namespace Nollan.Visual_Space
 
 
 
-
-
-
-
-
-
-
         //-----------------------------
 
 
@@ -3603,142 +3243,254 @@ namespace Nollan.Visual_Space
         }
 
 
-        /*
-            MouseButtonEventArgs e 마우스버튼다운
-        MouseEventArgs e 마우스무브
-            MouseButtonEventArgs e 마우스버튼업
-             */
 
 
 
 
 
-        // private void control_MouseDown(object sender, MouseButtonEventArgs e)
-        // {
-        //     if (e.LeftButton == Mouse.LeftButton)
-        //     {
-        //       //  this.Invalidate();  //unselect other control
-        //         SelectedControl = (Control)sender;
-        //         Control control = (Control)sender;
-        //         mouseX = -e.GetPosition(null).X;
-        //         mouseY = -e.GetPosition(null).Y;
-        //    //     control.Invalidate();
-        //     //   DrawControlBorder(sender);
-        //         propertyGrid1.SelectedObject = SelectedControl;
-        //     }
-        // }
-        // private void control_MouseMove(object sender, MouseEventArgs e)
-        // {
-        //     if (e.LeftButton == Mouse.LeftButton)
-        //     {
-        //        Control control = (System.Windows.Forms.Control)sender;
-        //         Point nextPosition = new Point();
-        //         nextPosition = this.TranslatePoint(nextPosition, this.mainWindow);
-        //         //   nextPosition = this.PointToClient(MousePosition);
-        //         nextPosition.Offset(mouseX, mouseY);
 
-        //    //     control. = nextPosition;
+    
 
 
+       //====================================== 김태우 작성 ==========================================//
+       // 데이터 받는 부분
+       // 저장 및 불러오기
+       // 불러온데이터 셋팅
 
-        //    //       control.Location = nextPosition;
-        //   //      Invalidate();
-        //     }
-        // }
-        // private void control_MouseUp(object sender, MouseButtonEventArgs e)
-        // {
-        //     if (e.LeftButton == Mouse.LeftButton)
-        //     {
-        //         Control control = (Control)sender;
-        ////         Cursor.Clip = System.Drawing.Rectangle.Empty;
-        ////         control.Invalidate();
-        //         //DrawControlBorder(control);
-        //     }
-        // }
+        // 유니티에서 데이터가 오면 받아서 처리하는 부분
+        private void OnReceviedCompleted(WpfUnityPacketHeader header)
+        {
+            Dispatcher.Invoke(() => processReceivedPacket(header));
+        }
 
-        //public bool dragAction = false;
+        private void processReceivedPacket(WpfUnityPacketHeader header)
+        {
+            switch (header.PacketType)
+            {
+                case WpfUnityPacketType.WallInfoPacket:
+                    processReceivedWallInfo(header as WallInfoPacket);
+                    break;
 
-        //private void minuteHand_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    dragAction = true;
-        //    minuteHand_MouseMove(this.minuteHand, e);
-        //}
+                case WpfUnityPacketType.ObjectInfoPacket:
+                    processReceivedObjectInfo(header as ObjectInfoPacket);
+                    break;
 
-        //private void Window_MouseMove(object sender, MouseEventArgs e)
-        //{
-        //    if (e.LeftButton == MouseButtonState.Pressed)
-        //    {
-        //        this.DragMove();
-        //    }
-        //}
+                case WpfUnityPacketType.FloorInfoPacket:
+                    processReceivedFloorInfo(header as FloorInfoPacket);
+                    break;
+            }
+        }
 
-        //private void minuteHand_MouseLeftButtonUp(object sender, MouseEventArgs e)
-        //{
-        //    dragAction = false;
-        //}
+        private void processReceivedFloorInfo(FloorInfoPacket floorInfoPk)
+        {
 
+            switch (floorInfoPk.Command)
+            {
+                case WpfUnityCommand.MOVE3D:
 
-        //private void DrawControlBorder(object sender)
-        //{
-        //    Control control = (Control)sender;
-        //    //define the border to be drawn, it will be offset by DRAG_HANDLE_SIZE / 2
-        //    //around the control, so when the drag handles are drawn they will be seem
-        //    //connected in the middle.
-        //    Rectangle Border = new Rectangle(
-        //        new Point(control.Location.X - DRAG_HANDLE_SIZE / 2,
-        //            control.Location.Y - DRAG_HANDLE_SIZE / 2),
-        //        new Size(control.Size.Width + DRAG_HANDLE_SIZE,
-        //            control.Size.Height + DRAG_HANDLE_SIZE));
-        //    //define the 8 drag handles, that has the size of DRAG_HANDLE_SIZE
-        //    Rectangle NW = new Rectangle(
-        //        new Point(control.Location.X - DRAG_HANDLE_SIZE,
-        //            control.Location.Y - DRAG_HANDLE_SIZE),
-        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
-        //    Rectangle N = new Rectangle(
-        //        new Point(control.Location.X + control.Width / 2 - DRAG_HANDLE_SIZE / 2,
-        //            control.Location.Y - DRAG_HANDLE_SIZE),
-        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
-        //    Rectangle NE = new Rectangle(
-        //        new Point(control.Location.X + control.Width,
-        //            control.Location.Y - DRAG_HANDLE_SIZE),
-        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
-        //    Rectangle W = new Rectangle(
-        //        new Point(control.Location.X - DRAG_HANDLE_SIZE,
-        //            control.Location.Y + control.Height / 2 - DRAG_HANDLE_SIZE / 2),
-        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
-        //    Rectangle E = new Rectangle(
-        //        new Point(control.Location.X + control.Width,
-        //            control.Location.Y + control.Height / 2 - DRAG_HANDLE_SIZE / 2),
-        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
-        //    Rectangle SW = new Rectangle(
-        //        new Point(control.Location.X - DRAG_HANDLE_SIZE,
-        //            control.Location.Y + control.Height),
-        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
-        //    Rectangle S = new Rectangle(
-        //        new Point(control.Location.X + control.Width / 2 - DRAG_HANDLE_SIZE / 2,
-        //            control.Location.Y + control.Height),
-        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
-        //    Rectangle SE = new Rectangle(
-        //        new Point(control.Location.X + control.Width,
-        //            control.Location.Y + control.Height),
-        //        new Size(DRAG_HANDLE_SIZE, DRAG_HANDLE_SIZE));
+                    var pos = convert3DFloorPosTo2DRect(floorInfoPk);
+                    Canvas.SetLeft(selectedRectangle, pos[0]);
+                    Canvas.SetTop(selectedRectangle, pos[1]);
+                    break;
 
-        //    //get the form graphic
-        //    Graphics g = this.CreateGraphics();
-        //    //draw the border and drag handles
-        //    ControlPaint.DrawBorder(g, Border, Color.Gray, ButtonBorderStyle.Dotted);
-        //    ControlPaint.DrawGrabHandle(g, NW, true, true);
-        //    ControlPaint.DrawGrabHandle(g, N, true, true);
-        //    ControlPaint.DrawGrabHandle(g, NE, true, true);
-        //    ControlPaint.DrawGrabHandle(g, W, true, true);
-        //    ControlPaint.DrawGrabHandle(g, E, true, true);
-        //    ControlPaint.DrawGrabHandle(g, SW, true, true);
-        //    ControlPaint.DrawGrabHandle(g, S, true, true);
-        //    ControlPaint.DrawGrabHandle(g, SE, true, true);
-        //    g.Dispose();
-        //}
+                case WpfUnityCommand.REMOVE3D:
+                    DeleteRectangle();
+                    break;
+
+                case WpfUnityCommand.SELECT3D:
+                    Rectangle toSelect = findUIElementByName(floorInfoPk.Name) as Rectangle;
+
+                    if (toSelect != null)
+                    {
+                        selectedRectangle = toSelect;
+                        DrawControlRectangleBorder(selectedRectangle);
+                    }
+                    break;
+
+                case WpfUnityCommand.DESELECT3D:
+                    DeleteControlRectangleBorder(selectedRectangle);
+                    selectedRectangle = null;
+                    break;
 
 
+            }
+        }
+
+        private void processReceivedObjectInfo(ObjectInfoPacket objInfoPk)
+        {
+            switch (objInfoPk.Command)
+            {
+                case WpfUnityCommand.REMOVE3D:
+                    DeleteObject();
+                    selectedImage = null;
+                    break;
+
+
+                case WpfUnityCommand.MOVE3D:
+                    List<float> pos = convert3DObjectPosTo2DImage(objInfoPk);
+                    Canvas.SetLeft(selectedImage, pos[0] - selectedImage.ActualWidth / 2);
+                    Canvas.SetTop(selectedImage, pos[1] - selectedImage.ActualHeight / 2);
+                    break;
+
+
+                case WpfUnityCommand.SELECT3D:
+                    Image toSelect = findUIElementByName(objInfoPk.Name) as Image;
+
+                    if (toSelect != null)
+                    {
+                        selectedImage = toSelect;
+                        DrawControlBorder(selectedImage);
+                    }
+                    break;
+
+
+
+                case WpfUnityCommand.DESELECT3D:
+                    if (selectedImage != null)
+                    {
+                        DeleteControlBorder(selectedImage);
+                        selectedImage = null;
+                    }
+                    break;
+            }
+        }
+
+        private void processReceivedWallInfo(WallInfoPacket wallInfo)
+        {
+            switch (wallInfo.Command)
+            {
+                case WpfUnityCommand.MOVE3D:
+                    List<int> pos = convert3DWallPosTo2DLine(wallInfo);
+                    if (selectedLine != null)
+                    {
+                        selectedLine.X1 = pos[2];
+                        selectedLine.Y1 = pos[3];
+                        selectedLine.X2 = pos[0];
+                        selectedLine.Y2 = pos[1];
+                    }
+                    break;
+
+                case WpfUnityCommand.REMOVE3D:
+
+                    if (selectedLine != null)
+                    {
+                        mapCanvas.Children.Remove(selectedLine);
+                    }
+
+                    break;
+
+
+                case WpfUnityCommand.SELECT3D:
+
+                    UIElement toSelect = findUIElementByName(wallInfo.Name);
+                    if (toSelect != null)
+                    {
+                        selectedLine = toSelect as Line;
+                        selectedLine.Stroke = Brushes.Red;
+                    }
+                    break;
+
+                case WpfUnityCommand.DESELECT3D:
+
+                    if (selectedLine != null)
+                    {
+
+                        WallConvertInfo wci = selectedLine.Tag as WallConvertInfo;
+
+                        if (wci.WallLineimgBrush != null)
+                        {
+                            selectedLine.Stroke = wci.WallLineimgBrush; // 선
+                                                                        // selectedLine.Stroke = ib;
+                        }
+                        else
+                        {
+                            selectedLine.Stroke = Brushes.Black;
+                            selectedLine.StrokeDashArray = DoubleCollection.Parse("1, 0.1");
+                            selectedLine = null;
+                        }
+                    }
+
+                    selectedLine = null;
+                    break;
+            }
+        }
+
+
+        UIElement findUIElementByName(string name)
+        {
+            UIElement uie = null;
+            try
+            {
+                uie = mapCanvas.Children.OfType<UIElement>().First<UIElement>(e => e.GetValue(FrameworkElement.NameProperty).ToString() == name);
+            }
+            catch (InvalidOperationException)
+            { }
+
+            return uie;
+        }
+
+
+
+
+
+
+        private List<int> convert3DFloorPosTo2DRect(FloorInfoPacket floorInfo)
+        {
+
+            int w = (int)(floorInfo.ScaleX * 40);
+            int h = (int)(floorInfo.ScaleZ * 40);
+            int left = (int)((floorInfo.PosX * 40 + zeroPos) - w / 2f);
+            int top = (int)((floorInfo.PosZ * 40 * -1 + zeroPos) - h / 2f);
+            return new List<int> { left, top, w, h };
+
+        }
+
+        private List<int> convert3DWallPosTo2DLine(WallInfoPacket wallInfo)
+        {
+            // 2D 상의 중심점을 구한다.
+            int xc = (int)(wallInfo.PosX * 40 + zeroPos);
+            int yc = (int)(wallInfo.PosZ * 40 * -1 + zeroPos);
+            int w, h;
+
+            // 2D 상의 길이를 구한다.
+            // float이기 때문에 유니티상에서 정확하게 소수점 1자리로 안떨어지고 2.6이면 2.5xxxxx 로 나온다.
+            // 따라서 반올림을 해줘서 값을 보정한다.
+            if (wallInfo.ScaleX > wallInfo.ScaleZ)
+            {
+                w = (int)((wallInfo.ScaleX - 0.2f) * 40);
+                h = 0;
+            }
+            else
+            {
+                w = 0;
+                h = (int)((wallInfo.ScaleZ - 0.2f) * 40);
+            }
+
+            // 이만큼 더해주면 x1,x2 빼주면 x2, y2가된다.
+            w = w / 2;
+            h = h / 2;
+
+            List<int> pos = new List<int>();
+            pos.Add(xc - w);
+            pos.Add(yc - h);
+            pos.Add(xc + w);
+            pos.Add(yc + h);
+            return pos;
+        }
+
+
+        private List<float> convert3DObjectPosTo2DImage(ObjectInfoPacket objInofPk)
+        {
+
+
+            float xc = objInofPk.PosX * 40 + zeroPos;
+            float yc = objInofPk.PosZ * 40 * -1 + zeroPos;
+            List<float> pos = new List<float>();
+            pos.Add(xc);
+            pos.Add(yc);
+
+            return pos;
+        }
 
 
 
@@ -3790,7 +3542,7 @@ namespace Nollan.Visual_Space
             if (result == true)
             {
                 AllClear();
-                server.Send(fillCommandInfo(CommandPacket.CommandAction.ALLCLEAR));
+                server.Send(fillCommandInfo(WpfUnityCommand.ALLCLEAR));
                 JsonTypeDesignDataControler controler = new JsonTypeDesignDataControler();
                 controler.Load(ofd.FileName);
                 SetLoadedDataIn2DAnd3D(mapCanvas, controler.data);
@@ -3827,11 +3579,11 @@ namespace Nollan.Visual_Space
 
 
                 WallConvertInfo wallConvertInfo = new WallConvertInfo();
-                wallConvertInfo.AssetBundleName = ld.AssetBundleName;
+                wallConvertInfo.AssetBundleName = ld.WallImageName;
 
                 Canvas.SetZIndex(line, 1);
 
-                
+
                 if (ld.ImageIndex >= 0)
                 {
                     wallConvertInfo.WallLineimgBrush = imageBrushes[ld.ImageIndex];
@@ -3856,7 +3608,7 @@ namespace Nollan.Visual_Space
                 };
 
                 FloorConvertInfo floorConvertInfo = new FloorConvertInfo();
-                floorConvertInfo.AssetBundleName = fd.AssetBundleName;
+                floorConvertInfo.AssetBundleName = fd.FloorImageName;
                 rect.Stroke = new SolidColorBrush(Colors.DarkGreen);
                 Canvas.SetZIndex(rect, 0);
 
@@ -3882,11 +3634,9 @@ namespace Nollan.Visual_Space
                 };
 
                 ObjConvertImageInfo objconverInfo = new ObjConvertImageInfo();
-                objconverInfo.AssetBundleName = imgData.AssetBundleName;
+                objconverInfo.AssetBundleName = imgData.ObjectName;
                 objconverInfo.brand = imgData.brand;
-                objconverInfo.convertFilePath = imgData.convertFilePath;
                 objconverInfo.explain = imgData.explain;
-                objconverInfo.ImgFilePath = imgData.ImgFilePath;
                 objconverInfo.ObjectName = img.Name;
                 objconverInfo.ObjectType = imgData.ObjectType;
                 objconverInfo.price = imgData.price;
@@ -3913,7 +3663,7 @@ namespace Nollan.Visual_Space
 #endif
 
                 objconverInfo.ImgFilePath = imageFilePath;
-                
+
 
 
                 BitmapImage convertbitmap = new BitmapImage();
@@ -3951,15 +3701,15 @@ namespace Nollan.Visual_Space
                 switch (item)
                 {
                     case Line line:
-                        server.Send(fillWallInfo(line, WallInfo.WallInfoAction.CREATE));
+                        server.Send(fillWallInfo(line, WpfUnityCommand.CREATE));
                         break;
 
                     case Image image:
-                        server.Send(fillObjectInfo(image, ObjectInfoPacket.ObjectAction.CREATE));
+                        server.Send(fillObjectInfo(image, WpfUnityCommand.CREATE));
                         break;
 
                     case Rectangle rect:
-                        server.Send(fillFloorInfo(rect, FloorInfoPacket.FloorInfoAction.CREATE));
+                        server.Send(fillFloorInfo(rect, WpfUnityCommand.CREATE));
                         break;
                 }
             }
