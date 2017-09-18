@@ -122,7 +122,7 @@ namespace Nollan.Visual_Space.DockingWindows
 
             string VisualName = ObjConvertimgInfo.VisualName;
             string ObjType = ObjConvertimgInfo.ObjectType;
-            string ObjName = ObjConvertimgInfo.ObjectName;
+            string ObjName = ObjConvertimgInfo.InnerObjName;
 
             
 
@@ -165,7 +165,7 @@ namespace Nollan.Visual_Space.DockingWindows
         //메인윈도우에서 이미지 델리트키로 지우면 여기 리스트윈도우창의 트리뷰 안의 내용도 지워짐.
         public void DeleteList(ObjConvertImageInfo ObjConvertimgInfo) //메인창에서 이 함수를 호출하게 되면 
         {
-            string mainObjimg = ObjConvertimgInfo.ObjectName;
+            string mainObjimg = ObjConvertimgInfo.InnerObjName;
             
 
             for (int i = 0; i < MyTreeView.Items.Count; i++)
@@ -174,7 +174,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 ObjConvertImageInfo oci = (ObjConvertImageInfo)tvi.Tag;
                 
 
-                if (mainObjimg == oci.ObjectName)
+                if (mainObjimg == oci.InnerObjName)
                 {
 
                     //816
@@ -230,7 +230,7 @@ namespace Nollan.Visual_Space.DockingWindows
 
 
                     ObjConvertImageInfo oci = (ObjConvertImageInfo)tvi.Tag;                                        
-                    call_mainwindow.treeviewTomainwindow_ReceiveDelimg(oci.ObjectName); //메인윈도우로 문자열값 전달하여 메인윈도우에서 전달받은 해당 문자열과 매칭되는 이미지를 찾아서 지움.
+                    call_mainwindow.treeviewTomainwindow_ReceiveDelimg(oci.InnerObjName); //메인윈도우로 문자열값 전달하여 메인윈도우에서 전달받은 해당 문자열과 매칭되는 이미지를 찾아서 지움.
 
 
                     //816
@@ -282,7 +282,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 img_ListThumnail.Source = bitmap;
            
 
-            Selected_ObjItemName = objconvertimginfo.ObjectName;
+            Selected_ObjItemName = objconvertimginfo.InnerObjName;
             Selected_ObjType = objconvertimginfo.ObjectType;
 
 
@@ -312,7 +312,7 @@ namespace Nollan.Visual_Space.DockingWindows
             objconvertimginfo = (ObjConvertImageInfo)tvi.Tag;
 
 
-            Selected_ObjItemName = objconvertimginfo.ObjectName;
+            Selected_ObjItemName = objconvertimginfo.InnerObjName;
             Selected_ObjType = objconvertimginfo.ObjectType;
 
 

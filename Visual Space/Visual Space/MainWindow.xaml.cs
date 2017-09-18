@@ -1,5 +1,5 @@
-﻿#define RUN_3DVIWER_IN_UNITY_EDITER
-#define RUN_3DVIWER //하단부에 유니티뷰어 띄우고 싶으면 이쪽은 주석해제하면 됨.
+﻿//#define RUN_3DVIWER_IN_UNITY_EDITER //하단부에 유니티뷰어 띄우고 싶으면 주석처리
+#define RUN_3DVIWER 
 
 
 using Nollan.Visual_Space.DockingWindows;
@@ -216,7 +216,7 @@ namespace Nollan.Visual_Space
         bool? Flag_HorizontalLinePlusMinus = null;
         bool? Flag_VerticalLinePlusMinus = null;
         bool? Result_separateLine = null;
-        int i = 0;
+        int InnerNum = 0;
         Image selectedImage;
         bool imageClick = false;
 
@@ -418,7 +418,7 @@ namespace Nollan.Visual_Space
                     WallConvertInfo wci = new WallConvertInfo();
                     wci.WallLineimgBrush = ib;
                     //824
-                    wci.AssetBundleName = Wallpaer_imgFileName; //컬러창에서 선택할 시 다이얼로그에서 선택된 이름 wallpaper1.png 을 기억
+                    wci.WallImageName = Wallpaer_imgFileName; //컬러창에서 선택할 시 다이얼로그에서 선택된 이름 wallpaper1.png 을 기억
 
                     line.Tag = wci; //선이 생성된 라인의 경우 태그에 자신에게 그려진 이미지 브러시를 가지고 있게 된다.
 
@@ -431,7 +431,7 @@ namespace Nollan.Visual_Space
 
                     //824 디폴트일 경우 태그에 디폴트라고 넣어줌
                     WallConvertInfo wci = new WallConvertInfo();
-                    wci.AssetBundleName = "default";
+                    wci.WallImageName = "default";
                     line.Tag = wci;
 
 
@@ -443,7 +443,7 @@ namespace Nollan.Visual_Space
                 //line.Stroke = Brushes.Black;
 
                 line.StrokeThickness = 6;
-                line.Name = $"Line_{i++}";
+                line.Name = $"Line_{InnerNum++}";
                 mapCanvas.Children.Add(line);
 
             }
@@ -1302,8 +1302,9 @@ namespace Nollan.Visual_Space
             // 공통적인 작업
             ObjectInfoPacket objectInfo = new ObjectInfoPacket();
             ObjConvertImageInfo ObjInfo = (ObjConvertImageInfo)img.Tag;
-            objectInfo.Name = ObjInfo.ObjectName;
-            objectInfo.ObjectName = ObjInfo.AssetBundleName;
+            objectInfo.Name = ObjInfo.InnerObjName;
+            objectInfo.ObjectName = ObjInfo.ObjectName;
+            objectInfo.AssetBundleName = ObjInfo.AssetBundleName;
             objectInfo.Command = action;
 
             // del 일때는 굳이 다른 정보가 필요없다.
@@ -2195,7 +2196,7 @@ namespace Nollan.Visual_Space
         }
 
 
-        public int innerObjName = 0;
+
         private void panel_Drop(object sender, DragEventArgs e)
         {
             // If an element in the panel has already handled the drop,
@@ -2229,12 +2230,6 @@ namespace Nollan.Visual_Space
                         else if (e.AllowedEffects.HasFlag(DragDropEffects.Move)) //컨트롤 안눌렀을 모든 경우 
                         {
 
-
-
-
-
-
-
                             Image img = _element.Content as Image;
                             ObjectInfo newInfo = (ObjectInfo)img.Tag;
 
@@ -2243,7 +2238,9 @@ namespace Nollan.Visual_Space
                             string _ObjectType = newInfo.ObjectType;
                             string _FilePath = newInfo.FilePath; //원본 이미지 경로(오른쪽 UI에 있는 이미지 경로)
                             string _VisualName = newInfo.VisualName;
-                            string _assetBundleName = newInfo.AssetBundleName;
+                            string _objectName = newInfo.ObjectName;
+                            string _assetbundleName = newInfo.AssetBundleName;
+
 
                             //816
                             int _price = newInfo.price;
@@ -2293,7 +2290,10 @@ namespace Nollan.Visual_Space
                             ObjConvertimgInfo.ObjectType = _ObjectType; //오브젝트타입
                             ObjConvertimgInfo.ImgFilePath = _FilePath; //원본 이미지 경로
                             ObjConvertimgInfo.VisualName = _VisualName; //비주얼 네임. 툴팁에 뜨는 이름.
-                            ObjConvertimgInfo.AssetBundleName = _assetBundleName; // 에셋번들이름
+                            ObjConvertimgInfo.VisualName = _VisualName; //비주얼 네임. 툴팁에 뜨는 이름.
+                            ObjConvertimgInfo.ObjectName = _objectName; 
+                            ObjConvertimgInfo.AssetBundleName = _assetbundleName; // 에셋번들이름
+
 
                             //816
                             ObjConvertimgInfo.price = _price;
@@ -2303,8 +2303,8 @@ namespace Nollan.Visual_Space
 
 
                             ObjConvertimgInfo.convertFilePath = convertImgPath; //변환 이미지 경로. 혹시 필요할까봐...
-                            ObjConvertimgInfo.ObjectName = $"Object{innerObjName}"; //이 이름을 가지고 유니티와 연동해서 양쪽으로 지우고 움직이고 함.
-                                                                                    //  ObjConvertimgInfo.rotationPoint = null;//회전값을 위한 2차원의 x,y point좌표.    
+                            ObjConvertimgInfo.InnerObjName = $"Object_{InnerNum}"; //이 이름을 가지고 유니티와 연동해서 양쪽으로 지우고 움직이고 함.
+                            //                                                        //  ObjConvertimgInfo.rotationPoint = null;//회전값을 위한 2차원의 x,y point좌표.    
 
                             ObjConvertimgInfo.obj_ConvertSize = newInfo.obj_ConvertSize;
 
@@ -2323,7 +2323,7 @@ namespace Nollan.Visual_Space
                             //---
 
 
-                            convertimg.Name = ObjConvertimgInfo.ObjectName;
+                            convertimg.Name = ObjConvertimgInfo.InnerObjName;
                             convertimg.Tag = ObjConvertimgInfo; //이미지의 tag에 정보를 기억.
 
 
@@ -2360,7 +2360,7 @@ namespace Nollan.Visual_Space
 
 
 
-                            innerObjName++;
+                            InnerNum++;
 
 
                             //811
@@ -2565,7 +2565,7 @@ namespace Nollan.Visual_Space
                         //트리뷰에서 건내받은 _objName이 맵캔버스에 있는 이미지의 오브젝트 네임과 같다면 그걸 저장하고
 
 
-                        if (oci.ObjectName == _objName)
+                        if (oci.InnerObjName == _objName)
                         {
                             //   DeleteControlBorder(img); 
                             DeleteControlBorder();//이미지에 생성된 보더 지우기. 리스트쪽에서 지울 땐 맵캔버스에 있는 보더 무조건 없애버린다. 831
@@ -2892,7 +2892,7 @@ namespace Nollan.Visual_Space
 
                 currentRect.Width = Math.Abs(prePosition.X - Result_StartPoint.Item1);
                 currentRect.Height = Math.Abs(prePosition.Y - Result_StartPoint.Item2);
-                currentRect.Name = $"Object{innerObjName++}";
+                currentRect.Name = $"Floor_{InnerNum++}";
 
                 if (currentRect.Width < 10 && currentRect.Height < 10)
                 {
@@ -2969,7 +2969,7 @@ namespace Nollan.Visual_Space
                 fci.RectimgBrush = Floorib;
 
                 //824               
-                fci.AssetBundleName = Floor_imgFileName;
+                fci.FloorImageName = Floor_imgFileName;
 
 
                 currentRect.Tag = fci;
@@ -2978,7 +2978,7 @@ namespace Nollan.Visual_Space
             else
             {
                 FloorConvertInfo fci = new FloorConvertInfo();
-                fci.AssetBundleName = "default";
+                fci.FloorImageName = "default";
                 currentRect.Tag = fci;
                 currentRect.Fill = new SolidColorBrush(Colors.LightYellow); //사용자가 바닥을 따로 선택하지 않았을 땐 기본 바닥 적용.
 
@@ -3242,16 +3242,6 @@ namespace Nollan.Visual_Space
             None
         }
 
-
-
-
-
-
-
-
-    
-
-
        //====================================== 김태우 작성 ==========================================//
        // 데이터 받는 부분
        // 저장 및 불러오기
@@ -3429,11 +3419,6 @@ namespace Nollan.Visual_Space
             return uie;
         }
 
-
-
-
-
-
         private List<int> convert3DFloorPosTo2DRect(FloorInfoPacket floorInfo)
         {
 
@@ -3447,6 +3432,7 @@ namespace Nollan.Visual_Space
 
         private List<int> convert3DWallPosTo2DLine(WallInfoPacket wallInfo)
         {
+
             // 2D 상의 중심점을 구한다.
             int xc = (int)(wallInfo.PosX * 40 + zeroPos);
             int yc = (int)(wallInfo.PosZ * 40 * -1 + zeroPos);
@@ -3493,8 +3479,6 @@ namespace Nollan.Visual_Space
         }
 
 
-
-
         private void btn_Save_Click(object sender, RoutedEventArgs e)
         {
 
@@ -3529,7 +3513,6 @@ namespace Nollan.Visual_Space
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
             ofd.Filter = "NCVSF(*.NCVSF)|*.NCVSF";
             ofd.Multiselect = false;
-
             ofd.AddExtension = true;
 
             string dir = Directory.GetCurrentDirectory();
@@ -3572,14 +3555,14 @@ namespace Nollan.Visual_Space
                     Y1 = ld.y1,
                     X2 = ld.x2,
                     Y2 = ld.y2,
-                    Name = $"Object_{i++}",
+                    Name = $"Line_{InnerNum++}",
                     StrokeThickness = 6,
                     Stroke = System.Windows.Media.Brushes.Black
                 };
 
 
                 WallConvertInfo wallConvertInfo = new WallConvertInfo();
-                wallConvertInfo.AssetBundleName = ld.WallImageName;
+                wallConvertInfo.WallImageName = ld.WallImageName;
 
                 Canvas.SetZIndex(line, 1);
 
@@ -3602,13 +3585,13 @@ namespace Nollan.Visual_Space
                     Width = fd.Width,
                     Height = fd.Height,
                     Stroke = System.Windows.Media.Brushes.Green,
-                    Name = $"Object_{i++}",
+                    Name = $"Floor_{InnerNum++}",
                     Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.LightYellow), //사용자가 바닥을 따로 선택하지 않았을 땐 기본 바닥 적용.
                     Opacity = 0.6,
                 };
 
                 FloorConvertInfo floorConvertInfo = new FloorConvertInfo();
-                floorConvertInfo.AssetBundleName = fd.FloorImageName;
+                floorConvertInfo.FloorImageName = fd.FloorImageName;
                 rect.Stroke = new SolidColorBrush(Colors.DarkGreen);
                 Canvas.SetZIndex(rect, 0);
 
@@ -3629,15 +3612,17 @@ namespace Nollan.Visual_Space
             {
                 Image img = new Image()
                 {
-                    Name = $"Object_{i++}",
+                    Name = $"Object_{InnerNum++}",
 
                 };
 
                 ObjConvertImageInfo objconverInfo = new ObjConvertImageInfo();
-                objconverInfo.AssetBundleName = imgData.ObjectName;
+                objconverInfo.AssetBundleName = imgData.AssetBundleName;
+                objconverInfo.InnerObjName = img.Name;
+                objconverInfo.ObjectName = imgData.ObjectName;
                 objconverInfo.brand = imgData.brand;
                 objconverInfo.explain = imgData.explain;
-                objconverInfo.ObjectName = img.Name;
+                objconverInfo.InnerObjName = img.Name;
                 objconverInfo.ObjectType = imgData.ObjectType;
                 objconverInfo.price = imgData.price;
                 objconverInfo.rotationAngle = imgData.rotationAngle;
@@ -3651,7 +3636,7 @@ namespace Nollan.Visual_Space
                     + $"../../../pictures/{objconverInfo.ObjectType}/convert/{objconverInfo.obj_ConvertSize.ToString()}.png";
 
                 string imageFilePath = AppDomain.CurrentDomain.BaseDirectory
-                    + $"../../../pictures/{objconverInfo.ObjectType}/{objconverInfo.AssetBundleName}.png";
+                    + $"../../../pictures/{objconverInfo.ObjectType}/{objconverInfo.InnerObjName}.png";
 
 #else
                             string convertImgPath = AppDomain.CurrentDomain.BaseDirectory + 
@@ -3659,24 +3644,20 @@ namespace Nollan.Visual_Space
 
                 
                 string imageFilePath = AppDomain.CurrentDomain.BaseDirectory
-                    + $"pictures/{objconverInfo.ObjectType}/{objconverInfo.AssetBundleName}.png";
+                    + $"pictures/{objconverInfo.ObjectType}/{objconverInfo.ObjectName}.png";
 #endif
 
                 objconverInfo.ImgFilePath = imageFilePath;
-
-
 
                 BitmapImage convertbitmap = new BitmapImage();
                 convertbitmap.BeginInit();
                 convertbitmap.UriSource = new Uri(convertImgPath, UriKind.RelativeOrAbsolute);
                 convertbitmap.EndInit();
 
-
                 img.Stretch = Stretch.Uniform;
                 img.Source = convertbitmap;
                 img.MouseEnter += Convertimg_MouseEnter;
                 img.MouseLeave += Convertimg_MouseLeave;
-
 
                 //---회전 811                      
                 rotateTransform = new RotateTransform();
@@ -3691,7 +3672,6 @@ namespace Nollan.Visual_Space
                 ((RotateTransform)img.RenderTransform).Angle = objconverInfo.rotationAngle;
                 AppendToChildList(objconverInfo); //리스트쪽으로 컨버트된 이미지 태그에 등록한 클래스 정보들을 자식의 함수를 통해 넘겨줌.
                 ObjConvertimgList.Add(objconverInfo); //왼쪽 UI에서 지울 수 있도록 이미지의 tag에 넣었던 정보를 리스트 안에도 저장. 
-
                 canvaes.Children.Add(img);
             }
 
@@ -3714,9 +3694,6 @@ namespace Nollan.Visual_Space
                 }
             }
         }
-
-
-
 
         //경로 넣어서 리턴값이 이미지브러시인 함수
         public ImageBrush GetBitmapBrushByPath(string Param_imgFilePath)

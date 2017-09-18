@@ -1022,7 +1022,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 byte[] bytesource = Utils.ConvertBitmapSourceToByteArray(img.Source);
                 _tempbyte = bytesource;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 System.Windows.MessageBox.Show("마우스 우클릭을 허용하지 않는 블로그 사진입니다. 저작권을 보호를 위해 양해해주세요.");
             }

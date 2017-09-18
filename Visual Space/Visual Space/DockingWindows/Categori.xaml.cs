@@ -34,9 +34,9 @@ namespace Nollan.Visual_Space.DockingWindows
             InitializeComponent();
 
 #if DEBUG
-            NewInfo.FilePath = Directory.GetCurrentDirectory() + $@"\..\..\..\pictures\{NewInfo.ObjectType}\{NewInfo.AssetBundleName}.png";
+            NewInfo.FilePath = Directory.GetCurrentDirectory() + $@"\..\..\..\pictures\{NewInfo.ObjectType}\{NewInfo.ObjectName}.png";
 #else
-            NewInfo.FilePath = Directory.GetCurrentDirectory() + $@"\pictures\{NewInfo.ObjectType}\{NewInfo.AssetBundleName}.png";
+            NewInfo.FilePath = Directory.GetCurrentDirectory() + $@"\pictures\{NewInfo.ObjectType}\{NewInfo.ObjectName}.png";
 #endif
             //Image myImage3 = new Image();
             //상대 파일경로의 png를 bitmap으로 변환.

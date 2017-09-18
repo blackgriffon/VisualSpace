@@ -33,6 +33,7 @@ namespace Nollan.Visual_Space.Data
                         objd.Left = Canvas.GetLeft(img);
                         objd.Width = img.Source.Width;
                         objd.Height = img.Source.Height;
+                        objd.AssetBundleName = covertImgInfo.AssetBundleName;
 
                         objd.ObjectType = covertImgInfo.ObjectType;
                         objd.brand = covertImgInfo.brand;
@@ -42,7 +43,7 @@ namespace Nollan.Visual_Space.Data
                         objd.VisualName = covertImgInfo.VisualName;
                         objd.obj_ConvertSize = (int)covertImgInfo.obj_ConvertSize;
 
-                       objd.ObjectName = covertImgInfo.AssetBundleName;
+                       objd.ObjectName = covertImgInfo.ObjectName;
 
                         data.objectData.Add(objd);
                         break;
@@ -56,7 +57,7 @@ namespace Nollan.Visual_Space.Data
                         ld.y1 = line.Y1;
                         ld.x2 = line.X2;
                         ld.y2 = line.Y2;
-                        ld.WallImageName = wallConvertInfo.AssetBundleName;
+                        ld.WallImageName = wallConvertInfo.WallImageName;
 
                         if (line.Stroke as ImageBrush != null)
                         {
@@ -96,7 +97,7 @@ namespace Nollan.Visual_Space.Data
                         fd.Left = Canvas.GetLeft(rect);
                         fd.Width = rect.ActualWidth;
                         fd.Height = rect.ActualHeight;
-                        fd.FloorImageName = floorConvertInfo.AssetBundleName;
+                        fd.FloorImageName = floorConvertInfo.FloorImageName;
                         fd.ImageIndex = -1;
 
                         if (rect.Fill as ImageBrush != null)
@@ -191,6 +192,7 @@ namespace Nollan.Visual_Space.Data
         // public string objectName; 
 
         // todo 용도 변경 에셋번들 패키지 이름..
+        public string AssetBundleName;
         public string ObjectName; // ObjectName
         public string VisualName; //사용자가 변경할 수 있는 이름.
         public double rotationAngle; //시계방향으로 회전하기 위한 2차원 x,y 정보 좌표계.   

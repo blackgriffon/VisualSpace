@@ -169,7 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjetControlManager: {fileID: 134471820}
   ObjectGenerationManager: {fileID: 134471819}
-  ParentGameObject: {fileID: 0}
+  ParentGameObject: {fileID: 1814683387}
 --- !u!4 &134471817
 Transform:
   m_ObjectHideFlags: 0

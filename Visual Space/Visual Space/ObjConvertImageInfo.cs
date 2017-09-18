@@ -16,11 +16,11 @@ namespace Nollan.Visual_Space
         public string AssetBundleName; // 에셋번들이름
         public string convertFilePath; //변환시켜줄 이미지
         public string ImgFilePath; //드롭할 때 tag에서 받아올 오른쪽 UI에 있는 원본 이미지 경로
-        public string ObjectName; //같은 오브젝트를 여러개 놓는다면 그걸 구분하기 위한 이름이 필요.
+        public string ObjectName;
+        public string InnerObjName; //같은 오브젝트를 여러개 놓는다면 그걸 구분하기 위한 이름이 필요.
         public string ObjectType;
         public Point canvasPoint; //캔버스 좌표
         public double rotationAngle; //시계방향으로 회전하기 위한 2차원 x,y 정보 좌표계.   
-
 
         
         public int price; //가격

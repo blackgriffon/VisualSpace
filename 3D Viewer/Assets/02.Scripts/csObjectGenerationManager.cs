@@ -27,12 +27,13 @@ public class csObjectGenerationManager : MonoBehaviour
 
 
         StartCoroutine(LoadAllAssetBundle("Windows"));
-        //StartCoroutine(LoadAssetBundleUsingWebRequest("bundle.unity3d"));
+       //StartCoroutine(LoadAssetBundleUsingWebRequest("bundle.unity3d"));
     }
 
 
     string assetBundleDirectory = "http://web.visualspace.uy.to/assetBundle/Windows/";
-
+    //string assetBundleDirectory = "http://visualspace.epizy.com/AssetBundle/Windows/";
+    
 
     IEnumerator LoadAllAssetBundle(string folderName)
     {
@@ -181,7 +182,7 @@ public class csObjectGenerationManager : MonoBehaviour
     public IEnumerator coLoadObject(ObjectInfoPacket objInfo)
     {
         // todo assetBundles["bundle"] ==> assetBundles[objInfo.AssetBundleName]
-        AssetBundleRequest assetPrefeb = assetBundles["bundle"].LoadAssetAsync<GameObject>(objInfo.ObjectName);
+        AssetBundleRequest assetPrefeb = assetBundles[objInfo.AssetBundleName].LoadAssetAsync<GameObject>(objInfo.ObjectName);
         yield return assetPrefeb;
 
 

@@ -24,7 +24,7 @@ public class csObjetControlManager : MonoBehaviour
     private Vector3 InitialCameraPos;
     private Quaternion InitialCameraRoation;
     float moveStep = 0.5f;
-    
+
 
     private void Awake()
     {
@@ -149,7 +149,7 @@ public class csObjetControlManager : MonoBehaviour
                 // 선택된 오브젝트가 있었으면
                 // 컨트롤 버튼을 비활성화 시켜서 안보이게 한다.
                 controlButtons.SetActive(false);
-                
+
                 // 오브젝트들은(ex가구) 자식들의 집합으로 이루워진 경우가 있으므로
                 var child = selecetdObject.GetComponentsInChildren<Transform>();
 
@@ -165,6 +165,9 @@ public class csObjetControlManager : MonoBehaviour
 
             // SelecetdObject에 들어온 값을 대입한다.
             selecetdObject = value;
+
+
+
 
             // 선택된거가 있으면
             if (selecetdObject != null)
@@ -184,6 +187,7 @@ public class csObjetControlManager : MonoBehaviour
                 }
 
             }
+
         }
     }
 
@@ -195,9 +199,9 @@ public class csObjetControlManager : MonoBehaviour
 
     IEnumerator coCheckInput()
     {
-        while(true)
+        while (true)
         {
-            
+
             // 0.마우스 왼쪽이 눌리면
             if (Input.GetMouseButtonDown(0))
             {
@@ -384,13 +388,13 @@ public class csObjetControlManager : MonoBehaviour
     {
         SelecetdObject.transform.position += moveValue;
         //SelecetdObject.transform.Translate(Vector3.left * moveStep);
-        
+
 
         switch (SelecetdObject.tag)
         {
             case "Wall":
-                
-                
+
+
                 WallInfoPacket wallInfo = new WallInfoPacket();
                 wallInfo.Command = WpfUnityCommand.MOVE3D;
                 wallInfo.Name = SelecetdObject.name;
@@ -462,7 +466,7 @@ public class csObjetControlManager : MonoBehaviour
         WpfUnityPacketHeader header = null;
         switch (SelecetdObject.tag)
         {
-            
+
 
             case "Wall":
                 WallInfoPacket wallInfo = new WallInfoPacket();

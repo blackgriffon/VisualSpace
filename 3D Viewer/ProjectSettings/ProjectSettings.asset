@@ -596,7 +596,7 @@ PlayerSettings:
   cloudServicesEnabled:
     UNet: 1
   facebookSdkVersion: 7.9.4
-  apiCompatibilityLevel: 2
+  apiCompatibilityLevel: 3
   cloudProjectId: 58c62c1d-d768-401f-87db-627792d4be97
   projectName: "\uC720\uB2C8\uD2F0 TCP CLINET \uAD6C\uD604"
   organizationId: taewoo-kim-5633404

@@ -83,7 +83,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 ObjectInfo objInfo = new ObjectInfo();
                 objInfo.ObjectType = "chairs";
                 objInfo.VisualName = $"이케아의자{i}";
-                objInfo.AssetBundleName = $"chair_{i + 1}";
+                objInfo.ObjectName = $"chair_{i + 1}";
 
                 if (i == 0)
                 {
@@ -126,7 +126,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 ObjectInfo objInfo = new ObjectInfo();
                 objInfo.ObjectType = "beds";
                 objInfo.VisualName = $"에이스침대{i}";
-                objInfo.AssetBundleName = $"bed_{i + 1}";
+                objInfo.ObjectName = $"bed_{i + 1}";
 
                 //824
                 objInfo.obj_ConvertSize = ObjSize.s_2x3;
@@ -154,7 +154,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 ObjectInfo objInfo = new ObjectInfo();
                 objInfo.ObjectType = "subbed";
                 objInfo.VisualName = $"에이스침대{i}";
-                objInfo.AssetBundleName = $"bed_{i + 1}";
+                objInfo.ObjectName = $"bed_{i + 1}";
 
                 //824
                 objInfo.obj_ConvertSize = ObjSize.s_2x3;
@@ -182,7 +182,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 ObjectInfo objInfo = new ObjectInfo();
                 objInfo.ObjectType = "tables";
                 objInfo.VisualName = $"LG 테이블{i}";
-                objInfo.AssetBundleName = $"table_{i + 1}";
+                objInfo.ObjectName = $"table_{i + 1}";
 
                 switch (i)
                 {
@@ -228,7 +228,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 ObjectInfo objInfo = new ObjectInfo();
                 objInfo.ObjectType = "doors";
                 objInfo.VisualName = $"원목도어{i}";
-                objInfo.AssetBundleName = $"door_{i + 1}";
+                objInfo.ObjectName = $"door_{i + 1}";
 
                 objInfo.obj_ConvertSize = ObjSize.s_2x1;
 
@@ -254,7 +254,7 @@ namespace Nollan.Visual_Space.DockingWindows
                 ObjectInfo objInfo = new ObjectInfo();
                 objInfo.ObjectType = "windows";
                 objInfo.VisualName = $"KCC창문{i}";
-                objInfo.AssetBundleName = $"window_{i + 1}";
+                objInfo.ObjectName = $"window_{i + 1}";
 
                 objInfo.obj_ConvertSize = ObjSize.s_2x1;
 

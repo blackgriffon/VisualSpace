@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3D Viewer", "3D Viewer.csproj", "{6744FD49-EDF1-FC3F-5648-1DB94E9FDF37}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3D Viewer.Editor", "3D Viewer.Editor.csproj", "{F64D4756-772B-B811-3FC9-C570A433C8C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{6744FD49-EDF1-FC3F-5648-1DB94E9FDF37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6744FD49-EDF1-FC3F-5648-1DB94E9FDF37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6744FD49-EDF1-FC3F-5648-1DB94E9FDF37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F64D4756-772B-B811-3FC9-C570A433C8C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F64D4756-772B-B811-3FC9-C570A433C8C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F64D4756-772B-B811-3FC9-C570A433C8C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F64D4756-772B-B811-3FC9-C570A433C8C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
