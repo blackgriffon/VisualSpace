@@ -26,20 +26,25 @@ namespace Nollan.Visual_Space.Network
         ALLCLEAR,
     }
 
+
+    // 프로토 버퍼를 사용하기 위해 사용
     [ProtoContract]
+    // 자식클래스가 어느것이 있느지 알려줌. 앞에 숫자는 아무거나 넣어도 됨.
     [ProtoInclude(1, typeof(WallInfoPacket))]
     [ProtoInclude(2, typeof(ObjectInfoPacket))]
     [ProtoInclude(3, typeof(FloorInfoPacket))]
     [ProtoInclude(4, typeof(CommandPacket))]
     public class WpfUnityPacketHeader
     {
-        public WpfUnityPacketType PacketType;
+        // 직렬화 할 데이터 번호에 맞는 데이터 타입을 한다.
+        [ProtoMember(1)] public WpfUnityPacketType PacketType;
     }
 
 
     [ProtoContract]
     public class WallInfoPacket : WpfUnityPacketHeader
     {
+        // 클래스 인스턴스화시에 패킷 type이 먼지 셋팅한다.
 
         public WallInfoPacket()
         {

@@ -84,26 +84,21 @@ namespace Nollan.Visual_Space.Network
             }
             Console.WriteLine("client: reader is shutting down");
         }
-
-
-        object sendlockObj = new object();
+        
         public void Send(WpfUnityPacketHeader header)
         {
             if (header != null && IsConnected)
             {
-
                 try
                 {
-                    ProtoBuf.Serializer.SerializeWithLengthPrefix<WpfUnityPacketHeader>(_NetworkStream, header, ProtoBuf.PrefixStyle.Fixed32);
-                    
+                    ProtoBuf.Serializer.SerializeWithLengthPrefix<WpfUnityPacketHeader>
+                        (_NetworkStream, header, ProtoBuf.PrefixStyle.Fixed32);
                 }
-                catch (System.IO.IOException)
+                catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.Message);
                 }
-                catch (Exception ex) { Console.WriteLine(ex.Message); }
             }
-
 
         }
 

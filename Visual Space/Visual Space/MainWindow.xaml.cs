@@ -1313,8 +1313,7 @@ namespace Nollan.Visual_Space
 
                 case WpfUnityCommand.CREATE:
                 case WpfUnityCommand.MOVE:
-
-
+                    
                     // 계산
                     // 2d 좌표 기준으로 200 / 200Canvas.GetTop(img) 센터로 지정한다.
 
@@ -1334,6 +1333,7 @@ namespace Nollan.Visual_Space
                     break;
 
             }
+            
 
 
             return objectInfo;
@@ -1351,14 +1351,13 @@ namespace Nollan.Visual_Space
 
 
 
-            // del 일때는 굳이 좌표정보가 필요없다.
+            // REMOVE 일때는 굳이 좌표정보가 필요없다.
             switch (action)
             {
 
 
                 case WpfUnityCommand.CREATE:
                 case WpfUnityCommand.MOVE:
-
 
                     float wallThickness = 0.2f;
                     // 계산
@@ -1439,7 +1438,7 @@ namespace Nollan.Visual_Space
                     float xc = (float)Canvas.GetLeft(rect) - zeroPos + (float)rect.Width / 2;
                     float yc = ((float)Canvas.GetTop(rect) - zeroPos + (float)rect.Height / 2) * -1;
 
-
+             
                     floorInfo.PosX = xc / 40;
                     floorInfo.PosY = 0;
                     floorInfo.PosZ = yc / 40;
@@ -1447,8 +1446,6 @@ namespace Nollan.Visual_Space
                     floorInfo.ScaleX = (float)rect.Width / 40;
                     floorInfo.ScaleY = 0.01f;
                     floorInfo.ScaleZ = (float)rect.Height / 40;
-
-
                     break;
 
             }
